@@ -26,15 +26,22 @@
                             Please login here to access the system.
                         </div>
                         <div class="col-12 mt-3">
-                            <form action="" method="POST">
+                            <form action="{{route('login.authenticate')}}" method="POST">
+                                @csrf
                                 <div class="form-group">
-                                  <label for="txtUsername">Username :</label>
-                                  <input type="text" class="form-control" id="txtUsername" >
+                                    <label for="txtUsername">Username :</label>
+                                    <input type="text" class="form-control" id="txtUsername"  name="username" />
+                                    @error('username')
+                                        <small id="username_error_msg" class="text-danger"> {{$message}}</small>
+                                    @enderror
 
                                 </div>
                                 <div class="form-group">
                                   <label for="txtPassword">Password:</label>
-                                  <input type="password" class="form-control" id="txtPassword">
+                                  <input type="password" class="form-control" id="txtPassword" name="password" />
+                                  @error('password')
+                                    <small id="password_error_msg" class="text-danger"> {{$message}}</small>
+                                  @enderror
                                 </div>
                                 <div class="form-group d-flex
                                 justify-content-end" >
@@ -42,7 +49,10 @@
                                 </div>
 
                                 <div class="form-group d-flex justify-content-center">
-                                    <div id="login-error">Username or password is wrong!</div>
+                                    @if (Session::has('login_status'))
+                                        <div id="login-error"> {{ session('login_status') }}</div>
+                                    @endif
+
                                 </div>
 
 
