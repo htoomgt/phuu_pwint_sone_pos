@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreateSystemSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,16 +14,14 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('system_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name', 512);
-            $table->string('username', 512);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->enum('status', ['active','inactive'])->default('active');
+            $table->string('setting_name',512);
+            $table->string('setting_value', 512);
             $table->timestamps();
+
+            $table->index('setting_name');
+            $table->index('setting_value');
         });
         Schema::enableForeignKeyConstraints();
     }
@@ -36,7 +34,7 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('system_settings');
         Schema::enableForeignKeyConstraints();
     }
 }

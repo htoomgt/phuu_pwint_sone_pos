@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUsersTable extends Migration
+class CreatePurchasesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,16 +14,18 @@ class CreateUsersTable extends Migration
     public function up()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('purchases', function (Blueprint $table) {
+            // Product In
             $table->id();
-            $table->string('full_name', 512);
-            $table->string('username', 512);
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->enum('status', ['active','inactive'])->default('active');
+            $table->date('received_date');
+            $table->foreignId('created_by')->references('id')->on('users');
+            $table->foreignId('updated_by')->references('id')->on('users')->nullable();
             $table->timestamps();
+
+            $table->index('received_date');
+            $table->index('created_by');
+            $table->index('updated_by');
+
         });
         Schema::enableForeignKeyConstraints();
     }
@@ -36,7 +38,7 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('purchases');
         Schema::enableForeignKeyConstraints();
     }
 }
