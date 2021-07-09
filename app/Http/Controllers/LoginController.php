@@ -15,7 +15,7 @@ class LoginController extends Controller
      * @author Htoo Maung Thait
      * @return \Illuminate\View\View
      */
-    public function showLoginPage():View
+    public function showLoginPage(): View
     {
         return view('login');
     }
@@ -27,8 +27,8 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse
      *
-    */
-    public function authenticate(Request $request):RedirectResponse
+     */
+    public function authenticate(Request $request): RedirectResponse
     {
 
         $validated = $request->validate([
@@ -39,25 +39,30 @@ class LoginController extends Controller
         $username = $request->username;
         $password = $request->password;
 
-        if(Auth::attempt(['username' => $username, 'password' => $password, 'status' => 'active'])){
+        if (Auth::attempt(['username' => $username, 'password' => $password, 'status' => 'active'])) {
             return redirect()->route('home.dashboard');
+        } else {
+            return back()->with('login_status', 'Username or password is wrong!');
         }
-        else{
-            return back()->with('login_status' , 'Username or password is wrong!');
-        }
-
 
     }
 
     /**
      * Logout from the system
-     *
+     * @author Htoo Maung Thait
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
-    */
-    public function logout():RedirectResponse
+     */
+    public function logout(Request $request): RedirectResponse
     {
-        Session::flush();
-        Auth::logout();
-        return redirect()->route('login.show');
+        if ($request->action == 'logout') {
+            Session::flush();
+            Auth::logout();
+            return redirect()->route('login.show');
+        }
+        else{
+            return back();
+        }
+
     }
 }

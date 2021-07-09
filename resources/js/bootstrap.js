@@ -14,6 +14,7 @@ window.$ = window.jQuery = require('jquery');
 
 require('popper.js');
 require('bootstrap');
+require('admin-lte');
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
