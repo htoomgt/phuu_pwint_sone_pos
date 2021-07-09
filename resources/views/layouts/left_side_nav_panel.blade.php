@@ -28,7 +28,7 @@
 
                 {{-- Dashboard  --}}
                 <li class="nav-item">
-                    <a href="{{route('home.dashboard')}}" class="nav-link active">
+                    <a href="{{route('home.dashboard')}}" class="nav-link @if($pageTitle=='Dashboard') active  @endif ">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -38,7 +38,7 @@
                 {{-- /Dashboard  --}}
                 {{-- Manage Product --}}
                 <li class="nav-item ">
-                    <a href="#" class="nav-link ">
+                    <a href="#" class="nav-link @if($pageTitle=='Manage Product') active  @endif">
                         <i class="nav-icon fas fa-gifts"></i>
                         <p>
                             Manage Product
