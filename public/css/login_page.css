@@ -1,0 +1,42 @@
+body{
+    background-image: url('../images/bg_patterns/moroccan-flower.png');
+    background-repeat: repeat;
+}
+
+
+.container{
+    /* border: 1px solid #000; */
+    min-height: 300px;
+    min-height: 100vh;
+}
+#login-card{
+    width: 50%;
+    border-radius: 15px;
+    min-height: 500px;
+    margin-bottom:10%;
+}
+.login-card-header{
+    margin-top:12px;
+}
+.info-text{
+    font-size: 14px;
+    color: #6c757d;
+}
+
+#login-error{
+    margin-top: 12px;
+    color:red;
+    font-size:16px;
+    font-weight: 800;
+
+}
+
+#btn-login{
+    min-width: 156px;
+}
+
+@media only screen and (max-width: 600px) {
+    #login-card{
+        width:95%;
+    }
+}
