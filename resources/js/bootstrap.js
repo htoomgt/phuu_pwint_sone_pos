@@ -15,9 +15,9 @@ window.$ = window.jQuery = $ = require('jquery');
 require('popper.js');
 require('bootstrap');
 require('admin-lte');
-var dt = require( 'datatables.net' )(window, $);
-require('datatables.net-dt');
-require('datatables.net-responsive');
+// var dt = require( 'datatables.net-bs4' )(window, $);
+// require('datatables.net-dt');
+// require('datatables.net-responsive');
 // dt bootstrap pagination`
 // require('./dt_bootstrap_pagination.js');
 // require('./datatableLoad');

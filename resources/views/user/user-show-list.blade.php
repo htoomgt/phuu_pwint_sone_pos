@@ -40,15 +40,15 @@
 
                 </div>
                 <!-- /.row -->
-                <div class="row">
+                <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
                                 <h5 class="m-0">User List Datatable</h5>
                             </div>
-                            <div class="card-body " style="border:1px solid #000;">
+                            <div class="card-body " style="">
                                 {{-- Datatable here --}}
-                                {!! $dataTable->table(['class' => 'table  table-striped dataTable dtr-inline collapsed', 'style' => 'width:100%;']) !!}
+                                {!! $dataTable->table(['class' => 'display table table-responsive table-striped collpase', 'style' => 'width:100%;']) !!}
 
 
 

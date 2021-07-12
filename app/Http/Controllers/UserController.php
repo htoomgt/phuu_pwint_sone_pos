@@ -42,9 +42,20 @@ class UserController extends GenericController implements ResourceFunctions
             ->parameters([
                 "paging" => true,
                 "searchDelay" => 350,
+                "responsive" => true,
+                "autoWidth" => false,
                 "order" => [
                     [0, 'desc']
                 ],
+                "columnDefs" => [
+                    ["width" => "5%", "targets" => 0],
+                    ["width" => "10%", "targets" => 1],
+                    ["width" => "10%", "targets" => 2],
+                    ["width" => "10%", "targets" => 3],
+                    ["width" => "15%", "targets" => 4],
+                    ["width" => "15%", "targets" => 5]
+
+                ]
 
             ]);
 
