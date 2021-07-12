@@ -20,7 +20,18 @@ Route::post('/', [LoginController::class, 'authenticate'])->name('login.authenti
 
 Route::middleware(['auth'])->group(function(){
 
-    Route::get('/home', [HomeController::class, 'showDashboard'])->name('home.dashboard');
+    Route::group(['middleware' => ['can:see dashboard']], function(){
+        Route::get('/home', [HomeController::class, 'showDashboard'])->name('home.dashboard');
+
+    });
+
+
+
+
+
+
+
+
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 });

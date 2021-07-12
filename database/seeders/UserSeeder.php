@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -15,10 +16,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
+        $user = User::create([
             'full_name' => 'Htoo Maung Thait',
             'username' => 'htoo htoo',
             'password' => Hash::make('developerPwds09#'),
         ]);
+
+        $user->assignRole('super-admin');
     }
 }
