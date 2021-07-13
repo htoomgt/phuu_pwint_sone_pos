@@ -45,7 +45,7 @@ class UserController extends GenericController implements ResourceFunctions
                             <i class="fas fa-edit"></i>
                             Edit
                         </a>
-                        <a class="dropdown-item" href="#" onclick = "teacherDelete('.$user->id.')">
+                        <a class="dropdown-item" href="#" onclick = "deleteUser('.$user->id.')">
                             <i class="far fa-trash-alt"></i>
                             Delete
                         </a>
@@ -203,6 +203,25 @@ class UserController extends GenericController implements ResourceFunctions
 
     public function deleteById(Request $request)
     {
+        $id = $request->id;
+
+        try {
+            $user = User::find($id);
+
+            $status = $user->delete();
+
+            if ($status) {
+                $this->setResponseInfo('success');
+            } else {
+                $this->setResponseInfo('fail');
+            }
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $this->setResponseInfo('fail');
+        }
+
+        return response()
+            ->json($this->response, $this->httpStatus);
 
     }
 }

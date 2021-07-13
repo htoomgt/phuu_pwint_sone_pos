@@ -69,11 +69,12 @@
 {!! $dataTable->scripts() !!}
 
 <script>
-    let changeStatus = 0;
+    let changeStatus;
     let deleteUser;
 
 
-    $(document).ready(function(){
+   $(document).ready(function(){
+       /** Change Status Function */
         changeStatus = (id=0, statusToChange = "") => {
             let dataToPost = {
                 userId : id,
@@ -86,14 +87,54 @@
                 url : "{{route('user.statusUpdateById')}}",
                 data: dataToPost
             }).then(function(response){
-                // console.log(response.data);
                 $("#user-datatable").DataTable().ajax.reload();
             }).catch(function(response){
                 console.log(response.data);
             })
 
         }
-    })
+
+        /** Delete User Function*/
+        deleteUser = (id=0) => {
+            let dataToPost = {
+                id : id,
+                _token : $("meta[name='csrf-token']").attr("content")
+            }
+
+            Swal.fire({
+                title: 'Are you sure to delete photo?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    axios({
+                        method : 'DELETE',
+                        url : "{{route('user.deleteById')}}",
+                        data: dataToPost
+                    }).then(function(response){
+                        if(response.data.status == 'success'){
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your requested user has been deleted.',
+                                    'success'
+                                )
+                            }
+
+                    }).catch(function(response){
+                        console.log(response);
+                    }).then(function(){
+                        $("#user-datatable").DataTable().ajax.reload();
+                    })
+                }
+            });
+
+
+        }
+   })
 
 
 </script>

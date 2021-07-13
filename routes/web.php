@@ -21,22 +21,22 @@ Route::post('/', [LoginController::class, 'authenticate'])->name('login.authenti
 
 Route::middleware(['auth'])->group(function(){
 
-    Route::group(['middleware' => ['can:see dashboard']], function(){
+    Route::middleware(['can:see dashboard'])->group(function(){
         Route::get('/home', [HomeController::class, 'showDashboard'])->name('home.dashboard');
 
     });
 
 
-    Route::group(['middleware' => ['can:manage user']], function(){
+    Route::middleware(['can:manage user'])->name('user.')->group(function(){
 
         /** User Routes */
-        Route::get('/users', [UserController::class, 'showListPage'])->name('user.showList');
-        Route::patch('/user', [UserController::class, 'statusUpdateById'])->name('user.statusUpdateById');
-        Route::delete('/user', [UserController::class, 'deleteById'])->name('user.deleteById');
-        Route::get('/user', [UserController::class, 'addNew'])->name('user.createPage');
-        Route::post('/user', [UserController::class, 'addNew'])->name('user.addNew');
-        Route::get('/user/{user}', [UserController::class, 'edit'])->name('user.edit');
-        Route::put('/user', [UserController::class, 'updateById'])->name('user.updateById');
+        Route::get('/users', [UserController::class, 'showListPage'])->name('showList');
+        Route::patch('/user', [UserController::class, 'statusUpdateById'])->name('statusUpdateById');
+        Route::delete('/user', [UserController::class, 'deleteById'])->name('deleteById');
+        Route::get('/user', [UserController::class, 'addNew'])->name('createPage');
+        Route::post('/user', [UserController::class, 'addNew'])->name('addNew');
+        Route::get('/user/{user}', [UserController::class, 'edit'])->name('edit');
+        Route::put('/user', [UserController::class, 'updateById'])->name('updateById');
         /** /User Routes */
     });
 
