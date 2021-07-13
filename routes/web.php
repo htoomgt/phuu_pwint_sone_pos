@@ -27,8 +27,17 @@ Route::middleware(['auth'])->group(function(){
     });
 
 
-    Route::group(['middleware' => ['can:see dashboard']], function(){
-        Route::get('/user', [UserController::class, 'showListPage'])->name('user.showList');
+    Route::group(['middleware' => ['can:manage user']], function(){
+
+        /** User Routes */
+        Route::get('/users', [UserController::class, 'showListPage'])->name('user.showList');
+        Route::patch('/user', [UserController::class, 'statusUpdateById'])->name('user.statusUpdateById');
+        Route::delete('/user', [UserController::class, 'deleteById'])->name('user.deleteById');
+        Route::get('/user', [UserController::class, 'addNew'])->name('user.createPage');
+        Route::post('/user', [UserController::class, 'addNew'])->name('user.addNew');
+        Route::get('/user/{user}', [UserController::class, 'edit'])->name('user.edit');
+        Route::put('/user', [UserController::class, 'updateById'])->name('user.updateById');
+        /** /User Routes */
     });
 
 

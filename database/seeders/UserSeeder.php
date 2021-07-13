@@ -21,6 +21,9 @@ class UserSeeder extends Seeder
             'username' => 'htoo htoo',
             'password' => Hash::make('developerPwds09#'),
         ]);
+        $user->created_by = 1;
+        $user->updated_by = 1;
+        $user->save();
 
         $user->assignRole('super-admin');
     }
