@@ -24,9 +24,10 @@ class User extends Authenticatable
     protected $fillable = [
         'full_name',
         'username',
-        // 'email',
         'password',
-        'status'
+        'status',
+        'created_by',
+        'updated_by'
     ];
 
     /**
@@ -57,4 +58,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
     }
+
+
 }

@@ -145,7 +145,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('user.create')}}" class="nav-link @if($lvl2PageTitle=='Create User') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add User</p>
                             </a>

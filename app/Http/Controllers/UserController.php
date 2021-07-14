@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends GenericController implements ResourceFunctions
 {
@@ -21,13 +22,23 @@ class UserController extends GenericController implements ResourceFunctions
     public function showListPage(Builder $builder)
     {
 
+        $authUser = User::find(Auth::user()->id);
+        $authUserRole =  $authUser->getRoleNames()[0];
 
 
         $this->setPageTitle("Manage User", "User List");
 
         if (request()->ajax()){
 
-            $model = User::query()->orderBy('id', 'DESC');
+            $model = User::query();
+
+            if($authUserRole != "super-admin"){
+                $model->whereHas('roles', function($q){
+                    $q->where('name', '<>', 'super-admin');
+                });
+            }
+
+            $model->orderBy('id', 'DESC');
 
             return DataTables::of($model)
                 ->addColumn('actions', function(User $user){
@@ -151,12 +162,35 @@ class UserController extends GenericController implements ResourceFunctions
 
     public function create()
     {
+        $this->setPageTitle("Manage User", "Create User");
 
+        return view('user.user-create');
     }
 
     public function addNew(Request $request)
     {
+        try {
+            $user = User::create($request->all());
+            $user->created_by = Auth::user()->id;
+            $user->updated_by = Auth::user()->id;
+            $user->save();
 
+            $user->assignRole($request->role);
+
+            if($user){
+                $this->setResponseInfo('success');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail');
+            Log::error($th->getMessage());
+        }
+
+        return response()
+            ->json($this->response, $this->httpStatus);
     }
 
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DropdownDataController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
@@ -33,11 +34,16 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/users', [UserController::class, 'showListPage'])->name('showList');
         Route::patch('/user', [UserController::class, 'statusUpdateById'])->name('statusUpdateById');
         Route::delete('/user', [UserController::class, 'deleteById'])->name('deleteById');
-        Route::get('/user', [UserController::class, 'addNew'])->name('createPage');
+        Route::get('/user', [UserController::class, 'create'])->name('create');
         Route::post('/user', [UserController::class, 'addNew'])->name('addNew');
         Route::get('/user/{user}', [UserController::class, 'edit'])->name('edit');
         Route::put('/user', [UserController::class, 'updateById'])->name('updateById');
         /** /User Routes */
+    });
+
+
+    Route::prefix('dropdown-data')->name('dropdownData.')->group(function(){
+        Route::post('/all-roles', [DropdownDataController::class, 'getAllRoles'])->name('getAllRoles');
     });
 
 

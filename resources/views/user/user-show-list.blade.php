@@ -30,7 +30,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <a class="btn btn-outline-primary">
+                    <a class="btn btn-outline-primary" href="{{route('user.create')}}">
                         <i class="fa fa-plus"></i>
                         Add New
                     </a>
