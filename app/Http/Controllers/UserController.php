@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends GenericController implements ResourceFunctions
 {
@@ -171,6 +172,7 @@ class UserController extends GenericController implements ResourceFunctions
     {
         try {
             $user = User::create($request->all());
+            $user->password = Hash::make($user->password);
             $user->created_by = Auth::user()->id;
             $user->updated_by = Auth::user()->id;
             $user->save();
