@@ -94,45 +94,118 @@
 
 <script>
     let resetForm;
+    let frmUserCreateFormValidationStatus;
 
     $(document).ready(function(){
         $("#frmCreateUser").one('submit', function(e){
             e.preventDefault();
             let dataToPost = $(this).serialize();
             // console.log(dataToPost);
+            if(frmUserCreateFormValidationStatus.form()){
+                axios({
+                    url : "{{route('user.addNew')}}",
+                    method : "POST",
+                    data : dataToPost
+                })
+                .then(function(response){
+                    if(response.data.status == "success"){
+                        Swal.fire({
+                            icon : 'success',
+                            title : 'Create a new user',
+                            text : 'A new user has been created successfully!',
+                            confirmButtonText : "OK"
+                        }).then((result) => {
+                            if(result.isConfirmed){
+                                window.location = "{{route('user.showList')}}"
+                            }
+                        });
+                    }
+                })
+                .catch(error => {
 
-            axios({
-                url : "{{route('user.addNew')}}",
-                method : "POST",
-                data : dataToPost
-            })
-            .then(function(response){
-                if(response.data.status == "success"){
                     Swal.fire({
-                        icon : 'success',
-                        title : 'Create a new user',
-                        text : 'A new user has been created successfully!',
-                        confirmButtonText : "OK"
-                    }).then((result) => {
-                        if(result.isConfirmed){
-                            window.location = "{{route('user.showList')}}"
-                        }
+                        icon : 'error',
+                        title : 'Cannot create a user!',
+                        text : "Error message : " + error.response.data.message
                     });
-                }
-            })
-            .catch(error => {
+                })
+            }
 
-                Swal.fire({
-                    icon : 'error',
-                    title : 'Cannot create a user!',
-                    text : "Error message : " + error.response.data.message
-                });
-            })
+
         })
 
         resetForm = () => {
             $("#dlRole").val('').trigger('change');
         }
+
+        $("#dlRole").on("select2:close", function(e){
+            $(this).valid();
+        })
+
+        valiRules = {
+            nameTitle : {
+                required : true,
+                maxlength : 512
+            }
+        }
+
+        valiRulesMsg = {
+            nameTitle : {
+                required : true,
+                maxlength : 512
+            }
+        }
+
+        frmUserCreateFormValidationStatus = $("#frmCreateUser").validate({
+            rules: {
+                full_name : {
+                    required : true,
+                    maxlength : 512
+                },
+                username : {
+                    required : true,
+                    maxlength : 512,
+                    // uniqueUsername
+                },
+                role : { required : true },
+                password : {
+                    required : true,
+                    minlength : 5,
+                },
+                confirmed_password : {
+                    required : true,
+                    minlength : 5,
+                    equalTo : "#txtPassword"
+                }
+            },
+            messages: {
+                full_name : {
+                    required : "Please enter full name",
+                    maxlength : "Max character is 512."
+                },
+                username : {
+                    required : "Please enter username",
+                    maxlength : "Max character is 512.",
+                },
+                role : {
+                    required : "Please choose a role"
+                },
+                password : {
+                    required : "Please enter password!",
+                    minlength : "Please enter at least 5 characters password.",
+
+                },
+                confirmed_password : {
+                    required : "Please enter confirmed password.",
+                    minlength: "Please enter at least 5 characters password.",
+                    equalTo : "Password and confirmed password do not match."
+                }
+            }
+        })
+
+        $.validator.addMethod("usernameUnique", function(value, element){
+
+        })
 
     })
 </script>

@@ -9988,5 +9988,9 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
     width:100%;
 }
 
+.error{
+    color:red;
+}
+
 
 
