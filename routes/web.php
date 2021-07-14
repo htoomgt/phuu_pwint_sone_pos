@@ -41,6 +41,10 @@ Route::middleware(['auth'])->group(function(){
         /** /User Routes */
     });
 
+    Route::get('/point-of-sale', function(){
+        return "Here is point of sale page";
+    })->name('sale.point');
+
 
     Route::prefix('dropdown-data')->name('dropdownData.')->group(function(){
         Route::post('/all-roles', [DropdownDataController::class, 'getAllRoles'])->name('getAllRoles');

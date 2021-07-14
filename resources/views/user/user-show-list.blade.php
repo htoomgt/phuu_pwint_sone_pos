@@ -73,6 +73,7 @@
     let deleteUser;
 
 
+
    $(document).ready(function(){
        /** Change Status Function */
         changeStatus = (id=0, statusToChange = "") => {

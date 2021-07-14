@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use \Illuminate\View\View;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -40,7 +41,18 @@ class LoginController extends Controller
         $password = $request->password;
 
         if (Auth::attempt(['username' => $username, 'password' => $password, 'status' => 'active'])) {
-            return redirect()->route('home.dashboard');
+            $userId = Auth::user()->id;
+            $user = User::find($userId);
+            $userRole = $user->getRoleNames()[0];
+
+            if($userRole != "sale-person"){
+                return redirect()->route('home.dashboard');
+            }
+            else{
+                return redirect()->route('sale.point');
+            }
+
+
         } else {
             return back()->with('login_status', 'Username or password is wrong!');
         }

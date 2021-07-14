@@ -74,6 +74,7 @@
 
 
                                 <button type="submit" class="btn btn-primary">Save Record</button>
+                                <button type="reset" class="btn btn-secondary" onClick="resetForm()">Reset Form</button>
                               </form>
 
                         </div>
@@ -92,6 +93,8 @@
 @include('common.DropdownLists')
 
 <script>
+    let resetForm;
+
     $(document).ready(function(){
         $("#frmCreateUser").one('submit', function(e){
             e.preventDefault();
@@ -117,14 +120,19 @@
                     });
                 }
             })
-            .catch(function(error){
-                Swa.fire({
+            .catch(error => {
+
+                Swal.fire({
                     icon : 'error',
                     title : 'Cannot create a user!',
-                    text : "Error message : " + error.data.message
-                })
+                    text : "Error message : " + error.response.data.message
+                });
             })
         })
+
+        resetForm = () => {
+            $("#dlRole").val('').trigger('change');
+        }
 
     })
 </script>

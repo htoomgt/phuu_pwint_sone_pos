@@ -171,11 +171,13 @@ class UserController extends GenericController implements ResourceFunctions
     public function addNew(Request $request)
     {
         try {
-            $user = User::create($request->all());
-            $user->password = Hash::make($user->password);
-            $user->created_by = Auth::user()->id;
-            $user->updated_by = Auth::user()->id;
-            $user->save();
+            $userDataToCreate =  $request->all();
+            $userDataToCreate['password'] = Hash::make($request->password);
+            $userDataToCreate['created_by'] = Auth::user()->id;
+            $userDataToCreate['updated_by'] = Auth::user()->id;
+
+
+            $user = User::create($userDataToCreate);
 
             $user->assignRole($request->role);
 
