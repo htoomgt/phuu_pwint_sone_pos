@@ -66,6 +66,11 @@
 
 
                                         </div>
+                                        <div class="form-group col-md-6" id="blkCurrentPassword">
+                                            <label for="txtPassword">Current Password: </label>
+                                            <input type="password" class="form-control" id="txtCurrentPassword"
+                                                name="current_password" autocomplete="off">
+                                        </div>
                                     </div>
 
                                     <div class="form-row mb-2">
@@ -84,11 +89,7 @@
                                     <div class="form-row">
 
 
-                                        <div class="form-group col-md-6" id="blkCurrentPassword">
-                                            <label for="txtPassword">Current Password: </label>
-                                            <input type="password" class="form-control" id="txtCurrentPassword"
-                                                name="current_password" autocomplete="off">
-                                        </div>
+
                                         <div class="form-group col-md-6" id="blkNewPassword">
                                             <label for="txtPassword">New Password: </label>
                                             <input type="password" class="form-control" id="txtPassword" name="password"
@@ -130,17 +131,16 @@
     <script>
         let resetForm;
         let frmUserCreateFormValidationStatus;
+        let toggleChangePassword;
 
         $(document).ready(function() {
 
             $("#dlRole").append("<option value='" + role + "' selected>" + role + "</option>");
 
-            $("#blkCurrentPassword").toggle();
             $("#blkNewPassword").toggle();
             $("#blkConfirmPassword").toggle();
 
             toggleChangePassword = () => {
-                $("#blkCurrentPassword").toggle();
                 $("#blkNewPassword").toggle();
                 $("#blkConfirmPassword").toggle();
             }
@@ -148,11 +148,14 @@
 
             $("#frmUpdateUser").one('submit', function(e) {
                 e.preventDefault();
+
                 let dataToPost = $(this).serialize();
-                // console.log(dataToPost);
+                let userId = $("#h_user_id").val();
+                let urlToUpdate = "{{ route('user.updateById') }}";
+
                 if (frmUserCreateFormValidationStatus.form()) {
                     axios({
-                            url: "{{ route('user.updateById') }}",
+                            url: urlToUpdate,
                             method: "PUT",
                             data: dataToPost
                         })
@@ -179,8 +182,8 @@
                                 })
                                 .then((result) => {
                                     if (result.isConfirmed) {
-                                        let userId = $("#h_user_id").val();
-                                        window.location = "{{ route('user.edit','') }}"+userId;
+
+                                        window.location = "{{ route('user.edit','') }}/"+userId;
                                     }
                                 });;
                         })
@@ -232,12 +235,8 @@
                         required: true
                     },
                     current_password: {
-                        required: function(element) {
-                            return $("#chkChangePassword").val() == true;
-                        },
-                        check_correct_current_password: function(element) {
-                            return $("#chkChangePassword").val() == true;
-                        }
+                        required: true,
+                        check_correct_current_password: true
                     },
                     password: {
                         required: function(element) {
@@ -264,6 +263,9 @@
                     },
                     role: {
                         required: "Please choose a role"
+                    },
+                    current_password:{
+                        required : "Please enter current password"
                     },
                     password: {
                         required: "Please enter password!",
