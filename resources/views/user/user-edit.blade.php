@@ -2,7 +2,11 @@
 
 @section('title', session('lvl2_page_title'))
 
+
 @section('content')
+    <script>
+        let role = "{{$user->getRoleNames()[0]}}";
+    </script>
     <div>
         <!-- Content Header (Page header) -->
         <div class="content-header">
@@ -35,14 +39,14 @@
                                         <div class="form-group col-md-6">
                                             <label for="txtFullname">Full Name: </label>
                                             <input type="text" class="form-control" id="txtFullName" placeholder="Full Name"
-                                                name="full_name" autocomplete="off">
+                                                name="full_name" autocomplete="off" value="{{$user->full_name ?? ''}}">
                                             <small id="txtFullNameInfo" class="form-text text-muted">To show in application
                                                 left side panel.</small>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="txtUsername">Username: </label>
                                             <input type="text" class="form-control" id="txtUsername" placeholder="Username"
-                                                name="username" autocomplete="off">
+                                                name="username" autocomplete="off" value="{{$user->username ?? ''}}">
                                             <small id="txtUserNameInfo" class="form-text text-muted">This will be used for
                                                 logging in application.</small>
                                         </div>
@@ -64,14 +68,33 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-row mb-2">
+                                        <div class="col-12">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="true" id="chkChangePassword" onClick="toggleChangePassword()">
+                                                <label class="form-check-label" for="chkChangePassword">
+                                                  Change Password
+                                                </label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <div class="form-row">
-                                        <div class="form-group col-md-6">
-                                            <label for="txtPassword">Password: </label>
+
+
+                                        <div class="form-group col-md-6" id="blkCurrentPassword">
+                                            <label for="txtPassword">Current Password: </label>
+                                            <input type="password" class="form-control" id="txtCurrentPassword" name="current_password"
+                                                autocomplete="off">
+                                        </div>
+                                        <div class="form-group col-md-6" id="blkNewPassword">
+                                            <label for="txtPassword">New Password: </label>
                                             <input type="password" class="form-control" id="txtPassword" name="password"
                                                 autocomplete="off">
                                         </div>
                                         <div class="form-group col-md-6">
-                                            <label for="txtConfirmedPassword">Confirmed Password: </label>
+                                            <label for="txtConfirmedPassword" id="blkConfirmPassword">Confirmed New Password: </label>
                                             <input type="password" class="form-control" id="txtConfirmedPassword"
                                                 name="confirmed_password" autocomplete="off">
                                         </div>
@@ -104,9 +127,22 @@
     <script>
         let resetForm;
         let frmUserCreateFormValidationStatus;
-        let goBackUserList;
 
         $(document).ready(function() {
+
+            $("#dlRole").append("<option value='"+role+"' selected>"+role+"</option>");
+
+            $("#blkCurrentPassword").toggle();
+            $("#blkNewPassword").toggle();
+            $("#blkConfirmPassword").toggle();
+
+            toggleChangePassword = () => {
+                $("#blkCurrentPassword").toggle();
+                $("#blkNewPassword").toggle();
+                $("#blkConfirmPassword").toggle();
+            }
+
+
             $("#frmCreateUser").one('submit', function(e) {
                 e.preventDefault();
                 let dataToPost = $(this).serialize();
@@ -147,6 +183,9 @@
             resetForm = () => {
                 $("#dlRole").val('').trigger('change');
             }
+
+
+
             goBackUserList = () => {
                 window.location = "{{route('user.showList')}}";
             }

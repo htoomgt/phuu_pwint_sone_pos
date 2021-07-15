@@ -12,7 +12,8 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use \Illuminate\Http\JsonResponse;
+use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 
 class UserController extends GenericController implements ResourceFunctions
 {
@@ -90,10 +91,8 @@ class UserController extends GenericController implements ResourceFunctions
                         <i class="fas fa-bars"></i>
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#"
-                                onclick="loadAddEditModal(`edit`,'.$user->id.')"
-                                data-toggle="modal"
-                                data-target="#teacher_add_edit"
+                        <a class="dropdown-item" href="'.route('user.edit', [$user->id]).'"
+
                                 >
                             <i class="fas fa-edit"></i>
                             Edit
@@ -217,7 +216,13 @@ class UserController extends GenericController implements ResourceFunctions
         return view('user.user-show-list', compact('dataTable'));
     }
 
-    public function create()
+    /**
+     * To show creat new user page
+     * @author Htoo Maung Thait
+     * @return View
+     * @since 2021-07-15
+     */
+    public function create():View
     {
         $this->setPageTitle("Manage User", "Create User");
         return view('user.user-create');
@@ -264,9 +269,15 @@ class UserController extends GenericController implements ResourceFunctions
 
     }
 
-    public function edit(User $user)
+    /**
+     * To show edit page of user
+     * @author Htoo Maung Thait
+     * @return View
+     */
+    public function edit(User $user): View
     {
-
+        $this->setPageTitle("Manage User", "Update User");
+        return view('user.user-edit', compact('user'));
     }
 
     public function updateById(Request $request)
