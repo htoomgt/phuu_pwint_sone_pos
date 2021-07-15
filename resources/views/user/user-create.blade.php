@@ -79,8 +79,11 @@
 
 
 
-                                    <button type="submit" class="btn btn-primary">Save Record</button>
+
+                                    <button type="button" class="btn btn-outline-success" onClick="goBackUserList()"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back User List</button>
                                     <button type="reset" class="btn btn-secondary" onClick="resetForm()">Reset Form</button>
+                                    <button type="submit" class="btn btn-primary">Save Record</button>
+
                                 </form>
 
                             </div>
@@ -142,6 +145,9 @@
 
             resetForm = () => {
                 $("#dlRole").val('').trigger('change');
+            }
+            goBackUserList = () => {
+                window.location = "{{route('user.showList')}}";
             }
 
             $("#dlRole").on("select2:close", function(e) {
@@ -228,6 +234,9 @@
                         else{
                             valid = true;
                         }
+                    },
+                    error : function(error){
+                        console.log(error);
                     }
 
                 });
