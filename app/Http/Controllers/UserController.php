@@ -12,6 +12,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use \Illuminate\Http\JsonResponse;
 
 class UserController extends GenericController implements ResourceFunctions
 {
@@ -219,11 +220,16 @@ class UserController extends GenericController implements ResourceFunctions
     public function create()
     {
         $this->setPageTitle("Manage User", "Create User");
-
         return view('user.user-create');
     }
 
-    public function addNew(Request $request)
+    /**
+     * To add new record of user
+     * @author Htoo Maung Thait
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addNew(Request $request) : JsonResponse
     {
         try {
             $userDataToCreate =  $request->all();
@@ -316,5 +322,35 @@ class UserController extends GenericController implements ResourceFunctions
         return response()
             ->json($this->response, $this->httpStatus);
 
+    }
+
+    /**
+     * To check username existance at database table of users for unique purpose validation
+     * @author Htoo Maung Thait
+     * @return
+     */
+    public function usernameUniqueCheck(Request $request)
+    {
+        try {
+            $userCount = User::query()->where('username', $request->username)->count();
+
+
+            if($userCount > 0){
+                $this->setResponseInfo('success');
+                $this->response['data'] = ['found' => true];
+            }
+            else{
+                $this->setResponseInfo('success');
+                $this->response['data'] = ['found' => false];
+            }
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail');
+            $this->response['data'] = ['found' => false];
+            $this->response['message'] = $th->getMessage();
+            Log::error('message : '. $th->getMessage() );
+        }
+
+        return response()
+            ->json($this->response, $this->httpStatus);
     }
 }
