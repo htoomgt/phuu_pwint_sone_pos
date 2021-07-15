@@ -5,7 +5,7 @@
 
 @section('content')
     <script>
-        let role = "{{$user->getRoleNames()[0]}}";
+        let role = "{{ $user->getRoleNames()[0] }}";
     </script>
     <div>
         <!-- Content Header (Page header) -->
@@ -33,20 +33,20 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <form id="frmCreateUser">
+                                <form id="frmUpdateUser">
                                     @csrf
                                     <div class="form-row">
                                         <div class="form-group col-md-6">
                                             <label for="txtFullname">Full Name: </label>
                                             <input type="text" class="form-control" id="txtFullName" placeholder="Full Name"
-                                                name="full_name" autocomplete="off" value="{{$user->full_name ?? ''}}">
+                                                name="full_name" autocomplete="off" value="{{ $user->full_name ?? '' }}">
                                             <small id="txtFullNameInfo" class="form-text text-muted">To show in application
                                                 left side panel.</small>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="txtUsername">Username: </label>
                                             <input type="text" class="form-control" id="txtUsername" placeholder="Username"
-                                                name="username" autocomplete="off" value="{{$user->username ?? ''}}">
+                                                name="username" autocomplete="off" value="{{ $user->username ?? '' }}">
                                             <small id="txtUserNameInfo" class="form-text text-muted">This will be used for
                                                 logging in application.</small>
                                         </div>
@@ -71,9 +71,10 @@
                                     <div class="form-row mb-2">
                                         <div class="col-12">
                                             <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="true" id="chkChangePassword" onClick="toggleChangePassword()">
+                                                <input class="form-check-input" type="checkbox" value="true"
+                                                    id="chkChangePassword" onClick="toggleChangePassword()">
                                                 <label class="form-check-label" for="chkChangePassword">
-                                                  Change Password
+                                                    Change Password
                                                 </label>
 
                                             </div>
@@ -85,25 +86,27 @@
 
                                         <div class="form-group col-md-6" id="blkCurrentPassword">
                                             <label for="txtPassword">Current Password: </label>
-                                            <input type="password" class="form-control" id="txtCurrentPassword" name="current_password"
-                                                autocomplete="off">
+                                            <input type="password" class="form-control" id="txtCurrentPassword"
+                                                name="current_password" autocomplete="off">
                                         </div>
                                         <div class="form-group col-md-6" id="blkNewPassword">
                                             <label for="txtPassword">New Password: </label>
                                             <input type="password" class="form-control" id="txtPassword" name="password"
                                                 autocomplete="off">
                                         </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="txtConfirmedPassword" id="blkConfirmPassword">Confirmed New Password: </label>
+                                        <div class="form-group col-md-6" id="blkConfirmPassword">
+                                            <label for="txtConfirmedPassword">Confirmed New Password: </label>
                                             <input type="password" class="form-control" id="txtConfirmedPassword"
                                                 name="confirmed_password" autocomplete="off">
                                         </div>
                                     </div>
+                                    <input type="hidden" id="h_user_id" name="user_id" value="{{ $user->id }}" />
 
 
 
 
-                                    <button type="button" class="btn btn-outline-success" onClick="goBackUserList()"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back User List</button>
+                                    <button type="button" class="btn btn-outline-success" onClick="goBackUserList()"> <i
+                                            class="fa fa-arrow-left" aria-hidden="true"></i> Go Back User List</button>
                                     <button type="reset" class="btn btn-secondary" onClick="resetForm()">Reset Form</button>
                                     <button type="submit" class="btn btn-primary">Save Record</button>
 
@@ -130,7 +133,7 @@
 
         $(document).ready(function() {
 
-            $("#dlRole").append("<option value='"+role+"' selected>"+role+"</option>");
+            $("#dlRole").append("<option value='" + role + "' selected>" + role + "</option>");
 
             $("#blkCurrentPassword").toggle();
             $("#blkNewPassword").toggle();
@@ -143,22 +146,22 @@
             }
 
 
-            $("#frmCreateUser").one('submit', function(e) {
+            $("#frmUpdateUser").one('submit', function(e) {
                 e.preventDefault();
                 let dataToPost = $(this).serialize();
                 // console.log(dataToPost);
                 if (frmUserCreateFormValidationStatus.form()) {
                     axios({
-                            url: "{{ route('user.addNew') }}",
-                            method: "POST",
+                            url: "{{ route('user.updateById') }}",
+                            method: "PUT",
                             data: dataToPost
                         })
                         .then(function(response) {
                             if (response.data.status == "success") {
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Create a new user',
-                                    text: 'A new user has been created successfully!',
+                                    title: 'Updating user',
+                                    text: 'The user has been updated successfully!',
                                     confirmButtonText: "OK"
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -170,10 +173,16 @@
                         .catch(error => {
 
                             Swal.fire({
-                                icon: 'error',
-                                title: 'Cannot create a user!',
-                                text: "Error message : " + error.response.data.message
-                            });
+                                    icon: 'error',
+                                    title: 'Cannot create a user!',
+                                    text: "Error message : " + error.response.data.message
+                                })
+                                .then((result) => {
+                                    if (result.isConfirmed) {
+                                        let userId = $("#h_user_id").val();
+                                        window.location = "{{ route('user.edit','') }}"+userId;
+                                    }
+                                });;
                         })
                 }
 
@@ -187,7 +196,7 @@
 
 
             goBackUserList = () => {
-                window.location = "{{route('user.showList')}}";
+                window.location = "{{ route('user.showList') }}";
             }
 
             $("#dlRole").on("select2:close", function(e) {
@@ -208,7 +217,7 @@
                 }
             }
 
-            frmUserCreateFormValidationStatus = $("#frmCreateUser").validate({
+            frmUserCreateFormValidationStatus = $("#frmUpdateUser").validate({
                 rules: {
                     full_name: {
                         required: true,
@@ -222,12 +231,24 @@
                     role: {
                         required: true
                     },
+                    current_password: {
+                        required: function(element) {
+                            return $("#chkChangePassword").val() == true;
+                        },
+                        check_correct_current_password: function(element) {
+                            return $("#chkChangePassword").val() == true;
+                        }
+                    },
                     password: {
-                        required: true,
+                        required: function(element) {
+                            return $("#chkChangePassword").val() == true;
+                        },
                         minlength: 5,
                     },
                     confirmed_password: {
-                        required: true,
+                        required: function(element) {
+                            return $("#chkChangePassword").val() == true;
+                        },
                         minlength: 5,
                         equalTo: "#txtPassword"
                     }
@@ -264,18 +285,18 @@
                     url: "{{ route('user.usernameUniqueCheck') }}",
                     type: "GET",
                     data: {
+                        id: $("#h_user_id").val(),
                         username: $('#txtUsername').val()
                     },
                     success: function(resp) {
                         // console.log(resp.data.found);
-                        if(resp.data.found){
+                        if (resp.data.found) {
                             valid = false;
-                        }
-                        else{
+                        } else {
                             valid = true;
                         }
                     },
-                    error : function(error){
+                    error: function(error) {
                         console.log(error);
                     }
 
@@ -285,6 +306,36 @@
 
 
             }, "Username already existed!");
+
+
+            $.validator.addMethod("check_correct_current_password", function(value, element) {
+                let valid = null;
+                $.ajax({
+                    'async': false,
+                    url: "{{ route('user.checkCurrentPassword') }}",
+                    type: "GET",
+                    data: {
+                        id: $("#h_user_id").val(),
+                        current_password: $('#txtCurrentPassword').val()
+                    },
+                    success: function(resp) {
+                        // console.log(resp.data.found);
+                        if (resp.data.same) {
+                            valid = true;
+                        } else {
+                            valid = false;
+                        }
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+
+                });
+
+                return valid;
+
+
+            }, "Please enter correct current password.");
 
         })
     </script>

@@ -280,9 +280,47 @@ class UserController extends GenericController implements ResourceFunctions
         return view('user.user-edit', compact('user'));
     }
 
-    public function updateById(Request $request)
+    /**
+     * To update validated user's data
+     * @author Htoo Maung Thait
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateById(Request $request): JsonResponse
     {
+        try {
+            $user = User::find($request->user_id);
+            $userRole = $request->role;
 
+            $columnsExcept = ['_token', 'role', 'current_password','password', 'confirmed_password', 'user_id', 'chk_change_password'];
+
+            if($request->chk_change_password){
+                $columnsExcept = array_diff($columnsExcept, "password");
+            }
+
+            $dataToUpdate = collect($request->all())->except($columnsExcept)->toArray();
+
+            $status = User::whereId($request->user_id)->update($dataToUpdate);
+
+            $userCurrentRoles = $user->getRoleNames();
+            foreach($userCurrentRoles as $cRole){
+                $user->removeRole($cRole);
+            }
+            $user->assignRole($userRole);
+
+            if($status){
+                $this->setResponseInfo('success');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail','','','',$th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()
+            ->json($this->response, $this->httpStatus);
     }
 
     public function statusUpdateById(Request $request)
@@ -343,7 +381,10 @@ class UserController extends GenericController implements ResourceFunctions
     public function usernameUniqueCheck(Request $request)
     {
         try {
-            $userCount = User::query()->where('username', $request->username)->count();
+            $userCount = User::query()
+                ->where('id', '<>', $request->id)
+                ->where('username', $request->username)
+                ->count();
 
 
             if($userCount > 0){
@@ -364,4 +405,35 @@ class UserController extends GenericController implements ResourceFunctions
         return response()
             ->json($this->response, $this->httpStatus);
     }
+
+    /**
+     * To check user input current password for related user password value in hash
+     * @author Htoo Maung Thait
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function checkCurrentPassword(Request $request): JsonResponse
+    {
+        try {
+            $user = User::find($request->id);
+
+            if(Hash::check($request->current_password, $user->password)){
+                $this->setResponseInfo('success');
+                $this->response['data'] = ['same' => true];
+            }
+            else{
+                $this->setResponseInfo('success');
+                $this->response['data'] = ['same' => false];
+            }
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail');
+            $this->response['data'] = ['same' => false];
+            Log::error('message : '. $th->getMessage() );
+        }
+
+        return response()
+            ->json($this->response, $this->httpStatus);
+    }
+
+
 }

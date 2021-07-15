@@ -107,7 +107,7 @@
         let goBackUserList;
 
         $(document).ready(function() {
-            $("#frmCreateUser").one('submit', function(e) {
+            $("#frmCreateUser").on('submit', function(e) {
                 e.preventDefault();
                 let dataToPost = $(this).serialize();
                 // console.log(dataToPost);
@@ -225,6 +225,7 @@
                     url: "{{ route('user.usernameUniqueCheck') }}",
                     type: "GET",
                     data: {
+                        id : 0,
                         username: $('#txtUsername').val()
                     },
                     success: function(resp) {

@@ -39,6 +39,8 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/user/{user}', [UserController::class, 'edit'])->name('edit');
         Route::put('/user', [UserController::class, 'updateById'])->name('updateById');
         Route::get('/username-unique-check', [UserController::class, 'usernameUniqueCheck'])->name('usernameUniqueCheck');
+        Route::get('/check-current-password', [UserController::class, 'checkCurrentPassword'])->name('checkCurrentPassword');
+
         /** /User Routes */
     });
 
