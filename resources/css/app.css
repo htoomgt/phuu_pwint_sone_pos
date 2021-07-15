@@ -4,3 +4,30 @@
 
 @import 'admin-lte/plugins/fontawesome-free/css/all.min.css';
 
+
+/* @import 'datatables.net-dt/css/jquery.dataTables.min.css'; */
+@import 'datatables.net-bs4/css/dataTables.bootstrap4.css';
+
+@import 'select2/dist/css/select2.min.css';
+
+.select2-selection__rendered {
+    line-height: 31px !important;
+}
+.select2-container .select2-selection--single {
+    height: 35px !important;
+}
+.select2-selection__arrow {
+    height: 34px !important;
+}
+.select2-selection__clear{
+    margin-right:-12px;
+}
+.width_100P{
+    width:100%;
+}
+
+.error{
+    color:red;
+}
+
+

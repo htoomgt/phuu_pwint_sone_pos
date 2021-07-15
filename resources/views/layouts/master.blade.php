@@ -2,6 +2,7 @@
 <html lang="en">
 @php
     $pageTitle = session('page_title') ?? '';
+    $lvl2PageTitle = session('lvl2_page_title') ?? '';
 @endphp
 {{-- Header  --}}
 @include('layouts.header')
@@ -44,3 +45,5 @@
 </body>
 
 </html>
+
+@stack('page_js_script')

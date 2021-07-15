@@ -129,8 +129,8 @@
                 </li>
                 {{-- /Reports  --}}
                 {{-- Manage User --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item @if($pageTitle=='Manage User') menu-open  @endif">
+                    <a href="#" class="nav-link @if($pageTitle=='Manage User') active  @endif ">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Manage User
@@ -139,13 +139,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('user.showList')}}" class="nav-link @if($lvl2PageTitle=='User List') active  @endif ">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>User List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('user.create')}}" class="nav-link @if($lvl2PageTitle=='Create User') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Add User</p>
                             </a>

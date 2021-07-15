@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
+use App\Http\Controllers\GenericController;
 
-class HomeController extends Controller
+class HomeController extends GenericController
 {
+    /**
+     * To show dashboard reports
+     * @author Htoo Maung Thait
+     * @return  \Illuminate\View\View
+     */
     public function showDashboard()
     {
-        session()->put('page_title', 'Dashboard');
+        $this->setPageTitle("Dashboard");
         return view('dashboard');
     }
+
+
 }

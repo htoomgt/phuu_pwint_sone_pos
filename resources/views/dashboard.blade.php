@@ -89,5 +89,6 @@
         </div>
         <!-- /.content -->
     </div>
+    {{-- /Content --}}
 
 @endsection

@@ -10,11 +10,21 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-window.$ = window.jQuery = require('jquery');
+window.$ = window.jQuery = $ = require('jquery');
+window.Swal = Swal = require('sweetalert2');
 
 require('popper.js');
 require('bootstrap');
 require('admin-lte');
+require('select2');
+require('jquery-validation');
+// var dt = require( 'datatables.net-bs4' )(window, $);
+// require('datatables.net-dt');
+// require('datatables.net-responsive');
+// dt bootstrap pagination`
+// require('./dt_bootstrap_pagination.js');
+// require('./datatableLoad');
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
