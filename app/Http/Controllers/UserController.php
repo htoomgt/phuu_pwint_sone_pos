@@ -31,7 +31,29 @@ class UserController extends GenericController implements ResourceFunctions
 
         if (request()->ajax()){
 
-            $model = User::query();
+
+
+            $orderDirection = request()->order[0]['dir'];
+            $orderColumnIndex = request()->order[0]['column'];
+            $searchValue = request()->search['value'] ?? '';
+            // $limit = request('length');
+            // $start = request('start');
+
+            $model = User::query()
+                        ->selectRaw('users.*');
+                        $model->join('model_has_roles as mhr', 'users.id', '=', 'mhr.model_id');
+                        $model->where('mhr.model_type', 'App\Models\User');
+                        $model->join('roles as r', 'r.id', '=', 'mhr.role_id');
+                        $model->selectRaw('r.name as role_name');
+                        $model->join('users as uc', 'users.created_by', '=', 'uc.id');
+                        $model->selectRaw('uc.full_name as creator_name');
+                        $model->join('users as uu', 'users.updated_by', '=', 'uu.id');
+                        $model->selectRaw('uu.full_name as updater_name');
+
+
+
+
+
 
             if($authUserRole != "super-admin"){
                 $model->whereHas('roles', function($q){
@@ -39,7 +61,25 @@ class UserController extends GenericController implements ResourceFunctions
                 });
             }
 
-            $model->orderBy('id', 'DESC');
+
+            //For join table column order
+            switch ($orderColumnIndex) {
+                case 5:
+                    $model->orderBy('r.name', $orderDirection);
+                    break;
+                case 6:
+                    $model->orderBy('uc.full_name', $orderDirection);
+                    break;
+                case 8:
+                    $model->orderBy('uu.full_name', $orderDirection);
+                    break;
+
+            }
+
+            // $model->offset($start)->limit($limit);
+
+
+
 
             return DataTables::of($model)
                 ->addColumn('actions', function(User $user){
@@ -117,13 +157,28 @@ class UserController extends GenericController implements ResourceFunctions
                 ->editColumn('updated_at', function($request){
                     return $request->created_at->format('Y-m-d');
                 })
+                ->filterColumn('role', function ($query, $keyword){
+
+                    $query->whereRaw("r.name LIKE '%".$keyword."%'");
+
+                })
+                ->filterColumn('creator', function ($query, $keyword){
+
+                    $query->whereRaw("uc.full_name LIKE '%".$keyword."%'");
+
+                })
+                ->filterColumn('updater', function ($query, $keyword){
+
+                    $query->whereRaw("uu.full_name LIKE '%".$keyword."%'");
+
+                })
                 ->rawColumns(['actions','status'])
                 ->toJson();
         }
 
         $dataTable = $builder->columns([
             ['data' => 'id', 'title' => 'Id'],
-            ['data' => 'actions', 'title' => 'Actions'],
+            ['data' => 'actions', 'title' => 'Actions', 'searchable' => false, 'orderable' => false],
             ['data' => 'status', 'title' => 'Status'],
             ['data' => 'full_name', 'title' => 'Fullname'],
             ['data' => 'username', 'title' => 'Username'],
