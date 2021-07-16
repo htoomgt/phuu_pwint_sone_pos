@@ -75,25 +75,6 @@
 
 
    $(document).ready(function(){
-       /** Change Status Function */
-        changeStatus = (id=0, statusToChange = "") => {
-            let dataToPost = {
-                userId : id,
-                statusToChange : statusToChange,
-                _token : $("meta[name='csrf-token']").attr("content")
-            }
-
-            axios({
-                method : 'PATCH',
-                url : "{{route('user.statusUpdateById')}}",
-                data: dataToPost
-            }).then(function(response){
-                $("#user-datatable").DataTable().ajax.reload();
-            }).catch(function(response){
-                console.log(response.data);
-            })
-
-        }
 
         /** Delete User Function*/
         deleteUser = (id=0) => {

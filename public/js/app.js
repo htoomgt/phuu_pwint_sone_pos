@@ -1861,6 +1861,65 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 $("#logout").on('click', function () {
   $("#frmLogout").submit();
 });
+/** Change Status Function */
+
+dtChangeStatus = function dtChangeStatus() {
+  var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var statusToChange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  var url = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+  var dataTableId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "";
+  var dataToPost = {
+    userId: id,
+    statusToChange: statusToChange,
+    _token: $("meta[name='csrf-token']").attr("content")
+  };
+  axios({
+    method: 'PATCH',
+    url: url,
+    data: dataToPost
+  }).then(function (response) {
+    $(dataTableId).DataTable().ajax.reload();
+  })["catch"](function (response) {
+    console.log(response.data);
+  });
+};
+/** Delete User Function*/
+
+
+dtDeleteRow = function dtDeleteRow() {
+  var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+  var url = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "";
+  var dataTableId = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
+  var dataToPost = {
+    id: id,
+    _token: $("meta[name='csrf-token']").attr("content")
+  };
+  Swal.fire({
+    title: 'Are you sure to delete?',
+    text: "You won't be able to revert this!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      axios({
+        method: 'DELETE',
+        url: url,
+        data: dataToPost
+      }).then(function (response) {
+        if (response.data.status == 'success') {
+          Swal.fire('Deleted!', response.data.messages.request_msg, 'success');
+        }
+      })["catch"](function (response) {
+        console.log(response);
+      }).then(function () {
+        $(dataTableId).DataTable().ajax.reload();
+      });
+    }
+  });
+};
 
 /***/ }),
 

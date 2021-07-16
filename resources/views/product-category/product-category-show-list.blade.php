@@ -45,8 +45,8 @@
                         </div>
                         <div class="card-body " style="">
                             {{-- Datatable here --}}
-                            {{-- {!! $dataTable->table(['id' => 'user-datatable', 'class' => 'display table table-responsive table-striped collpase',
-                            'style' => 'width:100%;']) !!} --}}
+                            {!! $dataTable->table(['id' => 'dtProductCategory', 'class' => 'display table table-responsive table-striped collpase',
+                            'style' => 'width:100%;']) !!}
 
 
 
@@ -64,5 +64,6 @@
 {{-- /Content --}}
 
 @push('page_js_script')
-
+{{-- Datatable Script --}}
+{!! $dataTable->scripts() !!}
 @endpush

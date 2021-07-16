@@ -71,7 +71,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link @if($lvl2PageTitle=='Product Category') active  @endif">
+                            <a href="{{route('productCategory.showList')}}" class="nav-link @if($lvl2PageTitle=='Product Category') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product Category</p>
                             </a>
