@@ -37,7 +37,7 @@
                 </li>
                 {{-- /Dashboard  --}}
                 {{-- Manage Product --}}
-                <li class="nav-item ">
+                <li class="nav-item @if($pageTitle=='Manage Product') menu-open  @endif">
                     <a href="#" class="nav-link @if($pageTitle=='Manage Product') active  @endif">
                         <i class="nav-icon fas fa-gifts"></i>
                         <p>
@@ -71,7 +71,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="#" class="nav-link @if($lvl2PageTitle=='Product Category') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product Category</p>
                             </a>
