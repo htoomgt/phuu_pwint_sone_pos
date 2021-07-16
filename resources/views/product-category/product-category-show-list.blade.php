@@ -27,10 +27,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <a class="btn btn-outline-primary" href="{{route('user.create')}}">
+                    <button id="btnAddNew" class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#mdlCreateProductCategory">
                         <i class="fa fa-plus"></i>
                         Add New
-                    </a>
+                    </button>
 
 
                 </div>
@@ -58,12 +58,18 @@
     </div>
     <!-- /.content -->
 
+    @include('product-category.product-category-create')
 
-</div>
+
 @endsection
 {{-- /Content --}}
 
 @push('page_js_script')
 {{-- Datatable Script --}}
 {!! $dataTable->scripts() !!}
+
+
+
+
+@include('product-category.js_load.product-create-js')
 @endpush

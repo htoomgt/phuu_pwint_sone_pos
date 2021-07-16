@@ -136,7 +136,21 @@ class ProductCategoryController extends GenericController implements ResourceFun
 
     public function addNew(Request $request)
     {
+        try {
+            $status = ProductCategory::create($request->all());
+            if(!empty($status)){
+                $this->setResponseInfo('success', 'Your product category has been created successfully!');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
 
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '','', '',$th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function getDataRowById(Request $request)
