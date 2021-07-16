@@ -6,6 +6,7 @@ use App\Http\Controllers\GenericController;
 use App\Http\Controllers\ResourceFunctions;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
@@ -37,7 +38,7 @@ class ProductCategoryController extends GenericController implements ResourceFun
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="'.route('user.edit', [$productCategory->id]).'"
+                    <a class="dropdown-item" href="#" onClick="productCategoryEdit('.$productCategory->id.')"
 
                             >
                         <i class="fas fa-edit"></i>
@@ -155,7 +156,26 @@ class ProductCategoryController extends GenericController implements ResourceFun
 
     public function getDataRowById(Request $request)
     {
+        // dd($request->all());
+        try {
+            $productCategory = ProductCategory::find($request->id);
 
+            if(!empty($productCategory)){
+                $this->setResponseInfo('success');
+                $this->response['data'] = $productCategory;
+            }
+            else{
+                $this->setResponseInfo('no data', '', '', 'No record is found for given data');
+                $this->response['data'] = [];
+            }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            $this->response['data'] = [];
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function edit(ProductCategory $productCategory)
@@ -163,9 +183,23 @@ class ProductCategoryController extends GenericController implements ResourceFun
 
     }
 
-    public function updateById(Request $request)
+    public function updateById(Request $request):JsonResponse
     {
+        try {
+            $status = ProductCategory::whereId($request->id)->update($request->all());
+            if($status){
+                $this->setResponseInfo('success', 'Your product category has been updated successfully!');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
 
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail','', '','', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function statusUpdateById(Request $request)

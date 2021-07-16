@@ -59,6 +59,7 @@
     <!-- /.content -->
 
     @include('product-category.product-category-create')
+    @include('product-category.product-category-update')
 
 
 @endsection
@@ -72,4 +73,5 @@
 
 
 @include('product-category.js_load.product-create-js')
+@include('product-category.js_load.product-update-js')
 @endpush

@@ -60,6 +60,7 @@ Route::middleware(['auth'])->group(function(){
             Route::patch('/productCategory', [ProductCategoryController::class, 'statusUpdateById'])->name('statusUpdateById');
             Route::delete('/productCategory', [ProductCategoryController::class, 'deleteById'])->name('deleteById');
             Route::get('/productCategory', [ProductCategoryController::class, 'create'])->name('create');
+            Route::get('/productCategory/get/', [ProductCategoryController::class, 'getDataRowById'])->name('getDataRowById');
             Route::post('/productCategory', [ProductCategoryController::class, 'addNew'])->name('addNew');
             Route::get('/productCategory/{productCategory}', [ProductCategoryController::class, 'edit'])->name('edit');
             Route::put('/productCategory', [ProductCategoryController::class, 'updateById'])->name('updateById');
