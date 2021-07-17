@@ -1,6 +1,6 @@
 <script>
     productCategoryEdit = async (id=0) => {
-        console.log(id);
+        // console.log(id);
 
         // Modal Show
         $("#mdlUpdateProductCategory").modal('show');

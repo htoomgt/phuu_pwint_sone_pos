@@ -36,7 +36,7 @@ class ProductMeasureUnitController extends GenericController implements Resource
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" onClick="productCategoryEdit('.$productMeasureUnit->id.')"
+                    <a class="dropdown-item" href="#" onClick="productMeasureUnitEdit('.$productMeasureUnit->id.')"
 
                             >
                         <i class="fas fa-edit"></i>
@@ -165,7 +165,24 @@ class ProductMeasureUnitController extends GenericController implements Resource
      */
     public function getDataRowById(Request $request)
     {
+        try {
+            $productMeasureUnit = ProductMeasureUnit::find($request->id);
 
+            if(!empty($productMeasureUnit)){
+                $this->setResponseInfo('success');
+                $this->response['data'] = $productMeasureUnit;
+            }
+            else{
+                $this->setResponseInfo('no data');
+                $this->response['data'] = [];
+            }
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     /**
@@ -177,7 +194,23 @@ class ProductMeasureUnitController extends GenericController implements Resource
      */
     public function updateById(Request $request)
     {
+        try {
+            $status = ProductMeasureUnit::whereId($request->id)->update($request->all());
 
+            if($status){
+                $this->setResponseInfo('success', 'Your product measure unit has been updated successfully!');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     /**
