@@ -138,8 +138,8 @@ class ProductCategoryController extends GenericController implements ResourceFun
     public function addNew(Request $request)
     {
         try {
-            $status = ProductCategory::create($request->all());
-            if(!empty($status)){
+            $productCategory = ProductCategory::create($request->all());
+            if(!empty($productCategory)){
                 $this->setResponseInfo('success', 'Your product category has been created successfully!');
             }
             else{

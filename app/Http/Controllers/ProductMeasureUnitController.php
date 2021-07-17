@@ -3,14 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\ProductMeasureUnit;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 
 class ProductMeasureUnitController extends GenericController implements ResourceFunctions
 {
-    public function showListPage(Builder $builder)
+    /**
+     * To show product measure unit list page with datatable
+     * @author Htoo Maung Thait
+     * @since 2021-07-17
+     * @return mixed (JsonResponse|View)
+     */
+    public function showListPage(Builder $builder):mixed
     {
         $this->setPageTitle("Manage Product", "Product Measure Unit");
         $statusUpdateUrl = route('productMeasureUnit.statusUpdateById');
@@ -118,26 +126,68 @@ class ProductMeasureUnitController extends GenericController implements Resource
 
             ]);
 
-        return view('product-category.product-category-show-list', compact('dataTable'));
+        return view('product-measure-unit.p-m-unit-show-list', compact('dataTable'));
 
     }
 
-    public function addNew(Request $request)
+    /**
+     * To add a new product measure unit
+     * @author Htoo Maung Thait
+     * @since 2021-07-17
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function addNew(Request $request):JsonResponse
     {
+        try {
+            $productMeasureUnit = ProductMeasureUnit::create($request->all());
+            if(!empty($productMeasureUnit)){
+                $this->setResponseInfo('success', 'A product measure unit has been created successfully!');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
 
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
+    /**
+     * To get single data row of product measure unit
+     * @author Htoo Maung Thait
+     * @since 2021-07-17
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function getDataRowById(Request $request)
     {
 
     }
 
+    /**
+     * To update the requested product measure unit
+     * @author Htoo Maung Thait
+     * @since 2021-07-17
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function updateById(Request $request)
     {
 
     }
 
-    public function statusUpdateById(Request $request)
+    /**
+     * To upate  product measure unit status by Id
+     * @author Htoo Maung Thait
+     * @since 2021-07-17
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function statusUpdateById(Request $request):JsonResponse
     {
         $id = $request->id;
         $statusToChange = $request->statusToChange;
@@ -159,7 +209,14 @@ class ProductMeasureUnitController extends GenericController implements Resource
         return response()->json($this->response, $this->httpStatus);
     }
 
-    public function deleteById(Request $request)
+    /**
+     * To delete product measure unit by Id
+     * @author Htoo Maung Thait
+     * @since 2021-07-17
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteById(Request $request):JsonResponse
     {
         try {
             $status = ProductMeasureUnit::whereId($request->id)->delete();

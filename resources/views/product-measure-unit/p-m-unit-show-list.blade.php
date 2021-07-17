@@ -30,7 +30,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <button id="btnAddNew" class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#mdlCreateProductCategory">
+                    <button id="btnAddNew" class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#mdlCreateProductMeasureUnit">
                         <i class="fa fa-plus"></i>
                         Add New
                     </button>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-body " style="">
                             {{-- Datatable here --}}
-                            {!! $dataTable->table(['id' => 'dtProductCategory', 'class' => 'display table table-responsive table-striped collpase',
+                            {!! $dataTable->table(['id' => 'dtProductMeasureUnit', 'class' => 'display table table-responsive table-striped collpase',
                             'style' => 'width:100%;']) !!}
 
 
@@ -72,7 +72,7 @@
 
 @push('page_js_script')
 {{-- Datatable Script --}}
-{{-- {!! $dataTable->scripts() !!} --}}
+{!! $dataTable->scripts() !!}
 
 
 @include('product-measure-unit.js_load.p-m-unit-create-js')
