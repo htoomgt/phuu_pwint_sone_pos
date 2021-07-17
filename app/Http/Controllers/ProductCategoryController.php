@@ -204,11 +204,11 @@ class ProductCategoryController extends GenericController implements ResourceFun
 
     public function statusUpdateById(Request $request)
     {
-        $userId = $request->userId;
+        $id = $request->id;
         $statusToChange = $request->statusToChange;
 
         try {
-            $user = ProductCategory::find($userId);
+            $user = ProductCategory::find($id);
             $user->status = $statusToChange;
             $status = $user->save();
             if($status){

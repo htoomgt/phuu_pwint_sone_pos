@@ -8,7 +8,7 @@ $("#logout").on('click', function(){
 /** Change Status Function */
 dtChangeStatus = (id=0, statusToChange = "", url = "", dataTableId = "") => {
     let dataToPost = {
-        userId : id,
+        id : id,
         statusToChange : statusToChange,
         _token : $("meta[name='csrf-token']").attr("content")
     }

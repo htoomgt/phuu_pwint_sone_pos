@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductCategoryController;
+use App\Http\Controllers\ProductMeasureUnitController;
+use App\Models\ProductMeasureUnit;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -47,14 +49,14 @@ Route::middleware(['auth'])->group(function(){
     });
     /** /User Routes */
 
-    /**  Manage Product Route */
+    /**  Manage Product Routes */
     Route::middleware(['can:manage product'])->group(function(){
 
-        /**Product CRUD */
+        /**Product Routes */
 
-        /** /Product CRUD */
+        /** /Product Routes */
 
-        /**Product Category CRUD */
+        /**Product Category Routes */
         Route::name('productCategory.')->group(function(){
             Route::get('/productCategories', [ProductCategoryController::class, 'showListPage'])->name('showList');
             Route::patch('/productCategory', [ProductCategoryController::class, 'statusUpdateById'])->name('statusUpdateById');
@@ -65,9 +67,18 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/productCategory/{productCategory}', [ProductCategoryController::class, 'edit'])->name('edit');
             Route::put('/productCategory', [ProductCategoryController::class, 'updateById'])->name('updateById');
         });
+        /** /Product Category Routes */
 
 
-        /** /Product Category CRUD */
+        /** Product Measure Unit */
+        Route::name('productMeasureUnit.')->group(function(){
+            Route::get('/productMeasureUnits', [ProductMeasureUnitController::class, 'showListPage'])->name('showList');
+            Route::patch('/productMeasureUnit', [ProductMeasureUnitController::class, 'statusUpdateById'])->name('statusUpdateById');
+            Route::delete('/productMeasureUnit', [ProductMeasureUnitController::class, 'deleteById'])->name('deleteById');
+            Route::get('/productMeasureUnit/get/', [ProductMeasureUnitController::class, 'getDataRowById'])->name('getDataRowById');
+            Route::post('/productMeasureUnit', [ProductMeasureUnitController::class, 'addNew'])->name('addNew');
+            Route::put('/productMeasureUnit', [ProductMeasureUnitController::class, 'updateById'])->name('updateById');
+        });
 
 
     });

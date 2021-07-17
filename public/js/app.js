@@ -1869,7 +1869,7 @@ dtChangeStatus = function dtChangeStatus() {
   var url = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "";
   var dataTableId = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "";
   var dataToPost = {
-    userId: id,
+    id: id,
     statusToChange: statusToChange,
     _token: $("meta[name='csrf-token']").attr("content")
   };

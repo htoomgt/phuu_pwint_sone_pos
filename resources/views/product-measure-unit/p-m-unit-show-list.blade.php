@@ -1,11 +1,13 @@
 @extends('layouts.master')
 
+
 @section('title', session('lvl2_page_title'))
 
-{{-- Content --}}
+
 @section('content')
+{{-- Content Start --}}
 <div>
-    <!-- Content Header (Page header) -->
+    {{-- Content Header Start --}}
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -21,8 +23,9 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content-header -->
-    <!-- Main content -->
+    {{-- Content Header End  --}}
+
+    {{-- Main Content Start --}}
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -41,11 +44,11 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="m-0">Product Category List Datatable</h5>
+                            <h5 class="m-0">Product Measure Unit List Datatable</h5>
                         </div>
                         <div class="card-body " style="">
                             {{-- Datatable here --}}
-                            {!! $dataTable->table(['id' => 'dtProductMeasureUnit', 'class' => 'display table table-responsive table-striped collpase',
+                            {!! $dataTable->table(['id' => 'dtProductCategory', 'class' => 'display table table-responsive table-striped collpase',
                             'style' => 'width:100%;']) !!}
 
 
@@ -56,22 +59,23 @@
             </div>
         </div><!-- /.container-fluid -->
     </div>
-    <!-- /.content -->
+    {{-- Main Content End  --}}
+</div>
+{{-- Content End --}}
 
-    @include('product-category.product-category-create')
-    @include('product-category.product-category-update')
-
-
+{{-- Load Modals Start--}}
+@include('product-measure-unit.p-m-unit-create')
+@include('product-measure-unit.p-m-unit-edit')
+{{-- Load Modals End --}}
 @endsection
-{{-- /Content --}}
+
 
 @push('page_js_script')
 {{-- Datatable Script --}}
-{!! $dataTable->scripts() !!}
+{{-- {!! $dataTable->scripts() !!} --}}
 
 
+@include('product-measure-unit.js_load.p-m-unit-create-js')
+@include('product-measure-unit.js_load.p-m-unit-edit-js')
 
-
-@include('product-category.js_load.product-create-js')
-@include('product-category.js_load.product-update-js')
 @endpush
