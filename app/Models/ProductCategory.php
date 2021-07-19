@@ -9,5 +9,7 @@ class ProductCategory extends Model
 {
     use HasFactory;
 
+    // protected $table = 'product_categories as pdt_cate';
+
     protected $fillable = [ 'name', 'status' ];
 }

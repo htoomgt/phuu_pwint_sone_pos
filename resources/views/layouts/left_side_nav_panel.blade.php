@@ -47,7 +47,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('product.showList')}}" class="nav-link @if($lvl2PageTitle=='Product') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product List</p>
                             </a>

@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductCategoryController;
 use App\Http\Controllers\ProductMeasureUnitController;
 use App\Models\ProductMeasureUnit;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +54,16 @@ Route::middleware(['auth'])->group(function(){
     Route::middleware(['can:manage product'])->group(function(){
 
         /**Product Routes */
+        Route::name('product.')->group(function(){
+            Route::get('/products', [ProductController::class, 'showListPage'])->name('showList');
+            Route::patch('/product', [ProductController::class, 'statusUpdateById'])->name('statusUpdateById');
+            Route::delete('/product', [ProductController::class, 'deleteById'])->name('deleteById');
+            Route::get('/product', [ProductController::class, 'create'])->name('create');
+            Route::get('/product/get/', [ProductController::class, 'getDataRowById'])->name('getDataRowById');
+            Route::post('/product', [ProductController::class, 'addNew'])->name('addNew');
+            Route::get('/product/{product}', [ProductController::class, 'edit'])->name('edit');
+            Route::put('/product', [ProductController::class, 'updateById'])->name('updateById');
+        });
 
         /** /Product Routes */
 
