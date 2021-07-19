@@ -12,6 +12,24 @@ class Product extends Model
     // protected $table = 'products as pdt';
 
 
+    protected $fillable = [
+        'name',
+        'myanmar_name',
+        'category_id',
+        'product_code',
+        'measure_unit_id',
+        'reorder_level',
+        'unit_price',
+        'ex-mill_price',
+        'transport_fee',
+        'unload_fee',
+        'created_by',
+        'created_at',
+        'updated_by',
+        'updated_at'
+    ];
+
+
     public function category()
     {
         return $this->belongsTo(ProductCategory::class, 'category_id', 'id');

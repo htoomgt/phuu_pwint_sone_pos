@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
+
 
 class ProductController extends GenericController implements ResourceFunctions
 {
@@ -175,6 +178,7 @@ class ProductController extends GenericController implements ResourceFunctions
 
     public function create(Request $request)
     {
+        $this->setPageTitle("Manage Product", "Product Create");
 
     }
 
@@ -198,13 +202,62 @@ class ProductController extends GenericController implements ResourceFunctions
 
     }
 
+    /**
+     * To update status by requested status
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
     public function statusUpdateById(Request $request)
     {
+        try {
+            $status = Product::whereId($request->id)->update([
+                'status' => $request->statusToChange
+            ]);
+
+            if($status)
+            {
+                $this->setResponseInfo('success');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail');
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
 
     }
 
-    public function deleteById(Request $request)
+    /**
+     * To delete product record by Id
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2021-07-19
+     */
+    public function deleteById(Request $request):JsonResponse
     {
+        try {
+            $status = Product::whereId($request->id)->delete();
 
+            if($status)
+            {
+                $this->setResponseInfo('success', 'Your product has been deleted successfully');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail');
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 }
