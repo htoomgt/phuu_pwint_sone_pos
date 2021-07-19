@@ -20,15 +20,16 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
+
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <button id="btnAddNew" class="btn btn-outline-primary" href="#" data-toggle="modal" data-target="#mdlCreateProductCategory">
+                    <a id="btnAddNew" class="btn btn-outline-primary" href="{{route('product.create')}}">
                         <i class="fa fa-plus"></i>
                         Add New
-                    </button>
+                    </a>
 
 
                 </div>

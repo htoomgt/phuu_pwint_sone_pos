@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 
@@ -176,15 +177,47 @@ class ProductController extends GenericController implements ResourceFunctions
         return view('product.product-show-list', compact('dataTable'));
     }
 
-    public function create(Request $request)
+    /**
+     * To show product create view page
+     * @return View
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
+    public function create():View
     {
         $this->setPageTitle("Manage Product", "Product Create");
+        return view('product.product-create');
 
     }
 
-    public function addNew(Request $request)
+    /**
+     * To create new product
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
+    public function addNew(Request $request):JsonResponse
     {
+        try {
+            $product = Product::create($request->all());
 
+            if(!empty($product) && $product->id > 0)
+            {
+                $this->setResponseInfo('success', 'Your product has been created successfully');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+
+
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function getDataRowById(Request $request)

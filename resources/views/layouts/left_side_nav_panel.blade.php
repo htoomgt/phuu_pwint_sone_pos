@@ -53,7 +53,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('product.create')}}" class="nav-link @if($lvl2PageTitle=='Product Create') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Setup a product</p>
                             </a>
