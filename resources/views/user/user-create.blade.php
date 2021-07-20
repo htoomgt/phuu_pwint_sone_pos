@@ -155,19 +155,7 @@
                 $(this).valid();
             })
 
-            valiRules = {
-                nameTitle: {
-                    required: true,
-                    maxlength: 512
-                }
-            }
 
-            valiRulesMsg = {
-                nameTitle: {
-                    required: true,
-                    maxlength: 512
-                }
-            }
 
             frmUserCreateFormValidationStatus = $("#frmCreateUser").validate({
                 rules: {

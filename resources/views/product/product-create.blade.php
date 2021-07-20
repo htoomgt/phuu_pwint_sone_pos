@@ -92,7 +92,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="txtExMillPrice">Ex-mill Price: </label>
                                         <input type="number" class="form-control" id="txtExMillPrice" placeholder="Ex-mill Price" value="0"
-                                            name="ex-mill_price" autocomplete="off">
+                                            name="ex_mill_price" autocomplete="off">
                                     </div>
 
                                     <div class="form-group col-md-6">
