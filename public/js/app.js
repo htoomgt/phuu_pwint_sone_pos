@@ -1949,9 +1949,7 @@ __webpack_require__(/*! admin-lte */ "./node_modules/admin-lte/dist/js/adminlte.
 
 __webpack_require__(/*! select2 */ "./node_modules/select2/dist/js/select2.js");
 
-__webpack_require__(/*! jquery-validation */ "./node_modules/jquery-validation/dist/jquery.validate.js");
-
-__webpack_require__(Object(function webpackMissingModule() { var e = new Error("Cannot find module 'jquery-validation/additional-methods'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())); // var dt = require( 'datatables.net-bs4' )(window, $);
+__webpack_require__(/*! jquery-validation */ "./node_modules/jquery-validation/dist/jquery.validate.js"); // var dt = require( 'datatables.net-bs4' )(window, $);
 // require('datatables.net-dt');
 // require('datatables.net-responsive');
 // dt bootstrap pagination`

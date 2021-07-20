@@ -3,9 +3,9 @@
         let dataToPost = $("#frmCreateProduct").serialize();
         let url = "{{ route('product.addNew') }}";
 
+
         if (frmCreateProductValidationStatus.form()) {
-            console.log(dataToPost);
-            return 0;
+
             axios({
                     url: url,
                     method: "POST",
@@ -34,6 +34,16 @@
 
     })
 
+
+    resetForm = () => {
+        $("#dlCategory").val('').trigger('change');
+        $("#dlProductUnit").val('').trigger('change');
+    }
+
+
+
+
+
     frmCreateProductValidationStatus = $("#frmCreateProduct").validate({
         rules: {
             name: {
@@ -56,7 +66,7 @@
             },
             reorder_level: {
                 required: true,
-                min : 1
+                min: 1
             },
             ex_mill_price: {
                 min: 1
@@ -113,6 +123,7 @@
     $.validator.addMethod('le', function(value, element, param) {
         return this.optional(element) || value <= $(param).val();
     }, 'Invalid value');
+
     $.validator.addMethod('ge', function(value, element, param) {
         return this.optional(element) || value >= $(param).val();
     }, 'Invalid value');
@@ -121,10 +132,30 @@
 
 
 
-    /* $("#txtExMillPrice").on('change', function(){
-        let ex_mill_price = $("#txtExMillPrice").val;
-        let transport_fee = $("#txtTransportFee").val;
-        let unload_fee = $("#txtUnloadFee").val;
+    $("#txtExMillPrice").on('change', function() {
+        calculateProfitPerUnit();
+    });
 
-    }) */
+    $("#txtTransportFee").on('change', function() {
+        calculateProfitPerUnit();
+    });
+
+    $("#txtUnloadFee").on('change', function() {
+        calculateProfitPerUnit();
+    });
+
+    $("#txtUnitPrice").on('change', function() {
+        calculateProfitPerUnit();
+    });
+
+    calculateProfitPerUnit = () => {
+        let ex_mill_price = parseInt($("#txtExMillPrice").val());
+        let transport_fee = parseInt($("#txtTransportFee").val());
+        let unload_fee = parseInt($("#txtUnloadFee").val());
+        let unit_price = parseInt($("#txtUnitPrice").val());
+
+        let profit_per_unit = unit_price - (ex_mill_price + transport_fee + unload_fee);
+
+        $("#txtProfitPerUnit").val(profit_per_unit);
+    }
 </script>

@@ -102,6 +102,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::prefix('dropdown-data')->name('dropdownData.')->group(function(){
         Route::post('/all-roles', [DropdownDataController::class, 'getAllRoles'])->name('getAllRoles');
+        Route::post('/all-product-categories', [DropdownDataController::class, 'getAllProductCategories'])->name('getAllProductCategories');
+        Route::post('/all-product-measure-units', [DropdownDataController::class, 'getProductMeasureUnits'])->name('getProductMeasureUnits');
     });
 
 

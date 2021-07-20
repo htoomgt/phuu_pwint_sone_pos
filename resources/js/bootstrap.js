@@ -18,7 +18,6 @@ require('bootstrap');
 require('admin-lte');
 require('select2');
 require('jquery-validation');
-require("jquery-validation/dist/additional-methods.js");
 
 // var dt = require( 'datatables.net-bs4' )(window, $);
 // require('datatables.net-dt');

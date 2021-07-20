@@ -25,7 +25,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('measure_unit_id')->references('id')->on('product_measure_units');
             $table->integer('reorder_level')->unsigned()->length(11);
             $table->decimal('unit_price',10,2)->unsigned();
-            $table->decimal('ex-mill_price', 10, 2)->unsigned();
+            $table->decimal('ex_mill_price', 10, 2)->unsigned();
             $table->decimal('transport_fee', 10, 2)->unsigned();
             $table->decimal('unload_fee', 10, 2)->unsigned();
             $table->foreignId('created_by')->references('id')->on('users');

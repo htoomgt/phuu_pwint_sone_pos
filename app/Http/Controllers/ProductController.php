@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
@@ -146,7 +147,7 @@ class ProductController extends GenericController implements ResourceFunctions
             ['data' => 'measure_unit', 'title' => 'Measure Unit'],
             ['data' => 'unit_price', 'title' => 'Unit Price'],
             ['data' => 'reorder_level', 'title' => 'Reorder Level'],
-            ['data' => 'ex-mill_price', 'title' => 'Ex-mill Price'],
+            ['data' => 'ex_mill_price', 'title' => 'Ex-mill Price'],
             ['data' => 'transport_fee', 'title' => 'Transport fee'],
             ['data' => 'unload_fee', 'title' => 'Unload fee'],
             ['data' => 'creator', 'title' => 'Creator'],
@@ -187,7 +188,6 @@ class ProductController extends GenericController implements ResourceFunctions
     {
         $this->setPageTitle("Manage Product", "Product Create");
         return view('product.product-create');
-
     }
 
     /**
@@ -200,7 +200,14 @@ class ProductController extends GenericController implements ResourceFunctions
     public function addNew(Request $request):JsonResponse
     {
         try {
-            $product = Product::create($request->all());
+
+            $dataFormPost = $request->all();
+            $authUserId = Auth::user()->id;
+
+            $dataFormPost['created_by'] = $authUserId;
+            $dataFormPost['updated_by'] = $authUserId;
+
+            $product = Product::create($dataFormPost);
 
             if(!empty($product) && $product->id > 0)
             {

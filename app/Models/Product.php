@@ -20,7 +20,7 @@ class Product extends Model
         'measure_unit_id',
         'reorder_level',
         'unit_price',
-        'ex-mill_price',
+        'ex_mill_price',
         'transport_fee',
         'unload_fee',
         'created_by',

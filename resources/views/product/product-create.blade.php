@@ -60,7 +60,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="dlCategory" class="width_100P">Product Category:</label>
 
-                                        <select name="category_id" class="form-control select2Role col-12" id="dlCategory">
+                                        <select name="category_id" class="form-control select2ProductCategory col-12" id="dlCategory">
                                             <option></option>
                                         </select>
 
@@ -72,7 +72,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="dlProductUnit" class="width_100P">Product Unit:</label>
 
-                                        <select name="measure_unit_id" class="form-control select2Role col-12" id="dlProductUnit">
+                                        <select name="measure_unit_id" class="form-control select2ProductMeasureUnit col-12" id="dlProductUnit">
                                             <option></option>
                                         </select>
 
@@ -148,7 +148,7 @@
 
 
 @push('page_js_script')
-
+@include('common.DropdownLists')
 @include('product.js_load.product-create-js')
 
 @endpush
