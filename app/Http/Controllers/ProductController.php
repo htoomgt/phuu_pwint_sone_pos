@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\ProductCriteriaChangeLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,7 +44,7 @@ class ProductController extends GenericController implements ResourceFunctions
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" onClick="productCategoryEdit(' . $product->id . ')"
+                    <a class="dropdown-item" href="'.route('product.edit', $product->id).'"
 
                             >
                         <i class="fas fa-edit"></i>
@@ -232,14 +233,96 @@ class ProductController extends GenericController implements ResourceFunctions
 
     }
 
-    public function edit(Product $productCategory)
+    public function edit(Product $product)
     {
-
+        $this->setPageTitle("Manage Product", "Product Edit");
+        return view('product.product-edit', compact('product'));
     }
 
-    public function updateById(Request $request)
-    {
 
+    /**
+     * To update product by Id
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
+    public function updateById(Request $request):JsonResponse
+    {
+        try {
+            $product = Product::find($request->id);
+
+            //dd($product->ex_mill_price, $request->ex_mill_price);
+
+            if($product->ex_mill_price != $request->ex_mill_price)
+            {
+                $productCriteriaChangeLog = new ProductCriteriaChangeLog();
+                $productCriteriaChangeLog->product_id = $product->id;
+                $productCriteriaChangeLog->criteria_name = 'ex_mill_price';
+                $productCriteriaChangeLog->value_from = $product->ex_mill_price;
+                $productCriteriaChangeLog->value_to = $request->ex_mill_price;
+                $productCriteriaChangeLog->used_date = date('Y-m-d');
+                $productCriteriaChangeLog->save();
+
+            }
+
+            if($product->transport_fee != $request->transport_fee)
+            {
+                $productCriteriaChangeLog = new ProductCriteriaChangeLog();
+                $productCriteriaChangeLog->product_id = $product->id;
+                $productCriteriaChangeLog->criteria_name = 'transport_fee';
+                $productCriteriaChangeLog->value_from = $product->transport_fee;
+                $productCriteriaChangeLog->value_to = $request->transport_fee;
+                $productCriteriaChangeLog->used_date = date('Y-m-d');
+                $productCriteriaChangeLog->save();
+
+            }
+
+            if($product->unload_fee != $request->unload_fee)
+            {
+                $productCriteriaChangeLog = new ProductCriteriaChangeLog();
+                $productCriteriaChangeLog->product_id = $product->id;
+                $productCriteriaChangeLog->criteria_name = 'unload_fee';
+                $productCriteriaChangeLog->value_from = $product->unload_fee;
+                $productCriteriaChangeLog->value_to = $request->unload_fee;
+                $productCriteriaChangeLog->used_date = date('Y-m-d');
+                $productCriteriaChangeLog->save();
+
+            }
+
+            if($product->unit_price != $request->unit_price)
+            {
+                $productCriteriaChangeLog = new ProductCriteriaChangeLog();
+                $productCriteriaChangeLog->product_id = $product->id;
+                $productCriteriaChangeLog->criteria_name = 'unit_price';
+                $productCriteriaChangeLog->value_from = $product->unit_price;
+                $productCriteriaChangeLog->value_to = $request->unit_price;
+                $productCriteriaChangeLog->used_date = date('Y-m-d');
+                $productCriteriaChangeLog->save();
+
+            }
+
+
+
+            $columnsExcept = ['_token', 'profit_per_unit'];
+
+            $dataToUpdate = collect($request->all())->except($columnsExcept)->toArray();
+
+            $status = Product::whereId($request->id)->update($dataToUpdate);
+
+            if($status){
+                $this->setResponseInfo('success', 'Your product has been updated successfully!');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     /**
