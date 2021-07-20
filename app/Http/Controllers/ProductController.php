@@ -252,8 +252,6 @@ class ProductController extends GenericController implements ResourceFunctions
         try {
             $product = Product::find($request->id);
 
-            //dd($product->ex_mill_price, $request->ex_mill_price);
-
             if($product->ex_mill_price != $request->ex_mill_price)
             {
                 $productCriteriaChangeLog = new ProductCriteriaChangeLog();
