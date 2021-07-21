@@ -9,6 +9,9 @@ use App\Http\Controllers\ProductMeasureUnitController;
 use App\Models\ProductMeasureUnit;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PurchaseController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +70,20 @@ Route::middleware(['auth'])->group(function(){
 
         /** /Product Routes */
 
+        /** Product Purchase */
+        Route::name('productPurchase.')->group(function(){
+            Route::get('/productPurchases', [PurchaseController::class, 'showListPage'])->name('showList');
+            Route::patch('/productPurchase', [PurchaseController::class, 'statusUpdateById'])->name('statusUpdateById');
+            Route::delete('/productPurchase', [PurchaseController::class, 'deleteById'])->name('deleteById');
+            Route::get('/productPurchase', [PurchaseController::class, 'create'])->name('create');
+            Route::get('/productPurchase/get/', [PurchaseController::class, 'getDataRowById'])->name('getDataRowById');
+            Route::post('/productPurchase', [PurchaseController::class, 'addNew'])->name('addNew');
+            Route::get('/productPurchase/{productPurchase}', [PurchaseController::class, 'edit'])->name('edit');
+            Route::put('/productPurchase', [PurchaseController::class, 'updateById'])->name('updateById');
+        });
+
+        /** /Product Purchase */
+
         /**Product Category Routes */
         Route::name('productCategory.')->group(function(){
             Route::get('/productCategories', [ProductCategoryController::class, 'showListPage'])->name('showList');
@@ -104,6 +121,7 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/all-roles', [DropdownDataController::class, 'getAllRoles'])->name('getAllRoles');
         Route::post('/all-product-categories', [DropdownDataController::class, 'getAllProductCategories'])->name('getAllProductCategories');
         Route::post('/all-product-measure-units', [DropdownDataController::class, 'getProductMeasureUnits'])->name('getProductMeasureUnits');
+        Route::post('/all-products', [DropdownDataController::class, 'getAllProducts'])->name('getAllProducts');
     });
 
 

@@ -17,7 +17,7 @@ class ProductController extends GenericController implements ResourceFunctions
 {
     public function showListPage(Builder $builder)
     {
-        $this->setPageTitle("Manage Product", "Product");
+        $this->setPageTitle("Manage Product", "Product List");
         $statusUpdateUrl = route('product.statusUpdateById');
         $deleteUrl = route('product.deleteById');
         $dataTableId = "#dtProduct";
@@ -231,6 +231,29 @@ class ProductController extends GenericController implements ResourceFunctions
     public function getDataRowById(Request $request)
     {
 
+
+        try {
+            $product = Product::with(['measure_unit', 'category'])->find($request->id);
+
+
+
+            if(!empty($product))
+            {
+                $this->setResponseInfo('success');
+                $this->response['data'] = $product;
+
+            }
+            else{
+                $this->setResponseInfo('no-data');
+                $this->response['data'] = [];
+
+            }
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+                $this->response['data'] = [];
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function edit(Product $product)

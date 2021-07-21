@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Models\ProductMeasureUnit;
 use Illuminate\Http\JsonResponse;
@@ -98,6 +99,39 @@ class DropdownDataController extends GenericController
             }
             else{
                 $this->setResponseInfo('no data', '', '', 'Product measure unit cannot be search!');
+                $this->response['data'] = [];
+            }
+
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            $this->response['data'] = [];
+        }
+
+        return response()->json($this->response, $this->httpStatus);
+    }
+
+    /**
+     * To list all products with name search
+     * @author Htoo Maung Thait
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2021-07-21
+     */
+    public function getAllProducts(Request $request)
+    {
+        try {
+            $productCategory = Product::query()
+                        ->where('name', 'LIKe', "%{$request->search}%")
+                        ->get();
+            if($productCategory->count() > 0)
+            {
+                $this->setResponseInfo('success', 'Your products can be searched!');
+                $this->response['data'] = $productCategory;
+            }
+            else{
+                $this->setResponseInfo('no data', '', '', 'Product cannot be search!');
                 $this->response['data'] = [];
             }
 

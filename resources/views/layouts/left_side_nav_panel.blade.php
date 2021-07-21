@@ -47,7 +47,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{{route('product.showList')}}" class="nav-link @if($lvl2PageTitle=='Product') active  @endif">
+                            <a href="{{route('product.showList')}}" class="nav-link @if($lvl2PageTitle=='Product List') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product List</p>
                             </a>
@@ -59,13 +59,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('productPurchase.showList')}}" class="nav-link @if($lvl2PageTitle=='Product Purchase List') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Purchase Product List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('productPurchase.create')}}" class="nav-link @if($lvl2PageTitle=='Product Purchase Create') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Purchase Product</p>
                             </a>
