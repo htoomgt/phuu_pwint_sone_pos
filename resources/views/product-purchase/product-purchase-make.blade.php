@@ -31,59 +31,62 @@
                         <div class="card-body">
                             <form id="frmProductPurchaseMake">
                                 @csrf
-                                <div class="container-fluid mb-4">
-                                    <div class="row">
-                                        <div class="purchase_product_block col-10 p-4" style="border:1px solid #000; border-radius:10px; ">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="product_id[]">Product Name: </label>
-                                                    <select name="product_id[0]" class="form-control select2Product col-12" id="product_id_0">
-                                                        <option></option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="product_code[]">Product Code: </label>
-                                                    <input type="text" class="form-control" id="product_code_0" placeholder="Product Code"
-                                                        name="product_code[0]" autocomplete="off" readonly="true">
+                                <div id="input_area">
+                                    <div class="container-fluid mb-4" id="purchase_product_whole_block_0">
+                                        <div class="row">
+                                            <div class="purchase_product_input_block col-10" >
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="product_id[]">Product Name: </label>
+                                                        <select name="product_id[0]" class="form-control select2Product col-12" id="product_id_0">
+                                                            <option></option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="product_code_0">Product Code: </label>
+                                                        <input type="text" class="form-control" id="product_code_0" placeholder="Product Code"
+                                                            name="product_code[0]" autocomplete="off" readonly="true">
 
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="purchase_date_0" class="width_100P">Purchase Date:</label>
+
+                                                        <input type="text" class="form-control datePicker" id="purchase_date_0"  name="purchase_date[0]" />
+
+
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <label for="quantity_0">Quantity: </label>
+                                                        <input type="number" class="form-control" id="quantity_0" name="quantity[0]"
+                                                            autocomplete="off">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label for="product_measure_unit_0">Product Measure Unit: </label>
+                                                        <input type="text" class="form-control" id="product_measure_unit_0" placeholder="Product Measure Unit"
+                                                            name="product_measure_unit[0]" autocomplete="off" readonly="true">
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="dlRole" class="width_100P">Purchase Date:</label>
-
-                                                    <input type="text" class="form-control datePicker" id=""  name="purchase_date[0]" />
-
-
-                                                </div>
-                                                <div class="form-group col-md-6">
-
-
-                                                </div>
-                                            </div>
-
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6">
-                                                    <label for="txtPassword">Quantity: </label>
-                                                    <input type="number" class="form-control" id="txtPassword" name="quantity[]"
-                                                        autocomplete="off">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label for="txtConfirmedPassword">Product Measure Unit: </label>
-                                                    <input type="text" class="form-control" id="product_measure_unit_0" placeholder="Product Measure Unit"
-                                                        name="product_measure_unit[0]" autocomplete="off" readonly="true">
-                                                </div>
+                                            <div class="col-2">
+                                                <button class="btn btn-default add-product" type="button" data-toggle="tooltip" data-placement="top" title="Add Product">
+                                                    <i class="fas fa-plus-circle"></i>
+                                                </button>
                                             </div>
                                         </div>
-                                        <div class="col-2">
-                                            <button class="btn btn-default add-product" type="button" >
-                                                <i class="fas fa-plus-circle"></i>
-                                            </button>
-                                        </div>
+
                                     </div>
-
                                 </div>
+
 
 
 

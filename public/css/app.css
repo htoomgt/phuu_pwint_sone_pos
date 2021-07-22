@@ -10458,4 +10458,10 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 }
 
 
+.purchase_product_input_block{
+    border:1px solid #000;
+    border-radius:10px;
+    padding: 24px;
+}
+
 
