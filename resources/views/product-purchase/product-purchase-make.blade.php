@@ -30,7 +30,17 @@
                     <div class="card">
                         <div class="card-body">
                             <form id="frmProductPurchaseMake">
+
                                 @csrf
+                                <div class="form-group col-md-4">
+                                    <label for="purchase_order_date" class="width_100P">Purchase Order Date:</label>
+
+                                    <input type="text" class="form-control datePicker" id="purchase_order_date"  name="purchase_order_date" />
+
+
+                                </div>
+
+
                                 <div id="input_area">
                                     <div class="container-fluid mb-4" id="purchase_product_whole_block_0">
                                         <div class="row">
@@ -50,19 +60,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="form-row">
-                                                    <div class="form-group col-md-6">
-                                                        <label for="purchase_date_0" class="width_100P">Purchase Date:</label>
 
-                                                        <input type="text" class="form-control datePicker" id="purchase_date_0"  name="purchase_date[0]" />
-
-
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-
-
-                                                    </div>
-                                                </div>
 
                                                 <div class="form-row">
                                                     <div class="form-group col-md-6">

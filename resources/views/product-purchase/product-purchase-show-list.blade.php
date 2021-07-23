@@ -27,7 +27,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-12">
-                    <a id="btnAddNew" class="btn btn-outline-primary" href="{{route('product.create')}}">
+                    <a id="btnAddNew" class="btn btn-outline-primary" href="{{route('productPurchase.create')}}">
                         <i class="fa fa-plus"></i>
                         Add New
                     </a>

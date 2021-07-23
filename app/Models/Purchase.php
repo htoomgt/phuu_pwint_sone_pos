@@ -10,6 +10,8 @@ class Purchase extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['received_date', 'created_by', 'updated_by'];
+
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by', 'id');
@@ -18,5 +20,10 @@ class Purchase extends Model
     public function updater()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id');
+    }
+
+    public function details()
+    {
+        return $this->hasMany(PurchaseDetail::class, 'purchase_id', 'id');
     }
 }

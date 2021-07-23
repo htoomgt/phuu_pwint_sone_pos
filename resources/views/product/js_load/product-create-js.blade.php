@@ -1,4 +1,6 @@
 <script>
+    dropDownRefresh();
+
     $("#btnCreateProduct").on('click', function() {
         let dataToPost = $("#frmCreateProduct").serialize();
         let url = "{{ route('product.addNew') }}";

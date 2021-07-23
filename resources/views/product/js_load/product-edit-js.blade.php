@@ -1,5 +1,5 @@
 <script>
-
+    dropDownRefresh();
 
     $("#btnUpdateProduct").on('click', function() {
         let dataToPost = $("#frmEditProduct").serialize();
