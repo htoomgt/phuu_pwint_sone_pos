@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Purchase;
 use App\Models\PurchaseDetail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -27,7 +28,7 @@ class PurchaseController extends GenericController implements ResourceFunctions
                 ->leftJoin('users as uu', 'purchases.updated_by', '=', 'uu.id');
 
             return DataTables::of($model)
-                ->addColumn('actions', function (Purchase $purchase) {
+                ->addColumn('actions', function (Purchase $purchase)  use ($deleteUrl, $dataTableId) {
                     $actions = '
                 <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -44,7 +45,7 @@ class PurchaseController extends GenericController implements ResourceFunctions
                         <i class="far fa-list-alt"></i>
                         View Purchased Item(s)
                     </a>
-                    <a class="dropdown-item" href="#" onclick = "deleteUser(' . $purchase->id . ')">
+                    <a class="dropdown-item" href="#" onclick = "dtDeleteRow(' . $purchase->id . ', `' . $deleteUrl . '`, `' . $dataTableId . '`)">
                         <i class="far fa-trash-alt"></i>
                         Delete
                     </a>
@@ -193,8 +194,28 @@ class PurchaseController extends GenericController implements ResourceFunctions
 
     }
 
-    public function deleteById(Request $request)
+    /**
+     * To delete product purchase and it details using delete on cascade
+     * @author Htoo Maung Thait
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function deleteById(Request $request):JsonResponse
     {
+        try {
+            $status = Purchase::whereId($request->id)->delete();
 
+            if($status){
+                $this->setResponseInfo('success', 'Your purchase has been deleted successfullye');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
     }
 }

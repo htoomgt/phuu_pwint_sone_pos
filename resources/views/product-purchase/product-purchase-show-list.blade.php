@@ -45,7 +45,7 @@
                         </div>
                         <div class="card-body " style="">
                             {{-- Datatable here --}}
-                            {!! $dataTable->table(['id' => 'dtProduct', 'class' => 'display table table-responsive table-striped collpase',
+                            {!! $dataTable->table(['id' => 'dtProductPurchase', 'class' => 'display table table-responsive table-striped collpase',
                             'style' => 'width:100%;']) !!}
 
 
