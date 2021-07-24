@@ -78,7 +78,7 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/productPurchase', [PurchaseController::class, 'create'])->name('create');
             Route::get('/productPurchase/get/', [PurchaseController::class, 'getDataRowById'])->name('getDataRowById');
             Route::post('/productPurchase', [PurchaseController::class, 'addNew'])->name('addNew');
-            Route::get('/productPurchase/{productPurchase}', [PurchaseController::class, 'edit'])->name('edit');
+            Route::get('/productPurchase/{id}', [PurchaseController::class, 'edit'])->name('edit');
             Route::put('/productPurchase', [PurchaseController::class, 'updateById'])->name('updateById');
         });
 

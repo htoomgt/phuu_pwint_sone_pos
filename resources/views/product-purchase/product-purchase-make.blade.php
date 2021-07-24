@@ -91,7 +91,7 @@
 
 
 
-                                <button type="button" class="btn btn-outline-success" onClick="goBackUserList()"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back To List</button>
+                                <a type="button" class="btn btn-outline-success" href="{{route('productPurchase.showList')}}"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back To List</a>
                                 <button type="button" class="btn btn-primary" id="btnProductPurchaseMake">Save Record</button>
 
                             </form>

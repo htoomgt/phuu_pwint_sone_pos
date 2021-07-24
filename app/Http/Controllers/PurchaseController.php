@@ -35,7 +35,7 @@ class PurchaseController extends GenericController implements ResourceFunctions
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="' . route('user.edit', [$purchase->id]) . '"
+                    <a class="dropdown-item" href="' . route('productPurchase.edit', [$purchase->id]) . '"
 
                             >
                         <i class="fas fa-edit"></i>
@@ -178,15 +178,24 @@ class PurchaseController extends GenericController implements ResourceFunctions
 
     }
 
-    public function edit(Purchase $purchase)
+    public function edit($id)
     {
-        $this->setPageTitle("Manage Product", "Product Purchase List");
-        return view('product-purchase.product-purchase-edit', compact('purchase'));
+        $productPurchase = Purchase::query()
+            ->with(['details' => function($q){
+                return $q->with(['product']);
+            }])
+            ->whereId($id)->first();
+
+
+
+
+        $this->setPageTitle("Manage Product", "Product Purchase Edit");
+        return view('product-purchase.product-purchase-edit', compact('productPurchase'));
     }
 
     public function updateById(Request $request)
     {
-
+        dd($request->all());
     }
 
     public function statusUpdateById(Request $request)
