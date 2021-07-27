@@ -18,6 +18,8 @@ require('bootstrap');
 require('admin-lte');
 require('select2');
 require('jquery-validation');
+require('bootstrap-datepicker');
+
 // var dt = require( 'datatables.net-bs4' )(window, $);
 // require('datatables.net-dt');
 // require('datatables.net-responsive');

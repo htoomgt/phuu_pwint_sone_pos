@@ -16,7 +16,7 @@ class CreateProductCriteriaChangeLogsTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('product_criteria_change_logs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->references('id')->on('products');
+            $table->foreignId('product_id')->nullable()->references('id')->on('products')->onUpdate('no action')->onDelete('set null');
             $table->string('criteria_name', 128);
             $table->date('used_date');
             $table->decimal('value_from', 10, 2)->unsigned();

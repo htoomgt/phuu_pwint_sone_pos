@@ -10,6 +10,8 @@
 
 @import 'select2/dist/css/select2.min.css';
 
+@import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.css';
+
 .select2-selection__rendered {
     line-height: 31px !important;
 }
@@ -30,4 +32,10 @@
     color:red;
 }
 
+
+.purchase_product_input_block{
+    border:1px solid #000;
+    border-radius:10px;
+    padding: 24px;
+}
 

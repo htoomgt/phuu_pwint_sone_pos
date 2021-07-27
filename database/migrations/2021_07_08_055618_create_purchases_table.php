@@ -18,8 +18,8 @@ class CreatePurchasesTable extends Migration
             // Product In
             $table->id();
             $table->date('received_date');
-            $table->foreignId('created_by')->references('id')->on('users');
-            $table->foreignId('updated_by')->references('id')->on('users')->nullable();
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onUpdate('no action')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()->references('id')->on('users')->nullable()->onUpdate('no action')->onDelete('set null');
             $table->timestamps();
 
             $table->index('received_date');

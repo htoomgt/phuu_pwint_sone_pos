@@ -37,7 +37,7 @@
                 </li>
                 {{-- /Dashboard  --}}
                 {{-- Manage Product --}}
-                <li class="nav-item ">
+                <li class="nav-item @if($pageTitle=='Manage Product') menu-open  @endif">
                     <a href="#" class="nav-link @if($pageTitle=='Manage Product') active  @endif">
                         <i class="nav-icon fas fa-gifts"></i>
                         <p>
@@ -47,37 +47,37 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('product.showList')}}" class="nav-link @if($lvl2PageTitle=='Product List') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('product.create')}}" class="nav-link @if($lvl2PageTitle=='Product Create') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Setup a product</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('productPurchase.showList')}}" class="nav-link @if($lvl2PageTitle=='Product Purchase List') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Purchase Product List</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('productPurchase.create')}}" class="nav-link @if($lvl2PageTitle=='Product Purchase Create') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Purchase Product</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('productCategory.showList')}}" class="nav-link @if($lvl2PageTitle=='Product Category') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product Category</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('productMeasureUnit.showList')}}" class="nav-link @if($lvl2PageTitle=='Product Measure Unit') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product Measure Unit</p>
                             </a>

@@ -20,16 +20,16 @@ class CreateProductsTable extends Migration
             $table->string('name', 512);
             $table->string('myanmar_name', 512)->nullable();
             $table->enum('status', ['active','inactive'])->default('active');
-            $table->foreignId('category_id')->references('id')->on('product_categories');
+            $table->foreignId('category_id')->nullable()->references('id')->on('product_categories')->onUpdate('cascade')->onDelete('set null');
             $table->string('product_code', 512);
-            $table->foreignId('measure_unit_id')->references('id')->on('product_measure_units');
+            $table->foreignId('measure_unit_id')->nullable()->references('id')->on('product_measure_units')->onUpdate('cascade')->onDelete('set null');
             $table->integer('reorder_level')->unsigned()->length(11);
             $table->decimal('unit_price',10,2)->unsigned();
-            $table->decimal('ex-mill_price', 10, 2)->unsigned();
+            $table->decimal('ex_mill_price', 10, 2)->unsigned();
             $table->decimal('transport_fee', 10, 2)->unsigned();
             $table->decimal('unload_fee', 10, 2)->unsigned();
-            $table->foreignId('created_by')->references('id')->on('users');
-            $table->foreignId('updated_by')->references('id')->on('users')->nullable();
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
+            $table->foreignId('updated_by')->nullable()->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();
 
             $table->index('name');
