@@ -108,7 +108,7 @@
 
                             </div>
 
-
+                            <input type="hidden" value="{{$productPurchase->id}}" name="purchase_id" />
 
 
 

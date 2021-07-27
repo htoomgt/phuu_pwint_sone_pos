@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\View\View;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 
@@ -178,7 +179,14 @@ class PurchaseController extends GenericController implements ResourceFunctions
 
     }
 
-    public function edit($id)
+    /**
+     * To edtit the specific product purchase
+     * @param int $id
+     * @return View
+     * @author Htoo Maung Thait
+     * @since 2021-07-25
+     */
+    public function edit($id):View
     {
         $productPurchase = Purchase::query()
             ->with(['details' => function($q){
@@ -193,9 +201,85 @@ class PurchaseController extends GenericController implements ResourceFunctions
         return view('product-purchase.product-purchase-edit', compact('productPurchase'));
     }
 
-    public function updateById(Request $request)
+    /**
+     * To update product purchase
+     * @author Htoo Maung Thait
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function updateById(Request $request):JsonResponse
     {
-        dd($request->all());
+
+        try {
+            $purchaseId = $request->purchase_id;
+            $productIds = $request->product_id;
+            $productCodes = $request->product_code;
+            $quantities = $request->quantity;
+            $productMeasureUnits = $request->product_measure_unit;
+            $purchaseOrderDate = $request->purchase_order_date;
+            $responseStatusMsg = 'fail';
+
+            $purchaseOrderDate = date('Y-m-d', strtotime($purchaseOrderDate));
+
+            $status = Purchase::whereId($purchaseId)->update([
+                'received_date' => $purchaseOrderDate,
+                'updated_by' => Auth::user()->id
+            ]);
+
+
+
+            foreach ($productIds as $index => $productId) {
+
+                // For deletion of item
+                PurchaseDetail::query()->where('purchase_id', $purchaseId)
+                    ->whereNotIn('product_id', $productIds)->delete();
+
+
+                // Get purchase detail
+                $purchaseDetail = PurchaseDetail::query()->where('purchase_id', $purchaseId)
+                    ->where('product_id', $productId)
+                    ->first();
+
+
+                // Update quantities for found product
+                if($purchaseDetail){
+                    $purchaseDetail->quantity = $quantities[$index];
+                    $purchaseDetail->save();
+                    $responseStatusMsg = 'success';
+                }
+                // Add product for new update
+                else{
+
+                    $purchaseDetailNew = PurchaseDetail::create([
+                        'product_id' => $productId,
+                        'purchase_id' => $purchaseId,
+                        'product_code' => $productCodes[$index],
+                        'measure_unit' => $productMeasureUnits[$index],
+                        'quantity' => $quantities[$index],
+                    ]);
+
+                    if($purchaseDetailNew){
+                        $responseStatusMsg = 'success';
+                    }
+
+                }
+
+
+            }
+
+
+
+            $this->setResponseInfo($responseStatusMsg, 'Your product purchase has been updated successfully!');
+
+
+
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function statusUpdateById(Request $request)
