@@ -10,8 +10,7 @@ use App\Models\ProductMeasureUnit;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
-
-
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +33,10 @@ Route::middleware(['auth'])->group(function(){
 
     });
 
-    Route::get('/point-of-sale', function(){
-        return "Here is point of sale page";
-    })->name('sale.point');
+    /** Point of Sale Routes */
+        Route::get('/point-of-sale', [SaleController::class, 'showMainSalePage'])->name('sale.main');
+
+    /** /Point of Sale Routes */
 
 
     /** User Routes */

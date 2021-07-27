@@ -14,6 +14,9 @@ use Yajra\DataTables\Html\Builder;
 
 class PurchaseController extends GenericController implements ResourceFunctions
 {
+    /**
+     *
+     */
     public function showListPage(Builder $builder)
     {
         $this->setPageTitle("Manage Product", "Product Purchase List");
@@ -130,7 +133,14 @@ class PurchaseController extends GenericController implements ResourceFunctions
         return view('product-purchase.product-purchase-make');
     }
 
-    public function addNew(Request $request)
+    /**
+     * To add new product purchase
+     * @param Request
+     * @return JsonResponse
+     * @author Htoo Maung Thait
+     * @since 2021-07-27
+     */
+    public function addNew(Request $request):JsonResponse
     {
 
         try {
