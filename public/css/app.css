@@ -10435,8 +10435,6 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
 .datepicker.datepicker-inline td {
   padding: 4px 5px;
 }
-/* @import 'datatables.net-dt/css/jquery.dataTables.min.css'; */
-
 .select2-selection__rendered {
     line-height: 31px !important;
 }
@@ -10457,11 +10455,21 @@ div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:las
     color:red;
 }
 
+.set-outline{
+    border: 1px solid #000;
+}
+
+/* @import 'datatables.net-dt/css/jquery.dataTables.min.css'; */
 
 .purchase_product_input_block{
     border:1px solid #000;
     border-radius:10px;
     padding: 24px;
 }
+
+.pos-item-card{
+    min-height: 435px;
+}
+
 
 
