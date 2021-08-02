@@ -13,12 +13,17 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.$ = window.jQuery = $ = require('jquery');
 window.Swal = Swal = require('sweetalert2');
 
+
 require('popper.js');
 require('bootstrap');
 require('admin-lte');
 require('select2');
 require('jquery-validation');
 require('bootstrap-datepicker');
+window.moment = require('moment');
+// require('./bootstrap_datetimepicker');
+// require('bootstrap4-datetimepicker');
+
 
 // var dt = require( 'datatables.net-bs4' )(window, $);
 // require('datatables.net-dt');

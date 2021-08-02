@@ -145,4 +145,58 @@ class DropdownDataController extends GenericController
         return response()->json($this->response, $this->httpStatus);
     }
 
+    public function getProductByNames(Request $request)
+    {
+        try {
+            $productCategory = Product::query()
+                        ->where('product_code', 'LIKe', "%{$request->search}%")
+                        ->where('name', 'LIKe', "%{$request->name}%")
+                        ->where('myanmar_name','LIKe', "%{$request->name}%")
+                        ->get();
+            if($productCategory->count() > 0)
+            {
+                $this->setResponseInfo('success', 'Your products can be searched!');
+                $this->response['data'] = $productCategory;
+            }
+            else{
+                $this->setResponseInfo('no data', '', '', 'Product cannot be search!');
+                $this->response['data'] = [];
+            }
+
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            $this->response['data'] = [];
+        }
+
+        return response()->json($this->response, $this->httpStatus);
+    }
+
+    public function getProductByCode(Request $request)
+    {
+        try {
+            $productCategory = Product::query()
+                        ->where('product_code', 'LIKe', "%{$request->search}%")
+                        ->get();
+            if($productCategory->count() > 0)
+            {
+                $this->setResponseInfo('success', 'Your products can be searched!');
+                $this->response['data'] = $productCategory;
+            }
+            else{
+                $this->setResponseInfo('no data', '', '', 'Product cannot be search!');
+                $this->response['data'] = [];
+            }
+
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            $this->response['data'] = [];
+        }
+
+        return response()->json($this->response, $this->httpStatus);
+    }
+
 }

@@ -231,10 +231,9 @@ class ProductController extends GenericController implements ResourceFunctions
     public function getDataRowById(Request $request)
     {
 
-
         try {
-            $product = Product::with(['measure_unit', 'category'])->find($request->id);
-
+            $product = Product::with(['measure_unit', 'category'])
+                ->whereId($request->id)->first();
 
 
             if(!empty($product))

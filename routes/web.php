@@ -35,6 +35,8 @@ Route::middleware(['auth'])->group(function(){
 
     /** Point of Sale Routes */
         Route::get('/point-of-sale', [SaleController::class, 'showMainSalePage'])->name('sale.main');
+        Route::post('/pos-make-payment', [SaleController::class, 'makePayment'])->name('sale.payment');
+        Route::post('/pos-print-slip', [SaleController::class, 'printSlip'])->name('sale.printSlip');
 
     /** /Point of Sale Routes */
 
@@ -122,6 +124,9 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/all-product-categories', [DropdownDataController::class, 'getAllProductCategories'])->name('getAllProductCategories');
         Route::post('/all-product-measure-units', [DropdownDataController::class, 'getProductMeasureUnits'])->name('getProductMeasureUnits');
         Route::post('/all-products', [DropdownDataController::class, 'getAllProducts'])->name('getAllProducts');
+
+        Route::post('/all-products-filter-by-names', [DropdownDataController::class, 'getProductByNames'])->name('getProductAllByNames');
+        Route::post('/all-products-filter-by-code', [DropdownDataController::class, 'getProductByNames'])->name('getProductAllByCode');
     });
 
 

@@ -12,7 +12,13 @@
 
 @import 'bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.css';
 
+
 @import './reusable_generic.css';
+
+/* @import 'bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.min.css'; */
+
+
+
 
 .purchase_product_input_block{
     border:1px solid #000;

@@ -161,7 +161,51 @@
 
         // Product Measure Unit
 
+        // Product
         $(".select2Product").select2(select2ProductConfig);
-        // / Product Categories
+        // Product End
+
+        // Product all by names
+        $(".select2ProductAllByName").select2({
+            placeholder: "Select a product name | code",
+        allowClear: true,
+        ajax: {
+            url: "{{ route('dropdownData.getProductAllByNames') }}",
+            method: "POST",
+            dataType: "json",
+
+            data: function(params) {
+                let dataToPost = {
+                    _token: $("meta[name='csrf-token']").attr("content"),
+                    search: params.term,
+                    name: ""
+                }
+                return dataToPost;
+            },
+            processResults: function(resp) {
+                let roles;
+                if (resp.status == "success") {
+                    roles = resp.data;
+
+                    return {
+                        results: $.map(roles, function(obj) {
+                            return {
+                                id: obj.id,
+                                text: obj.name +" | "+obj.product_code
+                            }
+                        })
+                    }
+                } else {
+                    return {
+                        id: "",
+                        text: "no role found"
+                    }
+                }
+            }
+        }
+        });
+        // / Product all by names
+
+
     }
 </script>
