@@ -5,7 +5,7 @@
 
     let itemIndex = 0;
 
-    $("#btnAddItem").on('click', function(e) {
+    $("body").on('click', '#btnAddItem', function(e) {
         e.preventDefault();
         itemIndex++;
 

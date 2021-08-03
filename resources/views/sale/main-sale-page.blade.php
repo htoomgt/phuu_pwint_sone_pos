@@ -25,62 +25,66 @@
         <!-- Main content -->
         <div class="content">
             <div class="container-fluid">
-                {{-- header action --}}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
+                <form action="" id="frmSaleVoucher">
+                    {{-- header action --}}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
 
 
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class=" col-md-4">
-                                            <button class="btn btn-outline-primary">
-                                                <i class="fa fa-plus-circle"></i> &nbsp;
-                                                New Vouncher
-                                            </button>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class=" col-md-4">
+                                                <button class="btn btn-outline-primary">
+                                                    <i class="fa fa-plus-circle"></i> &nbsp;
+                                                    New Vouncher
+                                                </button>
 
-                                            <button class="btn btn-outline-danger">
-                                                <i class="fa fa-trash"></i> &nbsp;
-                                                Remove Vouncher
-                                            </button>
+                                                <button class="btn btn-outline-danger">
+                                                    <i class="fa fa-trash"></i> &nbsp;
+                                                    Remove Vouncher
+                                                </button>
+                                            </div>
+                                            <label for="voucherTotal"
+                                                class="col-md-1 form-label col-form-label-md mt-1">Total
+                                                :</label>
+                                            <div class="col-md-3">
+                                                <input type="text" class="form-control" readonly value="0" id="total_amount"
+                                                    name="total" />
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <h4> pagination </h4>
+                                            </div>
+
                                         </div>
-                                        <label for="voucherTotal" class="col-md-1 form-label col-form-label-md mt-1">Total
-                                            :</label>
-                                        <div class="col-md-3">
-                                            <input type="text" class="form-control" readonly value="0" id="total_amount"/>
-                                        </div>
-
-                                        <div class="col-md-4">
-                                            <h4> pagination </h4>
-                                        </div>
-
                                     </div>
+
+
+
                                 </div>
-
-
-
                             </div>
                         </div>
+
+
                     </div>
+                    {{-- header action end --}}
 
+                    {{-- item add/edit --}}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card pos-item-card">
+                                <div class="card-body">
+                                    <div class="container-fluid">
+                                        {{-- voucher info action row --}}
 
-                </div>
-                {{-- header action end --}}
-
-                {{-- item add/edit --}}
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card pos-item-card">
-                            <div class="card-body">
-                                <div class="container-fluid">
-                                    {{-- voucher info action row --}}
-                                    <form action="" id="frmSaleVoucher">
                                         <div class="row">
                                             <div class="col-3">
                                                 <label for="voucher_datetime">Voucher Datetime</label>
                                                 <input type="datetime-local" class="form-control"
-                                                    placeholder="Voucher Datetime" id="voucher_datetime" name="sale_datetime" />
+                                                    placeholder="Voucher Datetime" id="voucher_datetime"
+                                                    name="sale_datetime" />
                                             </div>
                                             <div class="col-2">
                                                 <label for="voucher_datetime">Customer Name</label>
@@ -164,12 +168,13 @@
                                                 </table>
                                             </div>
                                         </div>
-                                    </form>
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             {{-- item add/edit end --}}
         </div><!-- /.container-fluid -->

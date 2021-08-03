@@ -17,9 +17,11 @@ class CreateSalesTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('voucher_number')->unsigned();
+            $table->bigInteger('voucher_number')->unsigned()->nullable();
             $table->datetime('sold_at');
-            $table->foreignId('sold_by')->nullable()->references('id')->on('user')->onUpdate('no action')->onDelete('set null');
+            $table->string('customer_name', 512)->nullable();
+            $table->string('customer_phone', 512)->nullable();
+            $table->foreignId('sold_by')->nullable()->references('id')->on('users')->onUpdate('no action')->onDelete('set null');
             $table->decimal('total_amount', 10, 2);
             $table->decimal('tax', 10, 2);
             $table->decimal('grand_total', 10,2);
