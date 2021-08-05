@@ -35,7 +35,7 @@ class SaleController extends GenericController
      * */
     public function makePayment(Request $request): JsonResponse
     {
-        session('voucher_no', '');
+        session(['voucher_no' => '']);
         try {
             $saleDateTime = $request->sale_datetime;
             $customerName = $request->customer_name;
@@ -64,7 +64,7 @@ class SaleController extends GenericController
             $sale->voucher_number = $saleId;
             $sale->save();
 
-            session('voucher_no', $sale->voucher_number);
+            session(['voucher_no' => $sale->voucher_number]);
 
             //Loop and insert into sale detail table
             foreach ($productIds as $key => $productId) {
@@ -128,6 +128,8 @@ class SaleController extends GenericController
             $transaction_id = session('voucher_no');
             $currency = SystemSetting::where('setting_name', 'currency')->first()->setting_value;
 
+            // dd($mid);
+
             // Init printer
             $printer = new ReceiptPrinter;
             $printer->init(
@@ -138,12 +140,23 @@ class SaleController extends GenericController
             // Set store info
             $printer->setStore($mid, $store_name, $store_address, $store_phone, $store_email, $store_website);
 
+            // Set transaction ID
+            $printer->setTransactionID($transaction_id);
+
+
+            // Set currency
+            $printer->setCurrency($currency);
+
             // Add items
             foreach ($productIds as $key => $productId) {
+
                 $unitPrice = $productUnitPrices[$key];
                 $quantity = $quantities[$key];
                 $amount = $amounts[$key];
-                $productName = Product::find($productId)->product_name;
+
+                $productName = Product::find($productId)->name;
+
+
 
 
                 $printer->addItem($productName, $quantity, $unitPrice);
@@ -151,17 +164,17 @@ class SaleController extends GenericController
 
             }
 
+            // Set Tax
+            $printer->setTax($tax);
 
 
 
-            // Set currency
-            $printer->setCurrency($currency);
+
+
 
             // Set request amount
             $printer->setRequestAmount($grandTotal);
 
-            // Set transaction ID
-            $printer->setTransactionID($transaction_id);
 
             // Set qr code
             $printer->setQRcode([

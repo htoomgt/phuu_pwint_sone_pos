@@ -53,5 +53,7 @@ class SystemSettingsSeeder extends Seeder
             'setting_name' => 'dashboard_date_range',
             'setting_value' => '1 month'
         ]);
+
+
     }
 }

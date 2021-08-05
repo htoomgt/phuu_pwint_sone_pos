@@ -1,5 +1,10 @@
 <?php
 
+use App\Models\SystemSetting;
+
+$printer_name = env('PRINTER_NAME');
+$printer_connector_type = env('PRINTER_CONNECTOR_TYPE');
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -10,7 +15,7 @@ return [
     | Valid values are: cups, network, windows
     |
     */
-    'connector_type' => 'windows',
+    'connector_type' => $printer_connector_type,
     /*
     |--------------------------------------------------------------------------
     | Printer connector descriptor
@@ -19,7 +24,7 @@ return [
     | Typically printer name or IP address.
     |
     */
-    'connector_descriptor' => env('PRINTER_NAME', '127.0.0.1'),
+    'connector_descriptor' => $printer_name,
     /*
     |--------------------------------------------------------------------------
     | Printer port
