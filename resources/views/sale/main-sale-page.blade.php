@@ -96,6 +96,11 @@
                                                 <input type="text" class="form-control" placeholder="Customer Phone"
                                                     id="customer_phone" name="customer_phone">
                                             </div>
+                                            <div class="col-2">
+                                                <label for="voucher_datetime">Customer Paid Amount</label>
+                                                <input type="number" class="form-control" placeholder="Paid Amount"
+                                                    id="customer_phone" name="customer_paid_amount">
+                                            </div>
                                             <div class="col-md-1">
                                                 <button class="btn btn-outline-secondary" id="btnAddItem">
                                                     <i class="fa fa-plus-circle"></i> &nbsp;

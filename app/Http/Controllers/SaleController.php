@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\SlipPrintingAlignmnt;
 use App\Models\Product;
 use App\Models\Sale;
 use App\Models\SaleDetails;
@@ -11,10 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
-use charlieuki\ReceiptPrinter\ReceiptPrinter as ReceiptPrinter;
+use Mike42\Escpos\PrintConnectors\CupsPrintConnector;
+use Mike42\Escpos\Printer;
 
 class SaleController extends GenericController
 {
+    use SlipPrintingAlignmnt;
     /**
      * To show main point of sale page
      * @return View
@@ -104,8 +107,10 @@ class SaleController extends GenericController
     public function printSlip(Request $request): JsonResponse
     {
         try {
+
             // Get form params
             $saleDateTime = $request->sale_datetime;
+            $saleDateTime = date('d/m/Y h:i A', strtotime($saleDateTime));
             $customerName = $request->customer_name;
             $customerPhone = $request->customer_phone;
             $productIds = $request->product_id;
@@ -116,74 +121,112 @@ class SaleController extends GenericController
             $taxPrcentage = SystemSetting::where('setting_name', 'tax_percentage')->first()->setting_value;
             $tax = $total * ($taxPrcentage / 100);
             $grandTotal = $total + ($tax);
+            $paid = $request->customer_paid_amount; //set user paid amount later
+
+            if($paid != "" && $paid > 0){
+                $balance = $grandTotal - $paid;
+                $balance = number_format($balance, 0, '.', ',');
+            }
+            else{
+                $paid = number_format($grandTotal, 0, '.', ',');
+                $balance = "-";
+            }
+
+
+
+
+            $total = number_format($total, 0,'.', ',');
+            $tax = number_format($tax, 0,'.', ',');
+            $grandTotal = number_format($grandTotal, 0,'.', ',');
+
+
 
 
             // Set params
-            $mid = session('voucher_no');
             $store_name = SystemSetting::where('setting_name', 'store_name')->first()->setting_value;
             $store_address = SystemSetting::where('setting_name', 'store_address')->first()->setting_value;
             $store_phone = SystemSetting::where('setting_name', 'store_phone')->first()->setting_value;
             $store_email = SystemSetting::where('setting_name', 'store_email')->first()->setting_value;
             $store_website = SystemSetting::where('setting_name', 'store_website')->first()->setting_value;
-            $transaction_id = session('voucher_no');
+            $voucherNo = session('voucher_no');
             $currency = SystemSetting::where('setting_name', 'currency')->first()->setting_value;
+            $printerName = SystemSetting::where('setting_name', 'printer_name')->first()->setting_value;
 
-            // dd($mid);
+            $connector = new CupsPrintConnector($printerName);
+            $printer = new Printer($connector);
 
-            // Init printer
-            $printer = new ReceiptPrinter;
-            $printer->init(
-                config('receiptprinter.connector_type'),
-                config('receiptprinter.connector_descriptor')
-            );
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+            $printer -> text($store_name."\n");
+            $printer -> text($store_address."\n");
+            $printer -> text($store_phone."\n");
+            $printer -> text($store_email."\n");
+            $printer -> text($store_website."\n");
+            $printer -> text($store_website."\n");
+            $printer -> setJustification(Printer::JUSTIFY_LEFT);
+            $printer -> text("Sold at : ".$saleDateTime."\n");
+            $printer -> text("Voucher No : ".$voucherNo."\n");
 
-            // Set store info
-            $printer->setStore($mid, $store_name, $store_address, $store_phone, $store_email, $store_website);
+            if($customerName !=""){
+                $printer -> text("Customer Name: ".$customerName."\n");
+            }
 
-            // Set transaction ID
-            $printer->setTransactionID($transaction_id);
+            if($customerPhone !=""){
+                $printer -> text("Customer Phone: ".$customerPhone."\n");
+            }
 
 
-            // Set currency
-            $printer->setCurrency($currency);
 
-            // Add items
+
+            $this->setSlipLineBreak($printer);
+
+
+            $printer -> text("|No.|      Item      | Qty |  Price  |  Amount |\n");
+
+            $this->setSlipLineBreak($printer);
+
             foreach ($productIds as $key => $productId) {
-
-                $unitPrice = $productUnitPrices[$key];
-                $quantity = $quantities[$key];
+                $price = $productUnitPrices[$key];
+                $price = number_format($price, 0,'.', ',');
+                $qty = $quantities[$key];
                 $amount = $amounts[$key];
-
+                $amount = number_format($amount, 0,'.', ',');
                 $productName = Product::find($productId)->name;
+                $iNo = $key + 1;
+
+                $iNo = $this->setItemNoAligned($iNo);
+                $productName = $this->setItemAligned($productName);
+                $qty = $this->setQtyAligned($qty);
+                $price = $this->setPriceAligned($price);
+                $amount = $this->setAmountAligned($amount);
 
 
-
-
-                $printer->addItem($productName, $quantity, $unitPrice);
-
+                $printer -> text("|{$iNo}|{$productName}|{$qty}|{$price}|{$amount}|\n");
 
             }
 
-            // Set Tax
-            $printer->setTax($tax);
+            // $printer -> text("| 1 |Item-1          | 2   |    2,000|    4,000|\n");
+
+            $this->setSlipLineBreak($printer);
+            $printer -> setJustification(Printer::JUSTIFY_RIGHT);
+            $printer -> text("Sub-total: {$total} {$currency}|\n");
+            $printer -> text(" Tax: {$tax} {$currency}|\n");
+            $printer -> text("Grand Total: {$grandTotal} {$currency}|\n");
+            $printer -> text("Paid: {$paid} {$currency}|\n");
+            $printer -> text("Balance: {$balance} {$currency}|\n");
 
 
+            $printer -> text("\n\n\n");
+
+            $printer -> setJustification(Printer::JUSTIFY_CENTER);
+
+            $printer -> text("Thank you for your buy, see you again\n\n");
 
 
+            $this->setSlipLineBreak($printer);
 
+            $printer -> cut();
+            $printer -> close();
 
-            // Set request amount
-            $printer->setRequestAmount($grandTotal);
-
-
-            // Set qr code
-            $printer->setQRcode([
-                'tid' => $transaction_id,
-                'amount' => $grandTotal,
-            ]);
-
-            // Print receipt
-            $printer->printReceipt();
 
             $this->setResponseInfo('success', 'Your slip print is successfully done!');
 

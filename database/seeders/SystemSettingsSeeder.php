@@ -16,22 +16,22 @@ class SystemSettingsSeeder extends Seeder
     {
         SystemSetting::create([
             'setting_name' => 'currency',
-            'setting_value' => 'mmk'
+            'setting_value' => 'MMK'
         ]);
 
         SystemSetting::create([
             'setting_name' => 'store_name',
-            'setting_value' => 'Phu Pwint Sone Grocery'
+            'setting_value' => 'Phu Pwint Sone Store'
         ]);
 
         SystemSetting::create([
             'setting_name' => 'store_address',
-            'setting_value' => 'No.164, King Min Bar Road, Rakhine State, Myanmar'
+            'setting_value' => 'No.164, Min Bar Gyi Road, Sittwe City, Rakhine  State, Myanmar'
         ]);
 
         SystemSetting::create([
             'setting_name' => 'store_phone',
-            'setting_value' => '(+95)9793432709'
+            'setting_value' => '(+95)-43-2023143'
         ]);
 
         SystemSetting::create([
@@ -53,6 +53,13 @@ class SystemSettingsSeeder extends Seeder
             'setting_name' => 'dashboard_date_range',
             'setting_value' => '1 month'
         ]);
+
+        SystemSetting::create([
+            'setting_name' => 'printer_name',
+            'setting_value' => 'TM-T81III-S-A'
+        ]);
+
+
 
 
     }
