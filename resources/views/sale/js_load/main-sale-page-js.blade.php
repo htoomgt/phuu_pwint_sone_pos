@@ -1,9 +1,11 @@
 <script>
+    let formatNum;
     dropDownRefresh();
     let currentDateTime = moment().format('yyyy-MM-DDTHH:mm');
     $("#voucher_datetime").val(currentDateTime);
     $("#btnPrint").attr('disabled', true);
     let frmSaleVoucherValidationStatus;
+    $("#btnRemoveVooucher").attr('disabled', true);
 
     let itemIndex = 0;
 
@@ -70,26 +72,26 @@
         $("#unit_" + itemIndex).val("");
         $("#unit_price_" + itemIndex).val("");
 
-        if(selectedProductId !=""){
+        if (selectedProductId != "") {
             axios({
-                url: "{{ route('product.getDataRowById') }}",
-                method: "GET",
-                params: {
-                    id: selectedProductId
-                }
-            })
-            .then((response) => {
-                if (response.data.status == 'success') {
-                    product = response.data.data;
+                    url: "{{ route('product.getDataRowById') }}",
+                    method: "GET",
+                    params: {
+                        id: selectedProductId
+                    }
+                })
+                .then((response) => {
+                    if (response.data.status == 'success') {
+                        product = response.data.data;
 
-                    $("#unit_" + itemIndex).val(product.measure_unit.name);
-                    $("#unit_price_" + itemIndex).val(parseInt(product.unit_price));
+                        $("#unit_" + itemIndex).val(product.measure_unit.name);
+                        $("#unit_price_" + itemIndex).val(parseInt(product.unit_price));
 
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            })
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         }
 
 
@@ -117,6 +119,8 @@
         }
 
         $("#total_amount").val(totalAmount);
+        // $("#total_amount").digits();
+        console.log(formatNum(totalAmount));
 
     })
 
@@ -145,10 +149,10 @@
                         $("#btnPrint").attr('disabled', false);
 
                         Swal.fire({
-                            icon : 'success',
-                            title : 'Sale Record and Payment',
-                            text : response.data.messages.request_msg,
-                            confirmButtonText : 'OK'
+                            icon: 'success',
+                            title: 'Sale Record and Payment',
+                            text: response.data.messages.request_msg,
+                            confirmButtonText: 'OK'
                         });
                     }
                 })
@@ -184,10 +188,10 @@
                         $("#btnPrint").attr('disabled', false);
 
                         Swal.fire({
-                            icon : 'success',
-                            title : 'Slip Printing',
-                            text : response.data.messages.request_msg,
-                            confirmButtonText : 'OK'
+                            icon: 'success',
+                            title: 'Slip Printing',
+                            text: response.data.messages.request_msg,
+                            confirmButtonText: 'OK'
                         });
                     }
                 })
@@ -205,10 +209,13 @@
                 required: true
             },
             'product_id[0]': {
-                required : true
+                required: true
             },
             'quantity[0]': {
-                required : true
+                required: true
+            },
+            customer_paid_amount : {
+                required: true
             }
         },
         messages: {
@@ -216,16 +223,19 @@
                 required: "Please enter voucher date time!"
             },
             'product_id[0]': {
-                required : "Please choose a product here!"
+                required: "Please choose a product here!"
             },
             'quantity[0]': {
-                required : "Please enter a quantity"
+                required: "Please enter a quantity"
+            },
+            customer_paid_amount : {
+                required: "Please enter the customer paid amount"
             }
 
         }
     });
 
-    function addValidationRules(){
+    function addValidationRules() {
         $('.select2ProductAllByName').each(function() {
             $(this).rules("add", {
                 required: true,
@@ -250,4 +260,13 @@
 
         })
     }
+
+    $("#btnRemoveVooucher").on('click', function(e){
+        e.preventDefault();
+
+        alert("Your voucher has been removed!");
+    })
+
+
+
 </script>

@@ -26,6 +26,8 @@ class SaleController extends GenericController
     {
         $this->setPageTitle("Point of Sale", "");
 
+        session(['voucher_no' => '']);
+
         return view('sale.main-sale-page');
     }
 
@@ -122,15 +124,12 @@ class SaleController extends GenericController
             $tax = $total * ($taxPrcentage / 100);
             $grandTotal = $total + ($tax);
             $paid = $request->customer_paid_amount; //set user paid amount later
+            $changeAmount = 0;
+            $changeAmount = $paid - $grandTotal;
+            $changeAmount = number_format($changeAmount, 0, '.',  ',');
 
-            if($paid != "" && $paid > 0){
-                $balance = $grandTotal - $paid;
-                $balance = number_format($balance, 0, '.', ',');
-            }
-            else{
-                $paid = number_format($grandTotal, 0, '.', ',');
-                $balance = "-";
-            }
+
+
 
 
 
@@ -138,6 +137,25 @@ class SaleController extends GenericController
             $total = number_format($total, 0,'.', ',');
             $tax = number_format($tax, 0,'.', ',');
             $grandTotal = number_format($grandTotal, 0,'.', ',');
+
+            $filteredItems = [];
+
+            // Composing clean Items list
+            foreach ($productIds as $key => $productId) {
+                $price = $productUnitPrices[$key];
+                $price = number_format($price, 0,'.', ',');
+                $qty = $quantities[$key];
+                $amount = $amounts[$key];
+                $amount = number_format($amount, 0,'.', ',');
+                $productName = Product::find($productId)->name;
+
+                $filteredItems[$productId] = [
+                    'productName' => $productName,
+                    'price' => $price,
+                    'qty' => $qty,
+                    'amount' => $amount,
+                ];
+            }
 
 
 
@@ -184,14 +202,16 @@ class SaleController extends GenericController
 
             $this->setSlipLineBreak($printer);
 
-            foreach ($productIds as $key => $productId) {
-                $price = $productUnitPrices[$key];
-                $price = number_format($price, 0,'.', ',');
-                $qty = $quantities[$key];
-                $amount = $amounts[$key];
-                $amount = number_format($amount, 0,'.', ',');
-                $productName = Product::find($productId)->name;
-                $iNo = $key + 1;
+
+            $printItem = 1;
+
+            foreach ($filteredItems as $productId => $item) {
+
+                $productName = $item['productName'];
+                $price = $item['price'];
+                $qty = $item['qty'];
+                $amount = $item['amount'];
+                $iNo = $printItem;
 
                 $iNo = $this->setItemNoAligned($iNo);
                 $productName = $this->setItemAligned($productName);
@@ -201,6 +221,7 @@ class SaleController extends GenericController
 
 
                 $printer -> text("|{$iNo}|{$productName}|{$qty}|{$price}|{$amount}|\n");
+                $printItem++;
 
             }
 
@@ -208,11 +229,11 @@ class SaleController extends GenericController
 
             $this->setSlipLineBreak($printer);
             $printer -> setJustification(Printer::JUSTIFY_RIGHT);
-            $printer -> text("Sub-total: {$total} {$currency}|\n");
-            $printer -> text(" Tax: {$tax} {$currency}|\n");
+            // $printer -> text("Sub-total: {$total} {$currency}|\n");
+            // $printer -> text(" Tax: {$tax} {$currency}|\n");
             $printer -> text("Grand Total: {$grandTotal} {$currency}|\n");
             $printer -> text("Paid: {$paid} {$currency}|\n");
-            $printer -> text("Balance: {$balance} {$currency}|\n");
+            $printer -> text("Change: {$changeAmount} {$currency}|\n");
 
 
             $printer -> text("\n\n\n");

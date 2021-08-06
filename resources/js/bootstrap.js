@@ -20,6 +20,7 @@ require('admin-lte');
 require('select2');
 require('jquery-validation');
 require('bootstrap-datepicker');
+require('js-number-format');
 window.moment = require('moment');
 // require('./bootstrap_datetimepicker');
 // require('bootstrap4-datetimepicker');

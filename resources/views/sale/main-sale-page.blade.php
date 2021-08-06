@@ -36,12 +36,12 @@
                                     <div class="container-fluid">
                                         <div class="row">
                                             <div class=" col-md-4">
-                                                <button class="btn btn-outline-primary">
+                                                <a href="{{route('sale.main')}}" class="btn btn-outline-primary">
                                                     <i class="fa fa-plus-circle"></i> &nbsp;
                                                     New Vouncher
-                                                </button>
+                                                </a>
 
-                                                <button class="btn btn-outline-danger">
+                                                <button class="btn btn-outline-danger" id="btnRemoveVooucher">
                                                     <i class="fa fa-trash"></i> &nbsp;
                                                     Remove Vouncher
                                                 </button>
@@ -99,7 +99,7 @@
                                             <div class="col-2">
                                                 <label for="voucher_datetime">Customer Paid Amount</label>
                                                 <input type="number" class="form-control" placeholder="Paid Amount"
-                                                    id="customer_phone" name="customer_paid_amount">
+                                                    id="customer_paid_amount" name="customer_paid_amount">
                                             </div>
                                             <div class="col-md-1">
                                                 <button class="btn btn-outline-secondary" id="btnAddItem">
@@ -191,6 +191,7 @@
 @endsection
 
 @push('page_js_script')
+    @include('common.SystemCommon')
     @include('common.DropdownLists')
     @include('sale.js_load.main-sale-page-js')
 @endpush
