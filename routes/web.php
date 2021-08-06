@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/point-of-sale', [SaleController::class, 'showMainSalePage'])->name('sale.main');
         Route::post('/pos-make-payment', [SaleController::class, 'makePayment'])->name('sale.payment');
         Route::post('/pos-print-slip', [SaleController::class, 'printSlip'])->name('sale.printSlip');
+        Route::delete('/delete-sale-voucher', [SaleController::class, 'deleteSaleVoucher'])->name('sale.delete');
 
     /** /Point of Sale Routes */
 

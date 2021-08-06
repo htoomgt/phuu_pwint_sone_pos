@@ -6,6 +6,8 @@
     $("#btnPrint").attr('disabled', true);
     let frmSaleVoucherValidationStatus;
     $("#btnRemoveVooucher").attr('disabled', true);
+    $("#btnAddItem").attr('disabled', false);
+    let saleId = 0;
 
     let itemIndex = 0;
 
@@ -120,7 +122,7 @@
 
         $("#total_amount").val(totalAmount);
         // $("#total_amount").digits();
-        console.log(formatNum(totalAmount));
+        // console.log(formatNum(totalAmount));
 
     })
 
@@ -147,6 +149,9 @@
                     if (response.data.status == 'success') {
                         $("#btnPay").attr('disabled', true);
                         $("#btnPrint").attr('disabled', false);
+                        $("#btnRemoveVooucher").attr('disabled', false);
+                        $("#btnAddItem").attr('disabled', true);
+                        saleId = response.data.data.sale_id;
 
                         Swal.fire({
                             icon: 'success',
@@ -263,8 +268,47 @@
 
     $("#btnRemoveVooucher").on('click', function(e){
         e.preventDefault();
+        let url = "{{route('sale.delete')}}";
+        let dataToPost = { "id" : saleId };
 
-        alert("Your voucher has been removed!");
+        Swal.fire({
+            icon : "warning",
+            title : "Are you sure to delete this sale voucher?",
+            confirmButtonText : "<i class='far fa-trash-alt'></i> Delete it ",
+            showCancelButton : true,
+            cancelButtonText : 'No, cancel'
+
+        }).then((result) => {
+            if(result.isConfirmed){
+                axios({
+                    url : url,
+                    method : "DELETE",
+                    data : dataToPost,
+                }).then((response)=>{
+                    if(response.data.status == 'success'){
+                        Swal.fire({
+                            icon : 'success',
+                            title : 'Deleting sale voucher',
+                            text : response.data.messages.request_msg,
+                            confirmButtonText : "OK"
+                        })
+                    }
+                }).catch((error) => {
+                    console.log(error.response);
+                    Swal.fire({
+                            icon : 'error',
+                            title : 'Deleting sale voucher',
+                            text : error.response.data.messages.request_msg,
+                            confirmButtonText : "OK"
+                        })
+                })
+            }
+        })
+
+
+
+
+        // alert("Your voucher has been removed!");
     })
 
 

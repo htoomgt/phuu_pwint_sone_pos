@@ -16,7 +16,7 @@ class CreatePurchaseDetailsTable extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('purchase_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->nullable()->references('id')->on('products')->onUpdate('no action')->onDelete('cascade');
+            $table->foreignId('product_id')->nullable()->references('id')->on('products')->onUpdate('no action')->onDelete('set null');
             $table->foreignId('purchase_id')->nullable()->references('id')->on('purchases')->onUpdate('no action')->onDelete('cascade');
             $table->string('product_code', 512);
             $table->string('measure_unit', 512);

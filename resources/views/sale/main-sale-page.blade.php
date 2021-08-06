@@ -55,7 +55,7 @@
                                             </div>
 
                                             <div class="col-md-4">
-                                                <h4> pagination </h4>
+                                                {{-- <h4> pagination </h4> --}}
                                             </div>
 
                                         </div>

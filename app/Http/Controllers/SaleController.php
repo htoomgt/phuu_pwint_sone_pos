@@ -89,7 +89,8 @@ class SaleController extends GenericController
             }
 
             //Compose success message
-            $this->setResponseInfo('success', 'Your sale voucher has been recorded successfully', '', '', '');
+            $this->response['data'] = ['sale_id' => $saleId];
+            $this->setResponseInfo('success', 'Your sale voucher has been recorded successfully!', '', '', '');
 
         } catch (\Throwable$th) {
             $this->setResponseInfo('fail', '', '', '', $th->getMessage());
@@ -254,6 +255,33 @@ class SaleController extends GenericController
 
 
         } catch (\Throwable$th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+            Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
+    }
+
+
+    /**
+     * To delete sale voucher
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2021-08-06
+     * @author Htoo Maung Thait
+     */
+    public function deleteSaleVoucher(Request $request):JsonResponse
+    {
+        try {
+            $status = Sale::whereId($request->id)->delete();
+
+            if($status){
+                $this->setResponseInfo('success', 'Your sale voucher has been deleted successfully!');
+            }
+            else{
+                $this->setResponseInfo('fail');
+            }
+        } catch (\Throwable $th) {
             $this->setResponseInfo('fail', '', '', '', $th->getMessage());
             Log::error($th->getMessage());
         }
