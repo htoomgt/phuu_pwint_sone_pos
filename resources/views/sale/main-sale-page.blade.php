@@ -60,7 +60,7 @@
                                                     name="total" />
                                             </div>
                                             <div class="col-1">
-                                                <a class="btn btn-default copyToClipboard"  data-placement="right" title="Copy sale total value to customer paid account."> <i class="far fa-clipboard"></i> </a>
+                                                <a class="btn btn-default copyToClipboard"  data-placement="right" title="Copy sale total value to customer paid amount."> <i class="far fa-clipboard"></i> </a>
                                             </div>
 
 

@@ -322,9 +322,20 @@
 
     $(document).on("click", ".copyToClipboard", function(e){
         e.preventDefault();
-        console.log('copy to clipboard clicked')
         let valToCopy = $("#total_amount").val();
         $("#customer_paid_amount").val(valToCopy);
+
+        $(this).tooltip('hide')
+            .attr('data-original-title', "copied")
+            .tooltip('show');
+
+        setTimeout(() => {
+            $(this).tooltip()
+            .attr('data-original-title', "Copy sale total value to customer paid amount.")
+            .tooltip('hide');
+
+        }, 900);
+
     })
 
 
