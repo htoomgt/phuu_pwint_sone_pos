@@ -46,13 +46,23 @@
                                                     Remove Vouncher
                                                 </button>
                                             </div>
-                                            <label for="voucherTotal"
+
+                                            {{-- <label for="voucherTotal"
                                                 class="col-md-1 form-label col-form-label-md mt-1">Total
-                                                :</label>
-                                            <div class="col-md-3">
-                                                <input type="text" class="form-control" readonly value="0" id="total_amount"
+                                                :</label> --}}
+
+                                            <div class="col-md-3 text-right display-6">
+                                                <label class="form-label-md mt-1"> Total: </label>
+                                                <label>
+                                                    <div class="text-bold mt-1 ml-3" id="total_amount_label" ></div>
+                                                </label>
+                                                <input type="hidden" class="form-control" readonly value="0" id="total_amount"
                                                     name="total" />
                                             </div>
+                                            <div class="col-1">
+                                                <a class="btn btn-default copyToClipboard"  data-placement="right" title="Copy sale total value to customer paid account."> <i class="far fa-clipboard"></i> </a>
+                                            </div>
+
 
                                             <div class="col-md-4">
                                                 {{-- <h4> pagination </h4> --}}
@@ -98,7 +108,7 @@
                                             </div>
                                             <div class="col-2">
                                                 <label for="voucher_datetime">Customer Paid Amount</label>
-                                                <input type="number" class="form-control" placeholder="Paid Amount"
+                                                <input type="number" class="form-control" placeholder="Paid Amount" min="0"
                                                     id="customer_paid_amount" name="customer_paid_amount">
                                             </div>
                                             <div class="col-md-1">
@@ -185,8 +195,8 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content -->
-    </div>
-    {{-- /Content --}}
+
+
 
 @endsection
 
@@ -194,4 +204,10 @@
     @include('common.SystemCommon')
     @include('common.DropdownLists')
     @include('sale.js_load.main-sale-page-js')
+
+    <script>
+
+    </script>
+
+
 @endpush

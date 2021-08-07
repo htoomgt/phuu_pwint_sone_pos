@@ -7,6 +7,9 @@
     let frmSaleVoucherValidationStatus;
     $("#btnRemoveVooucher").attr('disabled', true);
     $("#btnAddItem").attr('disabled', false);
+    $("#total_amount_label").html(
+        '0 MMK'
+        );
     let saleId = 0;
 
     let itemIndex = 0;
@@ -121,6 +124,10 @@
         }
 
         $("#total_amount").val(totalAmount);
+        let labelTotalAmount = numFormat(totalAmount);
+        $("#total_amount_label").html(labelTotalAmount +
+            ` MMK`
+            );
         // $("#total_amount").digits();
         // console.log(formatNum(totalAmount));
 
@@ -219,7 +226,7 @@
             'quantity[0]': {
                 required: true
             },
-            customer_paid_amount : {
+            customer_paid_amount: {
                 required: true
             }
         },
@@ -233,7 +240,7 @@
             'quantity[0]': {
                 required: "Please enter a quantity"
             },
-            customer_paid_amount : {
+            customer_paid_amount: {
                 required: "Please enter the customer paid amount"
             }
 
@@ -266,41 +273,43 @@
         })
     }
 
-    $("#btnRemoveVooucher").on('click', function(e){
+    $("#btnRemoveVooucher").on('click', function(e) {
         e.preventDefault();
-        let url = "{{route('sale.delete')}}";
-        let dataToPost = { "id" : saleId };
+        let url = "{{ route('sale.delete') }}";
+        let dataToPost = {
+            "id": saleId
+        };
 
         Swal.fire({
-            icon : "warning",
-            title : "Are you sure to delete this sale voucher?",
-            confirmButtonText : "<i class='far fa-trash-alt'></i> Delete it ",
-            showCancelButton : true,
-            cancelButtonText : 'No, cancel'
+            icon: "warning",
+            title: "Are you sure to delete this sale voucher?",
+            confirmButtonText: "<i class='far fa-trash-alt'></i> Delete it ",
+            showCancelButton: true,
+            cancelButtonText: 'No, cancel'
 
         }).then((result) => {
-            if(result.isConfirmed){
+            if (result.isConfirmed) {
                 axios({
-                    url : url,
-                    method : "DELETE",
-                    data : dataToPost,
-                }).then((response)=>{
-                    if(response.data.status == 'success'){
+                    url: url,
+                    method: "DELETE",
+                    data: dataToPost,
+                }).then((response) => {
+                    if (response.data.status == 'success') {
                         Swal.fire({
-                            icon : 'success',
-                            title : 'Deleting sale voucher',
-                            text : response.data.messages.request_msg,
-                            confirmButtonText : "OK"
+                            icon: 'success',
+                            title: 'Deleting sale voucher',
+                            text: response.data.messages.request_msg,
+                            confirmButtonText: "OK"
                         })
                     }
                 }).catch((error) => {
                     console.log(error.response);
                     Swal.fire({
-                            icon : 'error',
-                            title : 'Deleting sale voucher',
-                            text : error.response.data.messages.request_msg,
-                            confirmButtonText : "OK"
-                        })
+                        icon: 'error',
+                        title: 'Deleting sale voucher',
+                        text: error.response.data.messages.request_msg,
+                        confirmButtonText: "OK"
+                    })
                 })
             }
         })
@@ -310,6 +319,16 @@
 
         // alert("Your voucher has been removed!");
     })
+
+    $(document).on("click", ".copyToClipboard", function(e){
+        e.preventDefault();
+        console.log('copy to clipboard clicked')
+        let valToCopy = $("#total_amount").val();
+        $("#customer_paid_amount").val(valToCopy);
+    })
+
+
+    $(".copyToClipboard").tooltip();
 
 
 
