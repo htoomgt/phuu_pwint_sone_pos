@@ -1,6 +1,7 @@
 <script>
     let productInputIndex = 0;
     let fromPurchaseProductCreateValidationStatus;
+    
     let validationConfig = {
         rules: {
             'product_id[0]': {

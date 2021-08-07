@@ -87,8 +87,8 @@
                 {{-- /Manage Product --}}
 
                 {{-- Sale  --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item ">
+                    <a href="{{route('sale.main')}}" class="nav-link @if($pageTitle=='Point of Sale') active  @endif">
                         <i class="nav-icon fas fa-cash-register"></i>
                         <p>
                             Point of Sale

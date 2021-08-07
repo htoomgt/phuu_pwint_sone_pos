@@ -10,8 +10,7 @@ use App\Models\ProductMeasureUnit;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
-
-
+use App\Http\Controllers\SaleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +33,13 @@ Route::middleware(['auth'])->group(function(){
 
     });
 
-    Route::get('/point-of-sale', function(){
-        return "Here is point of sale page";
-    })->name('sale.point');
+    /** Point of Sale Routes */
+        Route::get('/point-of-sale', [SaleController::class, 'showMainSalePage'])->name('sale.main');
+        Route::post('/pos-make-payment', [SaleController::class, 'makePayment'])->name('sale.payment');
+        Route::post('/pos-print-slip', [SaleController::class, 'printSlip'])->name('sale.printSlip');
+        Route::delete('/delete-sale-voucher', [SaleController::class, 'deleteSaleVoucher'])->name('sale.delete');
+
+    /** /Point of Sale Routes */
 
 
     /** User Routes */
@@ -122,6 +125,9 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/all-product-categories', [DropdownDataController::class, 'getAllProductCategories'])->name('getAllProductCategories');
         Route::post('/all-product-measure-units', [DropdownDataController::class, 'getProductMeasureUnits'])->name('getProductMeasureUnits');
         Route::post('/all-products', [DropdownDataController::class, 'getAllProducts'])->name('getAllProducts');
+
+        Route::post('/all-products-filter-by-names', [DropdownDataController::class, 'getProductByNames'])->name('getProductAllByNames');
+        Route::post('/all-products-filter-by-code', [DropdownDataController::class, 'getProductByNames'])->name('getProductAllByCode');
     });
 
 
