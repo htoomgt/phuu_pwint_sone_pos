@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DropdownDataController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InventoryReportControllerReportController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductCategoryController;
@@ -10,6 +11,8 @@ use App\Models\ProductMeasureUnit;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\ReorderLevelReportControllerReportController;
+use App\Http\Controllers\SaleAndProfitReportController;
 use App\Http\Controllers\SaleController;
 
 /*
@@ -128,6 +131,14 @@ Route::middleware(['auth'])->group(function(){
 
         Route::post('/all-products-filter-by-names', [DropdownDataController::class, 'getProductByNames'])->name('getProductAllByNames');
         Route::post('/all-products-filter-by-code', [DropdownDataController::class, 'getProductByNames'])->name('getProductAllByCode');
+    });
+
+
+    Route::middleware(['see report'])->prefix('report')->name('report.')->group(function(){
+        Route::get('/sale-and-profit', [SaleAndProfitReportController::class], 'showReportPage')->name('saleAndProfit');
+        Route::get('/inventory', [InventoryReportControllerReportController::class], 'showReportPage')->name('inventory');
+        Route::get('/reorder-level', [ReorderLevelReportControllerReportController::class], 'showReportPage')->name('reorderLevel');
+
     });
 
 
