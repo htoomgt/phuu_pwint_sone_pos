@@ -23,6 +23,8 @@ class Product extends Model
         'ex_mill_price',
         'transport_fee',
         'unload_fee',
+        'original_cost',
+        'profit_per_unit',
         'created_by',
         'created_at',
         'updated_by',

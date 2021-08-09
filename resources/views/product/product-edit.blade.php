@@ -111,14 +111,21 @@
 
                                     <div class="form-group col-md-6">
                                         <label for="txtUnitPrice">Unit Price: </label>
-                                        <input type="double" class="form-control" id="txtUnitPrice" placeholder="Unit Price" value="{{$product->unit_price}}"
+                                        <input type="number" class="form-control" id="txtUnitPrice" placeholder="Unit Price" value="{{$product->unit_price}}"
                                             name="unit_price" autocomplete="off" >
 
                                     </div>
 
                                     <div class="form-group col-md-6">
+                                        <label for="txtOriginalCost"> Original Cost : </label>
+                                        <input type="number" class="form-control" id="txtOriginalCost" placeholder="Orignal Cost" value="{{$product->original_cost}}"
+                                            name="original_cost" autocomplete="off" readonly="true">
+
+                                    </div>
+
+                                    <div class="form-group col-md-6">
                                         <label for="txtProfitPerUnit"> Profit Per Unit: </label>
-                                        <input type="double" class="form-control" id="txtProfitPerUnit" placeholder="Unit Price" value="0"
+                                        <input type="number" class="form-control" id="txtProfitPerUnit" placeholder="Unit Price" value="0"
                                             name="profit_per_unit" autocomplete="off" readonly="true">
 
                                     </div>

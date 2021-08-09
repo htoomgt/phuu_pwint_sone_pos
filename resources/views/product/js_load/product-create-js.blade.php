@@ -77,7 +77,7 @@
                 min: 1
             },
             unload_fee: {
-                min: 1
+                min: 0
             },
             unit_price: {
                 min: 1
@@ -114,7 +114,7 @@
                 min: "Please enter transport fee greater than  1"
             },
             unload_fee: {
-                min: "Please enter unload fee greater than 1"
+                min: "Please enter unload fee greater than 0"
             },
             unit_price: {
                 min: "Please enter unit price greater than  1"
@@ -136,14 +136,17 @@
 
     $("#txtExMillPrice").on('change', function() {
         calculateProfitPerUnit();
+        calculateOriginalCost();
     });
 
     $("#txtTransportFee").on('change', function() {
         calculateProfitPerUnit();
+        calculateOriginalCost();
     });
 
     $("#txtUnloadFee").on('change', function() {
         calculateProfitPerUnit();
+        calculateOriginalCost();
     });
 
     $("#txtUnitPrice").on('change', function() {
@@ -159,5 +162,15 @@
         let profit_per_unit = unit_price - (ex_mill_price + transport_fee + unload_fee);
 
         $("#txtProfitPerUnit").val(profit_per_unit);
+    }
+
+    calculateOriginalCost = () => {
+        let ex_mill_price = parseInt($("#txtExMillPrice").val());
+        let transport_fee = parseInt($("#txtTransportFee").val());
+        let unload_fee = parseInt($("#txtUnloadFee").val());
+
+        let originalCost = ex_mill_price + transport_fee + unload_fee;
+
+        $("#txtOriginalCost").val(originalCost);
     }
 </script>

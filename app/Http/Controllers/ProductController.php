@@ -205,6 +205,8 @@ class ProductController extends GenericController implements ResourceFunctions
             $dataFormPost = $request->all();
             $authUserId = Auth::user()->id;
 
+
+
             $dataFormPost['created_by'] = $authUserId;
             $dataFormPost['updated_by'] = $authUserId;
 
@@ -274,6 +276,9 @@ class ProductController extends GenericController implements ResourceFunctions
         try {
             $product = Product::find($request->id);
 
+
+            $changesForComputeValue = false;
+
             if($product->ex_mill_price != $request->ex_mill_price)
             {
                 $productCriteriaChangeLog = new ProductCriteriaChangeLog();
@@ -283,6 +288,8 @@ class ProductController extends GenericController implements ResourceFunctions
                 $productCriteriaChangeLog->value_to = $request->ex_mill_price;
                 $productCriteriaChangeLog->used_date = date('Y-m-d');
                 $productCriteriaChangeLog->save();
+
+                $changesForComputeValue = true;
 
             }
 
@@ -296,6 +303,8 @@ class ProductController extends GenericController implements ResourceFunctions
                 $productCriteriaChangeLog->used_date = date('Y-m-d');
                 $productCriteriaChangeLog->save();
 
+                $changesForComputeValue = true;
+
             }
 
             if($product->unload_fee != $request->unload_fee)
@@ -307,6 +316,8 @@ class ProductController extends GenericController implements ResourceFunctions
                 $productCriteriaChangeLog->value_to = $request->unload_fee;
                 $productCriteriaChangeLog->used_date = date('Y-m-d');
                 $productCriteriaChangeLog->save();
+
+                $changesForComputeValue = true;
 
             }
 
@@ -320,11 +331,33 @@ class ProductController extends GenericController implements ResourceFunctions
                 $productCriteriaChangeLog->used_date = date('Y-m-d');
                 $productCriteriaChangeLog->save();
 
+                $changesForComputeValue = true;
+
+            }
+
+            // Logging compute value if there were changes in basic value
+            if($changesForComputeValue){
+
+                $productCriteriaChangeLog = new ProductCriteriaChangeLog();
+                $productCriteriaChangeLog->product_id = $product->id;
+                $productCriteriaChangeLog->criteria_name = 'original_cost';
+                $productCriteriaChangeLog->value_from = $product->original_cost;
+                $productCriteriaChangeLog->value_to = $request->original_cost;
+                $productCriteriaChangeLog->used_date = date('Y-m-d');
+                $productCriteriaChangeLog->save();
+
+                $productCriteriaChangeLog = new ProductCriteriaChangeLog();
+                $productCriteriaChangeLog->product_id = $product->id;
+                $productCriteriaChangeLog->criteria_name = 'profit_per_unit';
+                $productCriteriaChangeLog->value_from = $product->profit_per_unit;
+                $productCriteriaChangeLog->value_to = $request->profit_per_unit;
+                $productCriteriaChangeLog->used_date = date('Y-m-d');
+                $productCriteriaChangeLog->save();
             }
 
 
 
-            $columnsExcept = ['_token', 'profit_per_unit'];
+            $columnsExcept = ['_token'];
 
             $dataToUpdate = collect($request->all())->except($columnsExcept)->toArray();
 

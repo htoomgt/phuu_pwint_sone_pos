@@ -28,6 +28,8 @@ class CreateProductsTable extends Migration
             $table->decimal('ex_mill_price', 10, 2)->unsigned();
             $table->decimal('transport_fee', 10, 2)->unsigned();
             $table->decimal('unload_fee', 10, 2)->unsigned();
+            $table->decimal('original_cost', 10, 2)->unsigned();
+            $table->decimal('profit_per_unit', 10, 2)->unsigned();
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();

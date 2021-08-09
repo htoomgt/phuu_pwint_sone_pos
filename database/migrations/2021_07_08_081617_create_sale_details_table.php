@@ -20,7 +20,9 @@ class CreateSaleDetailsTable extends Migration
             $table->foreignId('sale_id')->nullable()->references('id')->on('sales')->onUpdate('no action')->onDelete('cascade');
             $table->decimal('unit_price', 10, 2);
             $table->integer('quantity')->unsigned()->lenght(11);
+            $table->decimal('profit_per_unit', 10, 2)->unsigned();
             $table->decimal('amount', 10, 2)->unsigned();
+
             $table->timestamps();
         });
         Schema::enableForeignKeyConstraints();

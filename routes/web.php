@@ -134,10 +134,10 @@ Route::middleware(['auth'])->group(function(){
     });
 
 
-    Route::middleware(['see report'])->prefix('report')->name('report.')->group(function(){
-        Route::get('/sale-and-profit', [SaleAndProfitReportController::class], 'showReportPage')->name('saleAndProfit');
-        Route::get('/inventory', [InventoryReportControllerReportController::class], 'showReportPage')->name('inventory');
-        Route::get('/reorder-level', [ReorderLevelReportControllerReportController::class], 'showReportPage')->name('reorderLevel');
+    Route::middleware(['can:see report'])->prefix('report')->name('report.')->group(function(){
+        Route::get('/sale-and-profit', [SaleAndProfitReportController::class, 'showReportPage'])->name('saleAndProfit');
+        Route::get('/inventory', [InventoryReportControllerReportController::class, 'showReportPage'])->name('inventory');
+        Route::get('/reorder-level', [ReorderLevelReportControllerReportController::class, 'showReportPage'])->name('reorderLevel');
 
     });
 

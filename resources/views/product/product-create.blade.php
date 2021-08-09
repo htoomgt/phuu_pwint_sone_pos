@@ -113,6 +113,12 @@
                                             name="unit_price" autocomplete="off" >
 
                                     </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="txtOriginalCost"> Original Cost : </label>
+                                        <input type="double" class="form-control" id="txtOriginalCost" placeholder="Orignal Cost" value="0"
+                                            name="original_cost" autocomplete="off" readonly="true">
+
+                                    </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="txtProfitPerUnit"> Profit Per Unit: </label>

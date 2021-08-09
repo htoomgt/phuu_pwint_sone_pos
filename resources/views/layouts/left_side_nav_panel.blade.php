@@ -98,8 +98,8 @@
                 {{-- /Sale  --}}
 
                 {{-- Reports  --}}
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
+                <li class="nav-item @if($pageTitle=='Report') menu-open  @endif">
+                    <a href="#" class="nav-link @if($pageTitle=='Report') active  @endif">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Reports
@@ -108,7 +108,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('report.saleAndProfit')}}" class="nav-link @if($lvl2PageTitle=='Sale And Profit') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sale and profit</p>
                             </a>
