@@ -60,4 +60,34 @@ class GenericController extends Controller
             $this->response['messages'] = array_merge($this->response['messages'], ['request_msg' => $custom_request_fail_msg]);
         }
     }
+
+    protected function generateSqlInsertReadyDates($startDate, $endDate)
+    {
+        $dateStartDate = date_create($startDate);
+        $dateEndDate = date_create($endDate);
+
+        $interval = date_diff($dateStartDate, $dateEndDate);
+        $dayCount = $interval->format("%a");
+        $sqlInsertReadyDates = "";
+
+        for ($i=1; $i <= $dayCount ; $i++) {
+
+            if($i==1){
+                $dateToAdd = $dateStartDate->format('Y-m-d');
+            }
+            else{
+                $dateToAdd = date("Y-m-d", strtotime($dateStartDate->format('Y-m-d')." + {$i} day"));
+            }
+
+            $sqlInsertReadyDates .= "('{$dateToAdd}')";
+
+
+            if($i !== $dayCount){
+                $sqlInsertReadyDates = $sqlInsertReadyDates.", \n";
+            }
+
+        }
+
+        return $sqlInsertReadyDates;
+    }
 }

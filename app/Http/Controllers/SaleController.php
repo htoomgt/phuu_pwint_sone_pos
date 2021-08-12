@@ -76,6 +76,11 @@ class SaleController extends GenericController
                 $unitPrice = $productUnitPrices[$key];
                 $quantity = $quantities[$key];
                 $amount = $amounts[$key];
+                $profitPerUnit = Product::find($productId)->profit_per_unit;
+
+                // dd($profitPerUnit);
+
+
 
                 $saleDetail = SaleDetails::updateOrCreate([ // for duplicate product Id and take last one only
                     'sale_id' => $saleId,
@@ -83,7 +88,9 @@ class SaleController extends GenericController
                 ], [
                     'unit_price' => $unitPrice,
                     'quantity' => $quantity,
+                    'profit_per_unit' => $profitPerUnit,
                     'amount' => $amount,
+
                 ]);
 
             }

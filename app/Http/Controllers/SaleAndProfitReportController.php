@@ -15,8 +15,13 @@ class SaleAndProfitReportController extends GenericController
         $dataTableId = "#dtProduct";
 
         if(request()->ajax()){
+            $totalSaleOnDate = request()->total_sale_on_date;
+            $product = request()->product;
             $startDate = request()->start_date;
             $endDate = request()->end_date;
+
+            $datesToSearch = $this->generateSqlInsertReadyDates($startDate, $endDate);
+
 
 
             $model = Product::query()

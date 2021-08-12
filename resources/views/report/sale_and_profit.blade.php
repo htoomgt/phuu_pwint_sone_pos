@@ -32,6 +32,19 @@
                                 <form action="" id="frmDataGrid">
                                     <div class="row">
                                         <div class="col-2">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="total_sale_on_date" value="true">
+                                                <label class="form-check-label" for="exampleCheck1"> Total Sale on Date</label>
+                                              </div>
+                                        </div>
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="product" class="form-control select2Product" id="product" style="width:100%;">
+                                                    <option></option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-2">
                                             <div class="form-group">
                                                 <input type="text" class="form-control datePicker" id="start_date"
                                                     name="start_date" placeholder="Enter start date" readonly="true">
@@ -99,6 +112,15 @@
                 "ajax": {
                     "url" : "{{route('report.saleAndProfit')}}",
                     "data" : function(d){
+                        d.total_sale_on_date = function(){
+                            if( $("#total_sale_on_date").is(':checked')){
+                                return true;
+                            }
+                            else{
+                                return false;
+                            }
+                        };
+                        d.product = $("#product").val();
                         d.start_date = $("#start_date").val();
                         d.end_date = $("#end_date").val();
                     }
@@ -177,7 +199,9 @@
             });
         });
     </script>
-    @include('common.SystemCommon')
+
+    @include('common.SystemCommon');
+    @include('common.DropdownLists')
     @include('report.js_load.sale_and_profit_js');
 
 @endpush

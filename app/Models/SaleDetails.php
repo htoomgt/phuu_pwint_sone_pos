@@ -14,6 +14,7 @@ class SaleDetails extends Model
         'sale_id',
         'unit_price',
         'quantity',
+        'profit_per_unit',
         'amount',
     ];
 }
