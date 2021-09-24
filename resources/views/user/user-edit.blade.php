@@ -134,6 +134,7 @@
         let toggleChangePassword;
 
         $(document).ready(function() {
+            dropDownRefresh();
 
             $("#dlRole").append("<option value='" + role + "' selected>" + role + "</option>");
 

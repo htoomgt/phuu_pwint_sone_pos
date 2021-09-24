@@ -53,7 +53,7 @@
                 minlength: 5
             },
             myanmar_name: {
-                required: true,
+                // required: true,
                 minlength: 3
             },
             product_code: {
@@ -74,7 +74,7 @@
                 min: 1
             },
             transport_fee: {
-                min: 1
+                min: 0
             },
             unload_fee: {
                 min: 0
@@ -90,7 +90,7 @@
                 minlenght: "Please enter at least 5 characters name."
             },
             myanmar_name: {
-                required: "Please enter the myanmar name",
+                // required: "Please enter the myanmar name",
                 minlength: "Plese enter at least 3 character name"
             },
             product_code: {
@@ -111,7 +111,7 @@
                 min: "Please enter the ex mill price greater than  1"
             },
             transport_fee: {
-                min: "Please enter transport fee greater than  1"
+                min: "Please enter transport fee greater than  0"
             },
             unload_fee: {
                 min: "Please enter unload fee greater than 1"

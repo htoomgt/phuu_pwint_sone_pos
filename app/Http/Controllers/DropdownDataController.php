@@ -22,6 +22,7 @@ class DropdownDataController extends GenericController
     {
         try {
             $roles = Role::query()
+                ->where('name', '<>', 'super-admin')
                 ->where('name', 'LIKE', "%{$request->search}%")
                 ->get();
 

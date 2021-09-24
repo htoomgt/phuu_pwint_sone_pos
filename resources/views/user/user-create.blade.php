@@ -107,6 +107,8 @@
         let goBackUserList;
 
         $(document).ready(function() {
+            dropDownRefresh();
+
             $("#frmCreateUser").on('submit', function(e) {
                 e.preventDefault();
                 let dataToPost = $(this).serialize();
