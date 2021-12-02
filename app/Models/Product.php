@@ -25,12 +25,19 @@ class Product extends Model
         'unload_fee',
         'original_cost',
         'profit_per_unit',
+        'breakdown_parent',
+        'breadown_parent_full_multiplier',
         'created_by',
         'created_at',
         'updated_by',
         'updated_at'
     ];
 
+
+    public function productBreakdownParent()
+    {
+        return $this->belongsTo('App\Models\Product', 'breakdown_parent', 'id');
+    }
 
     public function category()
     {

@@ -207,6 +207,8 @@ class ProductController extends GenericController implements ResourceFunctions
 
 
 
+
+
             $dataFormPost['created_by'] = $authUserId;
             $dataFormPost['updated_by'] = $authUserId;
 
@@ -259,6 +261,10 @@ class ProductController extends GenericController implements ResourceFunctions
 
     public function edit(Product $product)
     {
+
+        $product = Product::query()->with(['productBreakdownParent'])->find($product->id);
+
+
         $this->setPageTitle("Manage Product", "Product Edit");
         return view('product.product-edit', compact('product'));
     }
