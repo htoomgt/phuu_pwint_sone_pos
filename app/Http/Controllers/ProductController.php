@@ -159,7 +159,7 @@ class ProductController extends GenericController implements ResourceFunctions
             ->parameters([
                 "paging" => true,
                 "searchDelay" => 350,
-                "responsive" => false,
+                "responsive" => true,
                 "autoWidth" => false,
                 "order" => [
                     [0, 'desc'],
