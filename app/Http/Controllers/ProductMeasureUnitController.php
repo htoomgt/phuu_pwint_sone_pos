@@ -18,7 +18,7 @@ class ProductMeasureUnitController extends GenericController implements Resource
      * @since 2021-07-17
      * @return mixed (JsonResponse|View)
      */
-    public function showListPage(Builder $builder):mixed
+    public function showListPage(Builder $builder)
     {
         $this->setPageTitle("Manage Product", "Product Measure Unit");
         $statusUpdateUrl = route('productMeasureUnit.statusUpdateById');
