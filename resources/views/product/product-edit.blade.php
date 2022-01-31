@@ -5,7 +5,11 @@
 
 @section('content')
 <div>
-
+    @php
+        // if($product->productBreakdownParent !== null){
+        //     dd("break down exists");
+        // }
+    @endphp
 </div>
     {{-- Content Header (Page Header) --}}
     <div class="content-header">
@@ -95,7 +99,10 @@
 
                                         <select name="breakdown_parent" class="form-control select2Product col-12" id="dlBreakdownParent">
                                             <option></option>
-                                            <option value="{{$product->breakdown_parent}}" selected>{{$product->productBreakdownParent->name}}</option>
+                                            @if($product->productBreakdownParent !== null)
+                                                <option value="{{$product->productBreakdownParent->id}}" selected>{{$product->productBreakdownParent->name}}</option>
+                                                {{-- <option value="{{$product->breakdown_parent}}" selected>{{$product->productBreakdownParent->name}}</option> --}}
+                                            @endif
                                         </select>
 
 
