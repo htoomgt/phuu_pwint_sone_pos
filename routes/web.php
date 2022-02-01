@@ -14,6 +14,7 @@ use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\ReorderLevelReportControllerReportController;
 use App\Http\Controllers\SaleAndProfitReportController;
 use App\Http\Controllers\SaleController;
+use App\Http\Controllers\ProductBreakdownController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,7 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/product', [ProductController::class, 'addNew'])->name('addNew');
             Route::get('/product/{product}', [ProductController::class, 'edit'])->name('edit');
             Route::put('/product', [ProductController::class, 'updateById'])->name('updateById');
+            Route::get('/productByParentId', [ProductController::class, 'getProductByParentProductId'])->name('getByParentProductId');
         });
 
         /** /Product Routes */
@@ -112,6 +114,18 @@ Route::middleware(['auth'])->group(function(){
             Route::get('/productMeasureUnit/get/', [ProductMeasureUnitController::class, 'getDataRowById'])->name('getDataRowById');
             Route::post('/productMeasureUnit', [ProductMeasureUnitController::class, 'addNew'])->name('addNew');
             Route::put('/productMeasureUnit', [ProductMeasureUnitController::class, 'updateById'])->name('updateById');
+        });
+
+        /** Product Breakdown*/
+        Route::name('productBreakdown.')->group(function(){
+            Route::get('/productBreakdowns', [ProductBreakdownController::class, 'showListPage'])->name('showList');
+            Route::get('/productBreakdown', [ProductBreakdownController::class, 'makeBreakdownPage'])->name('makeBreakdownPage');
+            Route::post('/productBreakdown', [ProductBreakdownController::class, 'makeBreakdown'])->name('addNew');
+            Route::get('/productBreakdown/{breakdownId}',[ProductBreakdownController::class, 'editBreakdownPage'])->name('editBreakdownPage');
+            Route::put('/productBreakdown', [ProductBreakdownController::class, 'updateBreakdown'])->name('updateById');
+            Route::delete('/productBreakdown', [ProductBreakdownController::class, 'deleteBreakdown'])->name('deleteById');
+
+
         });
 
 

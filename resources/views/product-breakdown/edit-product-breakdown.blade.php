@@ -4,7 +4,7 @@
 
 
 @section('content')
-
+<h1> Edit Product Break down Page!</h1>
 
 @endsection
 

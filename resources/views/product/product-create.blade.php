@@ -4,9 +4,7 @@
 
 
 @section('content')
-<div>
 
-</div>
     {{-- Content Header (Page Header) --}}
     <div class="content-header">
         <div class="container-fluid">
