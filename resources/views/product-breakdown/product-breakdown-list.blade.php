@@ -4,7 +4,7 @@
 
 
 @section('content')
-    <h1>Make Product breakdown list</h1>
+    <h1>Make Product breakdown list </h1>
 
 @endsection
 

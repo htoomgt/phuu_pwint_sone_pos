@@ -18,7 +18,8 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="dlProductFromBreakdown">Product From Breakdown: </label>
-                                        <select name="ddlProductFromBreakdown" id="dlProductFromBreakdown" class="form-control select2Product col-12">
+                                        <select name="dlProductFromBreakdown" id="dlProductFromBreakdown"
+                                        class="form-control select2Product col-12">
                                             <option></option>
                                         </select>
                                         <small id="txtProductNameInfo" class="form-text text-muted">
@@ -30,12 +31,11 @@
                                         <select
                                             name="dlProductToBreakdown"
                                             id="dlProductToBreakdown"
-                                            class="form-control col-12"
+                                            class="form-control select2 col-12"
                                             readonly
                                         >
                                             <option value=""></option>
                                         </select>
-                                        <input type="hidden" name="hdnProductBreakdownMultiplier" id="hdnProductBreakdownMultiplier" />
                                             <small id="txtProductNameInfo" class="form-text text-muted">
                                                 {{-- helper text here  --}}
                                             </small>
@@ -46,7 +46,7 @@
                                     <div class="form-group col-md-6">
                                         <label for="txtQuantityToBreakdown">Quantity to Breakdown: </label>
                                         <input type="number" class="form-control" id="txtQuantityToBreakdown" placeholder="Quantity To Breakdown"
-                                            name="name" autocomplete="off" min="1">
+                                            name="txtQuantityToBreakdown" autocomplete="off" min="1">
                                             <small id="txtProductNameInfo" class="form-text text-muted">
                                                 {{-- helper text here  --}}
                                             </small>
@@ -62,8 +62,8 @@
 
                                 <div class="col-md-7 offset-md-5">
                                     <a type="button" class="btn btn-outline-success" href="{{route('productBreakdown.showList')}}"> <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back To Product Breakdown List</a>
-                                    <button type="reset" class="btn btn-secondary" onClick="resetForm()">Reset Form</button>
-                                    <button type="button" class="btn btn-primary" id="btnMakeProductBreakdown">Save Record</button>
+                                    <button type="button" class="btn btn-secondary" id="btnResetForm">Reset Form</button>
+                                    <button type="submit" class="btn btn-primary" id="btnMakeProductBreakdown">Save Record</button>
                                 </div>
 
 
