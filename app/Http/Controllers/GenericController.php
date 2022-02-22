@@ -54,6 +54,12 @@ class GenericController extends Controller
             $this->httpStatus = Response::HTTP_OK ;
             $this->response['messages'] = array_merge($this->response['messages'], $custom_no_data_msg);
         }
+        elseif($result_status == 'error')
+        {
+            $this->response['status'] = 'error';
+            $this->httpStatus = Response::HTTP_INTERNAL_SERVER_ERROR;
+            $this->response['messages'] = array_merge($this->response['messages'], ['request_msg' => $custom_request_fail_msg]);
+        }
         else{
             $this->response['status'] = 'fail';
             $this->httpStatus = Response::HTTP_SERVICE_UNAVAILABLE;
