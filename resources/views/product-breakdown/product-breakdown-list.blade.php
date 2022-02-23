@@ -4,7 +4,15 @@
 
 
 @section('content')
-    <h1>Make Product breakdown list </h1>
+    <!-- Content Header (Page header) -->
+    <x-page-header />
+    <!-- /.content-header -->
+
+    {{-- Main Content start  --}}
+
+    {{-- Main Content end --}}
+
+
 
 @endsection
 

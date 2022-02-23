@@ -1,5 +1,6 @@
 <script>
     dropDownRefresh();
+    let resetForm;
     let breakdownMultiplier = 0;
     let resetBreakdownForm;
     let frmBreakdownValidationStatus = null;
@@ -21,7 +22,7 @@
             if(result.status === "success"){
                 let fetchedProduct = result.data;
                 breakdownMultiplier = fetchedProduct.breadown_parent_full_multiplier;
-                $("#dlProductToBreakdown").append(`<option selected value="${fetchedProduct.id}">${fetchedProduct.name}</option>`);
+                $("#dlProductToBreakdown1").html(`<option selected value="${fetchedProduct.id}">${fetchedProduct.name}</option>`);
             }
             else{
                 alert('Error at fetching product of breakdown')
@@ -46,7 +47,8 @@
 
         })
 
-        $("#btnMakeProductBreakdown").on('click', () => {
+        $("#btnMakeProductBreakdown").on('click', (e) => {
+            e.preventDefault();
 
 
 
@@ -54,7 +56,32 @@
 
 
             if(frmBreakdownValidationStatus.form()){
-                alert("it is valid to submit")
+                let dataToPost = $("#frmMakeProductBreakdown").serialize();
+                let url = "{{route('productBreakdown.addNew')}}";
+
+                axios({
+                    url : url,
+                    method : "POST",
+                    data : dataToPost,
+                })
+                .then((response) => {
+                    if(response.data.status  === "success"){
+                        Swal.fire({
+                            'icon' : 'success',
+                            'title' : 'Product Breakdown ',
+                            'text' : response.data.messages.request_msg,
+                            'confirmButtonText' : "OK"
+                        })
+                        .then((result)=>{
+                            if(result.isConfirmed){
+                                window.location = "{{ route('productBreakdown.showList') }}";
+                            }
+                        });
+                    }
+                })
+
+
+                alert("it is valid to submit");
             }
 
 
@@ -85,15 +112,19 @@
 
 
 
-
-
-        $("#btnResetForm").on('click', () => {
+        resetForm = () => {
             $("#dlProductFromBreakdown").val('').trigger('change');
-            $("#dlProductToBreakdown").val('').trigger('change');
             $("#txtQuantityToBreakdown").val('');
             $("#txtTotalQuantityToAdd").val('');
 
+            setTimeout(() => {
+                $("#dlProductToBreakdown1").html('<option selected value="">Select Product</option>');
+            }, 1000);
+        }
 
-        })
+        $("#btnResetForm").on('click', resetForm);
+
+
+
     });
 </script>

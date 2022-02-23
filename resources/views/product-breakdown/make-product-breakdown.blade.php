@@ -30,8 +30,8 @@
                                         <label for="dlProductToBreakdown">Product To Breakdown: </label>
                                         <select
                                             name="dlProductToBreakdown"
-                                            id="dlProductToBreakdown"
-                                            class="form-control select2 col-12"
+                                            id="dlProductToBreakdown1"
+                                            class="form-control col-12"
                                             readonly
                                         >
                                             <option value=""></option>
