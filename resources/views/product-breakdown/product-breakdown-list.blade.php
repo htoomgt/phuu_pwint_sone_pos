@@ -9,6 +9,21 @@
     <!-- /.content-header -->
 
     {{-- Main Content start  --}}
+    <div class="content">
+        <div class="container-fluid">
+            {{-- Add New button block start --}}
+            <x-add-new-button-block routeName="{{ route('productBreakdown.makeBreakdownPage') }}" buttonText="Make New" />
+            {{-- Add New button block end --}}
+
+            <x-data-table-block
+                dataTableHeader="Product Breakdown List"
+                dataTableId="dtProductBreakdownList"
+                :dataTable="$dataTable"
+
+
+            />
+        </div>
+    </div>
 
     {{-- Main Content end --}}
 
@@ -19,6 +34,8 @@
 
 @push('page_js_script')
 @include('common.DropdownLists')
+{{-- Datatable Script --}}
+{!! $dataTable->scripts() !!}
 
 
 @endpush

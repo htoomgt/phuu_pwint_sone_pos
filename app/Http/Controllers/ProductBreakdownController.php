@@ -29,17 +29,17 @@ class ProductBreakdownController extends GenericController
         if (request()->ajax()) {
             $model = ProductBreakdown::query()
                         ->selectRaw("
-                            product_breakdowns.*,
+                            product_breakdown.*,
                             product_from.name as product_from,
                             product_to.name as product_to,
-                            creator.name as creator,
-                            updater.name as updater
+                            creator.full_name as created_user,
+                            updater.full_name as updated_user
 
                         ")
-                        ->leftJoin('products as product_from', 'product_breakdowns.product_from', '=', 'product_from.id')
-                        ->leftJoin('products as product_to', 'product_breakdowns.product_to', '=', 'product_to.id')
-                        ->leftJoin('users as creator', 'product_breakdowns.created_by', '=', 'creator.id')
-                        ->leftJoin('users as updater', 'product_breakdowns.updated_by', '=', 'updater.id');
+                        ->leftJoin('products as product_from', 'product_breakdown.product_from', '=', 'product_from.id')
+                        ->leftJoin('products as product_to', 'product_breakdown.product_to', '=', 'product_to.id')
+                        ->leftJoin('users as creator', 'product_breakdown.created_by', '=', 'creator.id')
+                        ->leftJoin('users as updater', 'product_breakdown.updated_by', '=', 'updater.id');
 
             return DataTables::of($model)
             ->editColumn('product_from', function(Product $product) {
@@ -65,8 +65,8 @@ class ProductBreakdownController extends GenericController
             ['data' => 'quantity_to_add', 'title' => 'Quantity To Add'],
             ['data' => 'created_at', 'title' => 'Created At'],
             ['data' => 'updated_at', 'title' => 'Updated At'],
-            ['data' => 'creator', 'title' => 'Created By'],
-            ['data' => 'updater', 'title' => 'Updated By'],
+            ['data' => 'created_user', 'title' => 'Created By'],
+            ['data' => 'updated_user', 'title' => 'Updated By'],
         ])
             ->parameters([
                 "paging" => true,
@@ -78,11 +78,12 @@ class ProductBreakdownController extends GenericController
                 ],
                 "columnDefs" => [
                     ["width" => "5%", "targets" => 0],
-                    ["width" => "10%", "targets" => 1],
+                    ["width" => "20%", "targets" => 1],
                     ["width" => "20%", "targets" => 2],
-                    ["width" => "25%", "targets" => 3],
-                    ["width" => "20%", "targets" => 4],
-                    ["width" => "20%", "targets" => 5],
+                    ["width" => "15%", "targets" => 3],
+                    ["width" => "10%", "targets" => 4],
+                    ["width" => "15%", "targets" => 5],
+                    ["width" => "15%", "targets" => 6],
 
                 ],
 

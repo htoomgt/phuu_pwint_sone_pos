@@ -9,6 +9,8 @@ class ProductBreakdown extends Model
 {
     use HasFactory;
 
+    protected $table = "product_breakdown";
+
     protected $fillable = [
         'product_from',
         'product_to',
