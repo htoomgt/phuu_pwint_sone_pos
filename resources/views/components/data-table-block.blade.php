@@ -6,8 +6,8 @@
             </div>
             <div class="card-body " style="">
                 {{-- Datatable here --}}
-                {{!! $dataTable->table(['id' => 'dtProductBreakdownList', 'class' => 'display table table-responsive table-striped collpase',
-                'style' => 'width:100%;']) !!}}
+                {{ $dataTable->table(['id' => $dataTableId, 'class' => 'display table table-responsive table-striped collpase',
+                'style' => 'width:100%;']) }}
 
 
 

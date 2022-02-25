@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
 
 class ProductBreakdownController extends GenericController
@@ -24,6 +25,7 @@ class ProductBreakdownController extends GenericController
     public function showListPage(Builder $builder){
         $this->setPageTitle("Manage Product", "Product Breakdown");
         $deleteUrl = route('productBreakdown.deleteById');
+        $dataTableId = "#dtProductBreakdownList";
 
         // Request Ajax
         if (request()->ajax()) {
@@ -42,6 +44,31 @@ class ProductBreakdownController extends GenericController
                         ->leftJoin('users as updater', 'product_breakdown.updated_by', '=', 'updater.id');
 
             return DataTables::of($model)
+            ->addColumn('actions', function(ProductBreakdown $productBreakdown)use($deleteUrl, $dataTableId){
+                $actions = '
+                <div class="dropdown">
+                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" onClick="productCategoryEdit('.$productBreakdown->id.')"
+
+                            >
+                        <i class="fas fa-edit"></i>
+                        Edit
+                    </a>
+                    <a class="dropdown-item" href="#" onclick = "dtDeleteRow('.$productBreakdown->id.', `'.$deleteUrl.'`, `'.$dataTableId.'`)">
+                        <i class="far fa-trash-alt"></i>
+                        Delete
+                    </a>
+                  </div>
+                </div>
+            ';
+
+
+
+            return  $actions;
+            })
             ->editColumn('product_from', function(Product $product) {
                 return $product->product_from->name;
 
@@ -59,6 +86,7 @@ class ProductBreakdownController extends GenericController
         //datatable compose
         $dataTable = $builder->columns([
             ['data' => 'id', 'title' => 'Id'],
+            ['data' => 'action', 'title' => 'Actions'],
             ['data' => 'product_from_name', 'title' => 'Product From'],
             ['data' => 'product_to_name', 'title' => 'Product To'],
             ['data' => 'quantity_to_breakdown', 'title' => 'Quantity To Breakdown'],
@@ -150,13 +178,51 @@ class ProductBreakdownController extends GenericController
         // respond to client
     }
 
+    /***
+     * To delete the product breakdown by Id
+     * @param Request $request
+     * @author Htoo Maung Thait
+     * @since 2022-02-25
+     */
     public function deleteBreakdownById(Request $request){
-        // get product breakdown Id
+        try{
+            // get product breakdown Id
+            $id = $request->id;
 
-        // delete product breakdown by Id
+            // validate the id
+            if($id == ""){
+                $this->setResponseInfo('invalid','', ['id' => 'Product Breakdown Id is required'],'','');
+            }
 
-        // if not cascade delete, delete transaction from parent and child product by transaction Id
+            if($this->validStatus){
+                // delete product breakdown by Id
+                $status = ProductBreakdown::where('id', $id)->delete();
+
+                if($status){
+                    $this->setResponseInfo('success', 'Your record has been deleted successfully', [], '', '');
+                }
+                else{
+                    $this->setResponseInfo('error', '', [], '', 'Your record has not been deleted');
+                }
+
+            }
+            else{
+                return response()->json($this->response, $this->httpStatus);
+            }
+
+
+
+            // if not cascade delete, delete transaction from parent and child product by transaction Id
+
+
+        }catch(Throwable $th){
+            $errorMsg = 'Delete Error Message : '.$this->getMessage();
+            Log::error($errorMsg);
+            $this->setResponseInfo('error', '', [], '',$errorMsg);
+        }
+
 
         // respond to client
+        return response()->json($this->response, $this->httpStatus);
     }
 }

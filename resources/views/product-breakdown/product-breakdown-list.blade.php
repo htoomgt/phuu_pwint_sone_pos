@@ -15,13 +15,13 @@
             <x-add-new-button-block routeName="{{ route('productBreakdown.makeBreakdownPage') }}" buttonText="Make New" />
             {{-- Add New button block end --}}
 
+            {{-- Datatable block start --}}
             <x-data-table-block
                 dataTableHeader="Product Breakdown List"
                 dataTableId="dtProductBreakdownList"
                 :dataTable="$dataTable"
-
-
             />
+            {{-- Datatable block end --}}
         </div>
     </div>
 
@@ -33,9 +33,9 @@
 
 
 @push('page_js_script')
-@include('common.DropdownLists')
-{{-- Datatable Script --}}
-{!! $dataTable->scripts() !!}
+    @include('common.DropdownLists')
+    {{-- Datatable Script --}}
+    {!! $dataTable->scripts() !!}
 
 
 @endpush

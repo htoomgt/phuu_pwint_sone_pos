@@ -16,13 +16,18 @@ class CreateProductBreakdown extends Migration
         Schema::disableForeignKeyConstraints();
         Schema::create('product_breakdown', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_from')->unsigned()->references('id')->on('products')->onUpdate('no action')->onDelete('set null');;
-            $table->bigInteger('product_to')->unsigned()->references('id')->on('products')->onUpdate('no action')->onDelete('set null');;
+            $table->bigInteger('product_from')->unsigned();
+            $table->bigInteger('product_to')->unsigned();
             $table->integer('quantity_to_breakdown');
             $table->integer('quantity_to_add');
-            $table->bigInteger('created_by')->unsigned()->references('id')->on('users')->onUpdate('no action')->onDelete('set null');
-            $table->bigInteger('updated_by')->unsigned()->references('id')->on('users')->onUpdate('no action')->onDelete('set null');
+            $table->bigInteger('created_by')->unsigned();
+            $table->bigInteger('updated_by')->unsigned();
             $table->timestamps();
+
+            $table->foreign('product_from')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('product_to')->references('id')->on('products')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
 
             $table->index('product_from');
             $table->index('product_to');
