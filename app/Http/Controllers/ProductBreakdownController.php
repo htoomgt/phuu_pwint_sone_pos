@@ -69,9 +69,12 @@ class ProductBreakdownController extends GenericController
 
             return  $actions;
             })
-            ->editColumn('product_from', function(Product $product) {
-                return $product->product_from->name;
+            ->editColumn('product_from', function(ProductBreakdown $productBreakdown) {
+                return $productBreakdown->product_from;
 
+            })
+            ->editColumn('product_to', function(ProductBreakdown $productBreakdown) {
+                return $productBreakdown->product_to;
 
             })
             ->editColumn('created_at', function ($request) {
@@ -80,15 +83,16 @@ class ProductBreakdownController extends GenericController
             ->editColumn('updated_at', function ($request) {
                 return $request->created_at->format('Y-m-d');
             })
+            ->rawColumns(['actions'])
             ->toJson();
-            ;
+
         }
         //datatable compose
         $dataTable = $builder->columns([
             ['data' => 'id', 'title' => 'Id'],
-            ['data' => 'action', 'title' => 'Actions'],
-            ['data' => 'product_from_name', 'title' => 'Product From'],
-            ['data' => 'product_to_name', 'title' => 'Product To'],
+            ['data' => 'actions', 'title' => 'Actions'],
+            ['data' => 'product_from', 'title' => 'Product From'],
+            ['data' => 'product_to', 'title' => 'Product To'],
             ['data' => 'quantity_to_breakdown', 'title' => 'Quantity To Breakdown'],
             ['data' => 'quantity_to_add', 'title' => 'Quantity To Add'],
             ['data' => 'created_at', 'title' => 'Created At'],
