@@ -20,7 +20,7 @@ class GenericController extends Controller
         $this->response['messages'] = [];
         $this->response['data'] = [];
         $this->httpStatus = 0;
-        $this->validStatus = false;
+        $this->validStatus = true;
     }
 
     protected function setPageTitle($pageTitle = "", $lvl2PageTitle = "")

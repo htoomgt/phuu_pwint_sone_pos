@@ -16,6 +16,8 @@ class ProductBreakdown extends Model
         'product_to',
         'quantity_to_breakdown',
         'quantity_to_add',
+        'created_by',
+        'updated_by'
     ];
 
     public function productFrom()

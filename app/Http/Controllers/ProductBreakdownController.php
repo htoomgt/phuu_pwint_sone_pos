@@ -8,11 +8,13 @@ use App\Http\Controllers\ResourceFunctions;
 use App\Models\Product;
 use App\Models\ProductBreakdown;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Yajra\DataTables\DataTables as DataTablesDataTables;
+
 
 class ProductBreakdownController extends GenericController
 {
@@ -141,6 +143,7 @@ class ProductBreakdownController extends GenericController
     }
 
     public function makeBreakdown(Request $request){
+        // dd($request->all());
         // get param
         $productFromBreakdown = $request->dlProductFromBreakdown;
 
@@ -148,16 +151,61 @@ class ProductBreakdownController extends GenericController
 
         $quantityToBreakdown = $request->txtQuantityToBreakdown;
 
-        $quantityToAdd = $request->txtQuantityToAdd;
+        $quantityToAdd = $request->txtTotalQuantityToAdd;
 
-        // decrease transaction from parent product
+        // validate
+        if($productFromBreakdown == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['produt_from_breakdown' => 'Product From is required'], '', '');
+        }
+
+        if($productToBreakdown == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['produt_to_breakdown' => 'Product To is required'], '', '');
+        }
+
+        if($quantityToBreakdown == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['quantity_to_breakdown' => 'Quantity To Breakdown is required'], '', '');
+        }
+
+        if($quantityToAdd == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['quantity_to_add' => 'Quantity To Add is required'], '', '');
+        }
 
 
-        // increase transaction to child product
+        // recording is enough, product current balance will be calculated by product transaction and breakdown transaction
 
-        // record to product breakdown table with above two transactions Id
+
+        if($this->validStatus){
+            // record to product breakdown table with above two transactions Id
+            try {
+                $productBreakdown = ProductBreakdown::create([
+                    'product_from' => $productFromBreakdown,
+                    'product_to' => $productToBreakdown,
+                    'quantity_to_breakdown' => $quantityToBreakdown,
+                    'quantity_to_add' => $quantityToAdd,
+                    'created_by' => Auth::user()->id,
+                    'updated_by' => Auth::user()->id,
+                ]);
+
+
+                if($productBreakdown){
+                    $this->setResponseInfo('success','Your product breakdown has been recorded successfully!', '', '', '');
+                }
+
+            } catch (\Throwable $th) {
+                //throw $th;
+                $errorMsg = "product breakdown recording is failed due to ".$th->getMessage();
+                Log::error($errorMsg);
+                $this->setResponseInfo('error','', [], '',$errorMsg);
+            }
+        }
+        // dd($this->response);
 
         // respond to client
+        return response()->json($this->response, $this->httpStatus);
 
     }
 
