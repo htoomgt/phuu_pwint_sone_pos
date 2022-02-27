@@ -37,5 +37,14 @@
     {{-- Datatable Script --}}
     {!! $dataTable->scripts() !!}
 
+    <script>
+        let prodcutBreakdownEditPage = ( url ) => {
+            // console.log(url);
+            window.location.href = url;
+
+        }
+
+    </script>
+
 
 @endpush

@@ -83,7 +83,14 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('productBreakdown.showList')}}" class="nav-link @if($lvl2PageTitle=='Product Breakdown') active  @endif">
+                            <a
+                                href="{{route('productBreakdown.showList')}}"
+                                class="nav-link
+                                @if($lvl2PageTitle=='Product Breakdown') active  @endif
+                                @if($lvl2PageTitle=='Edit Product Breakdown') active  @endif
+                                @if($lvl2PageTitle=='Make Product Breakdown') active  @endif"
+
+                                >
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product Breakdown</p>
                             </a>

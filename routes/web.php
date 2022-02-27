@@ -123,7 +123,7 @@ Route::middleware(['auth'])->group(function(){
             Route::post('/productBreakdown', [ProductBreakdownController::class, 'makeBreakdown'])->name('addNew');
             Route::get('/productBreakdown/{breakdownId}',[ProductBreakdownController::class, 'editBreakdownPage'])->name('editBreakdownPage');
             Route::put('/productBreakdown', [ProductBreakdownController::class, 'updateBreakdown'])->name('updateById');
-            Route::delete('/productBreakdown', [ProductBreakdownController::class, 'deleteBreakdown'])->name('deleteById');
+            Route::delete('/productBreakdown', [ProductBreakdownController::class, 'deleteBreakdownById'])->name('deleteById');
 
 
         });

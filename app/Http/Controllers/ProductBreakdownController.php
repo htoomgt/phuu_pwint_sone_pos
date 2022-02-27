@@ -29,6 +29,8 @@ class ProductBreakdownController extends GenericController
         $deleteUrl = route('productBreakdown.deleteById');
         $dataTableId = "#dtProductBreakdownList";
 
+
+
         // Request Ajax
         if (request()->ajax()) {
             $model = ProductBreakdown::query()
@@ -47,13 +49,14 @@ class ProductBreakdownController extends GenericController
 
             return DataTables::of($model)
             ->addColumn('actions', function(ProductBreakdown $productBreakdown)use($deleteUrl, $dataTableId){
+                $editUrl = route('productBreakdown.editBreakdownPage', $productBreakdown->id);
                 $actions = '
                 <div class="dropdown">
                   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" onClick="productCategoryEdit('.$productBreakdown->id.')"
+                    <a class="dropdown-item" href="#" onclick="prodcutBreakdownEditPage(`'.$editUrl.'`)"
 
                             >
                         <i class="fas fa-edit"></i>
@@ -136,6 +139,7 @@ class ProductBreakdownController extends GenericController
      * @author Htoo Maung Thait
      */
     public function makeBreakdownPage(Request $request){
+        // Set Page Title
         $this->setPageTitle("Manage Product", "Make Product Breakdown");
 
         // return make product breadown page
@@ -210,24 +214,82 @@ class ProductBreakdownController extends GenericController
     }
 
     public function editBreakdownPage(Request $request){
+        // Set Page Title
+        $this->setPageTitle("Manage Product", "Edit Product Breakdown");
+
         // get param
+        $productBreakdownId = $request->breakdownId;
 
         // get product breakdown data
+        $productBreakdownRecord = ProductBreakdown::where('id', $productBreakdownId)->with(['productFrom','productTo'])->first();
+        // dd($productBreakdownRecord->productFrom->name);
 
         // return view
-        return view('product-breakdown.edit-product-breakdown');
+        return view('product-breakdown.edit-product-breakdown', compact('productBreakdownRecord'));
     }
 
     public function updateBreakdown(Request $request){
         // get param
+        $productBreakdownId = $request->hvProductBreakdownId;
 
-        // decrease transaction from parent product by transaction Id
+        $productFromBreakdown = $request->dlProductFromBreakdown;
 
-        // increase transaction to child product by transaction Id
+        $productToBreakdown = $request->dlProductToBreakdown;
+
+        $quantityToBreakdown = $request->txtQuantityToBreakdown;
+
+        $quantityToAdd = $request->txtTotalQuantityToAdd;
+
+        // validate
+        if($productFromBreakdown == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['produt_from_breakdown' => 'Product From is required'], '', '');
+        }
+
+        if($productToBreakdown == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['produt_to_breakdown' => 'Product To is required'], '', '');
+        }
+
+        if($quantityToBreakdown == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['quantity_to_breakdown' => 'Quantity To Breakdown is required'], '', '');
+        }
+
+        if($quantityToAdd == ''){
+            $this->validStatus = false;
+            $this->setResponseInfo('invalid','', ['quantity_to_add' => 'Quantity To Add is required'], '', '');
+        }
 
         // record to product breakdown table with above two transactions Id by its own Id
+        if ($this->validStatus) {
+            // record to product breakdown table with above two transactions Id
+            try {
+                $productBreakdown = ProductBreakdown::where('id', $productBreakdownId)->update([
+                    'product_from' => $productFromBreakdown,
+                    'product_to' => $productToBreakdown,
+                    'quantity_to_breakdown' => $quantityToBreakdown,
+                    'quantity_to_add' => $quantityToAdd,
+                    'updated_by' => Auth::user()->id,
+                ]);
+
+
+
+                if($productBreakdown){
+                    $this->setResponseInfo('success','Your product breakdown has been updated successfully!', '', '', '');
+                }
+                else{
+                    $this->setResponseInfo('error','', [], '', 'product breakdown update is failed');
+                }
+            } catch(Throwable $th){
+                $errorMsg = "product breakdown update is failed due to ".$th->getMessage();
+                Log::error($errorMsg);
+                $this->setResponseInfo('error','', [], '',$errorMsg);
+            }
+        }
 
         // respond to client
+        return response()->json($this->response, $this->httpStatus);
     }
 
     /***
