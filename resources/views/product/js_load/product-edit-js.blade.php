@@ -66,6 +66,16 @@
             measure_unit_id: {
                 required: true
             },
+            breadown_parent_full_multiplier : {
+                required: function(element){
+                    return $("#breakdown_parent_id").val() != "";
+                },
+                min : function(element){
+                    if($("#breakdown_parent_id").val() != ""){
+                        return 2;
+                    }
+                }
+            },
             reorder_level: {
                 required: true,
                 min: 1
@@ -102,6 +112,10 @@
             },
             measure_unit_id: {
                 required: "Please choose measure munit"
+            },
+            breadown_parent_full_multiplier : {
+                required: "Please enter breadown parent full multiplier",
+                min: "Please enter breadown parent full multiplier at least 2"
             },
             reorder_level: {
                 required: "Please enter reorder level",

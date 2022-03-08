@@ -4,9 +4,7 @@
 
 
 @section('content')
-<div>
 
-</div>
     {{-- Content Header (Page Header) --}}
     <div class="content-header">
         <div class="container-fluid">
@@ -83,6 +81,24 @@
                                         <input type="number" class="form-control" id="txtUsername" placeholder="reorder-level"
                                             name="reorder_level" autocomplete="off">
                                         <small id="txtUserNameInfo" class="form-text text-muted"> Product unit count margin to order from supplier</small>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="dlProductUnit" class="width_100P">Breakdown Parent:</label>
+
+                                        <select name="breakdown_parent" class="form-control select2Product col-12" id="dlBreakdownParent">
+                                            <option></option>
+                                        </select>
+
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="txtUsername">Breakdown Parent Full Multiplier: </label>
+                                        <input type="number" class="form-control" id="txtUsername" placeholder="breakdown parent full multiplier"
+                                            name="breadown_parent_full_multiplier" autocomplete="off">
+                                        <small id="txtBreakdownParentFullMultiplierInfo" class="form-text text-muted"> Count to full one parent quantity</small>
                                     </div>
                                 </div>
 

@@ -70,6 +70,16 @@
                 required: true,
                 min: 1
             },
+            breadown_parent_full_multiplier : {
+                required: function(element){
+                    return $("#breakdown_parent_id").val() != "";
+                },
+                min : function(element){
+                    if($("#breakdown_parent_id").val() != ""){
+                        return 2;
+                    }
+                }
+            },
             ex_mill_price: {
                 min: 1
             },
@@ -106,6 +116,10 @@
             reorder_level: {
                 required: "Please enter reorder level",
                 min: "Please enter reorder level at least 1"
+            },
+            breadown_parent_full_multiplier : {
+                required: "Please enter breadown parent full multiplier",
+                min: "Please enter breadown parent full multiplier at least 2"
             },
             ex_mill_price: {
                 min: "Please enter the ex mill price greater than  1"

@@ -30,6 +30,10 @@ class CreateProductsTable extends Migration
             $table->decimal('unload_fee', 10, 2)->unsigned();
             $table->decimal('original_cost', 10, 2)->unsigned();
             $table->decimal('profit_per_unit', 10, 2)->unsigned();
+            $table->foreignId('breakdown_parent')->nullable()->references('id')->on('products')->onUpdate('cascade')->onDelete('set null');
+            $table->integer('breadown_parent_full_multiplier')->unsigned()->nullable();
+
+
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
             $table->foreignId('updated_by')->nullable()->references('id')->on('users')->onUpdate('cascade')->onDelete('set null');
             $table->timestamps();

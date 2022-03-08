@@ -5,7 +5,11 @@
 
 @section('content')
 <div>
-
+    @php
+        // if($product->productBreakdownParent !== null){
+        //     dd("break down exists");
+        // }
+    @endphp
 </div>
     {{-- Content Header (Page Header) --}}
     <div class="content-header">
@@ -85,6 +89,29 @@
                                         <input type="number" class="form-control" id="txtUsername" placeholder="reorder-level"
                                             name="reorder_level" autocomplete="off" value="{{$product->reorder_level}}" >
                                         <small id="txtUserNameInfo" class="form-text text-muted"> Product unit count margin to order from supplier</small>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="dlProductUnit" class="width_100P">Breakdown Parent:</label>
+
+                                        <select name="breakdown_parent" class="form-control select2Product col-12" id="dlBreakdownParent">
+                                            <option></option>
+                                            @if($product->productBreakdownParent !== null)
+                                                <option value="{{$product->productBreakdownParent->id}}" selected>{{$product->productBreakdownParent->name}}</option>
+                                                {{-- <option value="{{$product->breakdown_parent}}" selected>{{$product->productBreakdownParent->name}}</option> --}}
+                                            @endif
+                                        </select>
+
+
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="txtUsername">Breakdown Parent Full Multiplier: </label>
+                                        <input type="number" class="form-control" id="txtUsername" placeholder="breakdown parent full multiplier"
+                                            name="breadown_parent_full_multiplier" autocomplete="off" value="{{$product->breadown_parent_full_multiplier}}">
+                                        <small id="txtBreakdownParentFullMultiplierInfo" class="form-text text-muted"> Count to full one parent quantity</small>
                                     </div>
                                 </div>
 

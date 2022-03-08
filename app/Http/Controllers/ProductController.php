@@ -207,6 +207,8 @@ class ProductController extends GenericController implements ResourceFunctions
 
 
 
+
+
             $dataFormPost['created_by'] = $authUserId;
             $dataFormPost['updated_by'] = $authUserId;
 
@@ -259,6 +261,10 @@ class ProductController extends GenericController implements ResourceFunctions
 
     public function edit(Product $product)
     {
+
+        $product = Product::query()->with(['productBreakdownParent'])->find($product->id);
+
+
         $this->setPageTitle("Manage Product", "Product Edit");
         return view('product.product-edit', compact('product'));
     }
@@ -432,6 +438,39 @@ class ProductController extends GenericController implements ResourceFunctions
         } catch (\Throwable $th) {
             $this->setResponseInfo('fail');
             Log::error($th->getMessage());
+        }
+
+        return response()->json($this->response, $this->httpStatus);
+    }
+
+    /**
+     * To get the child product row by parent product Id
+     * @param Request $request
+     * @return JsonResponse
+     * @since 2022-01-02
+    */
+    public function getProductByParentProductId(Request $request)
+    {
+
+        try {
+            $product = Product::with(['measure_unit', 'category'])
+                ->where('breakdown_parent', $request->id)->first();
+
+
+            if(!empty($product))
+            {
+                $this->setResponseInfo('success');
+                $this->response['data'] = $product;
+
+            }
+            else{
+                $this->setResponseInfo('no-data');
+                $this->response['data'] = [];
+
+            }
+        } catch (\Throwable $th) {
+            $this->setResponseInfo('fail', '', '', '', $th->getMessage());
+                $this->response['data'] = [];
         }
 
         return response()->json($this->response, $this->httpStatus);
