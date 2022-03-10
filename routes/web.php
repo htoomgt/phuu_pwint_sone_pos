@@ -158,6 +158,7 @@ Route::middleware(['auth'])->group(function(){
 
     Route::middleware(['can:see system_settings'])->prefix('system_settings')->name('system_settings.')->group(function(){
         Route::get('/show-list', [SystemSettingsController::class, 'showListPage'])->name('showList');
+        Route::delete('/delete-by-id', [SystemSettingsController::class, 'deleteSystemSettingById'])->name('deleteById');
 
     });
 

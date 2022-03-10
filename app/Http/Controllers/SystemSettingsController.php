@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SystemSetting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 
@@ -11,7 +12,7 @@ class SystemSettingsController extends GenericController
 {
     public function __construct()
     {
-        //
+        parent::__construct();
     }
 
     /***
@@ -25,8 +26,8 @@ class SystemSettingsController extends GenericController
     public function showListPage(Builder $builder)
     {
         $this->setPageTitle("System Settings", "Show List");
-        $statusUpdateUrl = route('productMeasureUnit.statusUpdateById');
-        $deleteUrl = route('productMeasureUnit.deleteById');
+        // $statusUpdateUrl = route('productMeasureUnit.statusUpdateById');
+        $deleteUrl = route('system_settings.deleteById');
         $dataTableId = "dtSystemSetting";
         $dataTableIdSelector = "#".$dataTableId;
 
@@ -119,6 +120,43 @@ class SystemSettingsController extends GenericController
 
     public function deleteSystemSettingById(Request $request)
     {
+        try {
+            // get system settings Id
+            $id = $request->id;
+
+            // validate the id
+            if($id == ""){
+                $this->setResponseInfo('invalid','', ['id' => 'System Settingn Id is required'],'','');
+            }
+
+            if($this->validStatus){
+                // delete System settings by Id
+                $status = SystemSetting::where('id', $id)->delete();
+
+                if($status){
+                    $this->setResponseInfo('success', 'Your record has been deleted successfully', [], '', '');
+                }
+                else{
+                    $this->setResponseInfo('error', '', [], '', 'Your record has not been deleted');
+                }
+
+            }
+            else{
+                return response()->json($this->response, $this->httpStatus);
+            }
+
+
+
+
+
+        } catch (\Throwable $th) {
+            $errorMsg = 'Delete Error Message : '.$th->getMessage();
+            Log::error($errorMsg);
+            $this->setResponseInfo('error', '', [], '',$errorMsg);
+        }
+
+        // respond to client
+        return response()->json($this->response, $this->httpStatus);
 
     }
 }
