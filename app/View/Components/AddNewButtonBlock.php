@@ -8,16 +8,18 @@ class AddNewButtonBlock extends Component
 {
     public string $routeName = "";
     public string $buttonText = "";
+    public string $targetModel = "";
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct(string $routeName, string $buttonText)
+    public function __construct(string $routeName, string $buttonText, string $targetModel)
     {
         $this->routeName = $routeName;
         $this->buttonText = $buttonText;
+        $this->targetModel = $targetModel;
     }
 
     /**

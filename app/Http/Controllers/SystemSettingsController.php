@@ -100,24 +100,24 @@ class SystemSettingsController extends GenericController
             ]);
 
 
-        return view('system-settings.system-settings-show-list', compact(['dataTable', 'dataTableId']));
+        return view('system-settings.system-settings-show-list', compact(['dataTable', 'dataTableId', 'dataTableIdSelector']));
     }
 
     public function addSystemSetting(Request $request)
     {
         try {
             $systemSetting = new SystemSetting();
-            $systemSetting->setting_name = $request->setting_name;
-            $systemSetting->setting_value = $request->setting_value;
+            $systemSetting->setting_name = $request->system_setting_name;
+            $systemSetting->setting_value = $request->system_setting_value;
 
             if($systemSetting->setting_name == ''){
                 $this->validStatus = false;
-                $this->setResponseInfo('invalid','', ['setting_name' => 'Setting Name is required'], '', '');
+                $this->setResponseInfo('invalid','', ['system_setting_name' => 'Setting Name is required'], '', '');
             }
 
             if($systemSetting->setting_value == ''){
                 $this->validStatus = false;
-                $this->setResponseInfo('invalid','', ['setting_value' => 'Setting Value is required'], '', '');
+                $this->setResponseInfo('invalid','', ['system_setting_value' => 'Setting Value is required'], '', '');
             }
 
             if($this->validStatus){
@@ -176,17 +176,17 @@ class SystemSettingsController extends GenericController
             $systemSetting = SystemSetting::find($id);
 
             if($systemSetting){
-                $systemSetting->setting_name = $request->setting_name;
-                $systemSetting->setting_value = $request->setting_value;
+                $systemSetting->setting_name = $request->system_setting_name;
+                $systemSetting->setting_value = $request->system_setting_value;
 
                 if($systemSetting->setting_name == ''){
                     $this->validStatus = false;
-                    $this->setResponseInfo('invalid','', ['setting_name' => 'Setting Name is required'], '', '');
+                    $this->setResponseInfo('invalid','', ['system_setting_name' => 'Setting Name is required'], '', '');
                 }
 
                 if($systemSetting->setting_value == ''){
                     $this->validStatus = false;
-                    $this->setResponseInfo('invalid','', ['setting_value' => 'Setting Value is required'], '', '');
+                    $this->setResponseInfo('invalid','', ['system_setting_value' => 'Setting Value is required'], '', '');
                 }
 
                 if($this->validStatus){

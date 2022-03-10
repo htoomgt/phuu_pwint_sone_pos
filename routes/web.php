@@ -158,6 +158,9 @@ Route::middleware(['auth'])->group(function(){
 
     Route::middleware(['can:see system_settings'])->prefix('system_settings')->name('system_settings.')->group(function(){
         Route::get('/show-list', [SystemSettingsController::class, 'showListPage'])->name('showList');
+        Route::post('/add-new', [SystemSettingsController::class, 'addSystemSetting'])->name('addNew');
+        Route::get('/get-data-row/', [SystemSettingsController::class, 'getSystemSettingById'])->name('getDataRowById');
+        Route::put('/update-by-id', [SystemSettingsController::class, 'updateSystemSettingById'])->name('updateById');
         Route::delete('/delete-by-id', [SystemSettingsController::class, 'deleteSystemSettingById'])->name('deleteById');
 
     });
