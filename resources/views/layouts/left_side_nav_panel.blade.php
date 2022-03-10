@@ -168,7 +168,7 @@
                 {{-- /Manage User --}}
                 {{-- System Settings --}}
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="{{route('system_settings.showList')}}" class="nav-link @if($pageTitle=='System Settings') active  @endif">
                         <i class="nav-icon fas fa-sliders-h"></i>
                         <p>
                             System Settings
