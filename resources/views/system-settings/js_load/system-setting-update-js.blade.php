@@ -1,28 +1,29 @@
 <script>
-    productMeasureUnitEdit = async (id=0) => {
+    systemSettingEdit = async (id=0) => {
 
         // Modal Show
-        $("#mdlUpdateProductMeasureUnit").modal('show');
+        $("#mdlSystemSettingsEdit").modal('show');
 
         // Form reset
-        $("#frmUpdateProductMeasureUnit").trigger('reset');
+        $("#frmSystemSettingsUpdate").trigger('reset');
 
         // Get data by Id and load to form
-        let productMeasureUnit = null;
+        let systemSettingToEdit = null;
 
-        let resp = await axios.get("{{route('productMeasureUnit.getDataRowById')}}", { params : {id : id}});
+        let resp = await axios.get("{{route('system_settings.getDataRowById')}}", { params : {id : id}});
 
-        productMeasureUnit = resp.data.data;
+        systemSettingToEdit = resp.data.data;
 
 
-        $("#txtProductMeasureUnitUpdate").val(productMeasureUnit.name);
-        $("#hProductMeasureUnitUpdateId").val(productMeasureUnit.id);
+        $("#textSystemSettingnameEdit").val(systemSettingToEdit.setting_name);
+        $("#txtSystemSettingValueEdit").val(systemSettingToEdit.setting_name);
+        $("#hvSystemSettingId").val(systemSettingToEdit.id);
     }
 
-    $("#btnProductMeasureUnitUpdate").on('click', function(){
+    $("#btnSystemSettingUpdate").on('click', function(){
         if(productMeasureUnitValidationStatus.form()){
-            let dataToPost = $("#frmUpdateProductMeasureUnit").serialize();
-            let url = "{{route('productMeasureUnit.updateById')}}";
+            let dataToPost = $("#frmSystemSettingsUpdate").serialize();
+            let url = $("#frmSystemSettingsUpdate").attr('action');
 
             axios({
                 url : url,
@@ -34,14 +35,15 @@
                 {
                     Swal.fire({
                         icon : 'success',
-                        title : 'Updating a product measure unit',
+                        title : 'Updating A System Setting',
                         text : response.data.messages.request_msg,
                         confirmButtonText : "OK"
                     }).then((result)=>{
-                        $("#mdlUpdateProductMeasureUnit").modal('hide');
+                        $("#frmSystemSettingsUpdate")[0].reset();
+                        $("#mdlSystemSettingsEdit").modal('hide');
                     })
 
-                    $("#dtProductMeasureUnit").DataTable().ajax.reload();
+                    $("{{$dataTableIdSelector}}").DataTable().ajax.reload();
                 }
             }).catch(function(error){
                 console.log(error);
@@ -52,7 +54,7 @@
     })
 
 
-    productMeasureUnitValidationStatus = $("#frmUpdateProductMeasureUnit").validate({
+    productMeasureUnitValidationStatus = $("#frmSystemSettingsUpdate").validate({
         rules : {
             name : {
                 required : true

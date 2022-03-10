@@ -26,7 +26,6 @@ class SystemSettingsController extends GenericController
     public function showListPage(Builder $builder)
     {
         $this->setPageTitle("System Settings", "Show List");
-        // $statusUpdateUrl = route('productMeasureUnit.statusUpdateById');
         $deleteUrl = route('system_settings.deleteById');
         $dataTableId = "dtSystemSetting";
         $dataTableIdSelector = "#".$dataTableId;
@@ -42,7 +41,7 @@ class SystemSettingsController extends GenericController
                     <i class="fas fa-bars"></i>
                   </button>
                   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#" onClick="productMeasureUnitEdit('.$systemSetting->id.')"
+                    <a class="dropdown-item" href="#" onClick="systemSettingEdit('.$systemSetting->id.')"
 
                             >
                         <i class="fas fa-edit"></i>
@@ -149,7 +148,7 @@ class SystemSettingsController extends GenericController
             $systemSetting = SystemSetting::find($id);
 
             if($systemSetting){
-                $this->setResponseInfo('success','', '', '', 'system setting found!');
+                $this->setResponseInfo('success','', [], '', 'system setting found!');
                 $this->response['data'] = $systemSetting;
             }
             else{
@@ -171,13 +170,14 @@ class SystemSettingsController extends GenericController
     {
         try {
             // get Id from request
-            $id = $request->id;
+            $id = $request->hvSystemSettingId;
 
             $systemSetting = SystemSetting::find($id);
 
             if($systemSetting){
                 $systemSetting->setting_name = $request->system_setting_name;
                 $systemSetting->setting_value = $request->system_setting_value;
+                $systemSetting->updated_at = date('Y-m-d H:i:s');
 
                 if($systemSetting->setting_name == ''){
                     $this->validStatus = false;
@@ -191,10 +191,10 @@ class SystemSettingsController extends GenericController
 
                 if($this->validStatus){
                     if($systemSetting->save()){
-                        $this->setResponseInfo('success','Your system setting has been updated successfully!', '', '', '');
+                        $this->setResponseInfo('success','Your system setting has been updated successfully!', [], '', '');
                     }
                     else{
-                        $this->setResponseInfo('success','Your system setting cannot be updated unexpectedly!', '', '', '');
+                        $this->setResponseInfo('error','', [], 'Your system setting cannot be updated unexpectedly!', '');
                     }
                 }
             }

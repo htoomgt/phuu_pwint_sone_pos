@@ -8,7 +8,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="frmSystemSettings" method="POST" action="{{route('productMeasureUnit.addNew')}}">
+            <form id="frmSystemSettings" method="POST" action="{{route('system_settings.addNew')}}">
                 <div class="modal-body">
 
                     <div class="form-group">

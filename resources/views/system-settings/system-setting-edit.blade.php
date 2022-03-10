@@ -1,29 +1,37 @@
-<div class="modal fade" id="mdlUpdateProductMeasureUnit" tabindex="-1" role="dialog"
-    aria-labelledby="mdlUpdateProductMeasureUnitCenterTitle" aria-hidden="true">
+<div class="modal fade" id="mdlSystemSettingsEdit" tabindex="-1" role="dialog"
+    aria-labelledby="mdlSystemSettingsEditCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="mdlUpdateProductMeasureUnitLongTitle">Create Product Measure Unit</h5>
+                <h5 class="modal-title" id="mdlSystemSettingsEditLongTitle">Edit System Setting</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="frmUpdateProductMeasureUnit" method="POST" action="{{route('productMeasureUnit.updateById')}}">
+            <form id="frmSystemSettingsUpdate" method="POST" action="{{route('system_settings.updateById')}}">
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <label for="txtProductMeasureUnitUpdate">Product Measure Unit:</label>
-                        <input type="text" class="form-control" id="txtProductMeasureUnitUpdate" name="name"
-                            aria-describedby="emailHelp" placeholder="Enter product measure unit" autocomplete="off">
-                        <small id="hTextProductCategoryNameCreate" class="form-text text-muted">Please enter the prodcut
-                            measure unit.</small>
+                        <label for="txtProductMeasureUnit">System Setting Name:</label>
+                        <input type="text" class="form-control" id="textSystemSettingnameEdit" name="system_setting_name"
+                            aria-describedby="emailHelp" placeholder="Enter system setting name" autocomplete="off">
+                        <small id="hTextProductCategoryNameCreate" class="form-text text-muted">Please enter the system setting name
+                            </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="txtProductMeasureUnit">System Setting Value:</label>
+                        <input type="text" class="form-control" id="txtSystemSettingValueEdit" name="system_setting_value"
+                            aria-describedby="emailHelp" placeholder="Enter  system setting value" autocomplete="off">
+                        <small id="hTextProductCategoryNameCreate" class="form-text text-muted">Please enter the system setting value
+                           </small>
                     </div>
 
                 </div>
                 <div class="modal-footer">
-                    <input type="hidden" name="id" id="hProductMeasureUnitUpdateId" />
+                    <input type="hidden" name="hvSystemSettingId" id="hvSystemSettingId">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="btnProductMeasureUnitUpdate">Save Record</button>
+                    <button type="button" class="btn btn-primary" id="btnSystemSettingUpdate">Update Record</button>
                 </div>
             </form>
         </div>
