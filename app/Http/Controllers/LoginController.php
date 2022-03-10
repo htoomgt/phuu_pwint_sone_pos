@@ -49,7 +49,7 @@ class LoginController extends Controller
                 return redirect()->route('home.dashboard');
             }
             else{
-                return redirect()->route('sale.point');
+                return redirect()->route('sale.main');
             }
 
 

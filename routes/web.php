@@ -15,6 +15,7 @@ use App\Http\Controllers\ReorderLevelReportControllerReportController;
 use App\Http\Controllers\SaleAndProfitReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\ProductBreakdownController;
+use App\Http\Controllers\SystemSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -152,6 +153,11 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/sale-and-profit', [SaleAndProfitReportController::class, 'showReportPage'])->name('saleAndProfit');
         Route::get('/inventory', [InventoryReportControllerReportController::class, 'showReportPage'])->name('inventory');
         Route::get('/reorder-level', [ReorderLevelReportControllerReportController::class, 'showReportPage'])->name('reorderLevel');
+
+    });
+
+    Route::middleware(['can:see system_settings'])->prefix('system_settings')->name('system_settings.')->group(function(){
+        Route::get('/show-list', [SystemSettingsController::class, 'showListPage'])->name('showList');
 
     });
 
