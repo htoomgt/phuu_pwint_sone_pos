@@ -19,7 +19,7 @@ class SystemSettingsController extends GenericController
      * Display a listing of the system settings.
      * @param Builder $builder
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @author Htoo Maung Thait
+     * @author Htoo Maung Thait (htoomaungthait@gmail.com)
      * @since 2022-03-09
      *
      */
@@ -103,19 +103,113 @@ class SystemSettingsController extends GenericController
         return view('system-settings.system-settings-show-list', compact(['dataTable', 'dataTableId']));
     }
 
-    public function addSystemSetting()
+    public function addSystemSetting(Request $request)
     {
+        try {
+            $systemSetting = new SystemSetting();
+            $systemSetting->setting_name = $request->setting_name;
+            $systemSetting->setting_value = $request->setting_value;
 
+            if($systemSetting->setting_name == ''){
+                $this->validStatus = false;
+                $this->setResponseInfo('invalid','', ['setting_name' => 'Setting Name is required'], '', '');
+            }
+
+            if($systemSetting->setting_value == ''){
+                $this->validStatus = false;
+                $this->setResponseInfo('invalid','', ['setting_value' => 'Setting Value is required'], '', '');
+            }
+
+            if($this->validStatus){
+                if($systemSetting->save()){
+                    $this->setResponseInfo('success','Your system setting has been recorded successfully!', '', '', '');
+                }
+                else{
+                    $this->setResponseInfo('success','Your system setting cannot be recorded unexpectedly!', '', '', '');
+                }
+            }
+
+
+        } catch (\Throwable $th) {
+            $errorMsg = 'Adding Error Message : '.$th->getMessage();
+            Log::error($errorMsg);
+            $this->setResponseInfo('error', '', [], '',$errorMsg);
+        }
+
+        // respond to client
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function getSystemSettingById(Request $request)
     {
+        try {
+            // get Id from request
+            $id = $request->id;
 
+            $systemSetting = SystemSetting::find($id);
+
+            if($systemSetting){
+                $this->setResponseInfo('success','', '', '', 'system setting found!');
+                $this->response['data'] = $systemSetting;
+            }
+            else{
+                $this->setResponseInfo('no data','', [], 'No system setting is found', '');
+            }
+
+
+        } catch (\Throwable $th) {
+            $errorMsg = 'Get By Id Error Message : '.$th->getMessage();
+            Log::error($errorMsg);
+            $this->setResponseInfo('error', '', [], '',$errorMsg);
+        }
+
+        // respond to client
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function updateSystemSettingById(Request $request)
     {
+        try {
+            // get Id from request
+            $id = $request->id;
 
+            $systemSetting = SystemSetting::find($id);
+
+            if($systemSetting){
+                $systemSetting->setting_name = $request->setting_name;
+                $systemSetting->setting_value = $request->setting_value;
+
+                if($systemSetting->setting_name == ''){
+                    $this->validStatus = false;
+                    $this->setResponseInfo('invalid','', ['setting_name' => 'Setting Name is required'], '', '');
+                }
+
+                if($systemSetting->setting_value == ''){
+                    $this->validStatus = false;
+                    $this->setResponseInfo('invalid','', ['setting_value' => 'Setting Value is required'], '', '');
+                }
+
+                if($this->validStatus){
+                    if($systemSetting->save()){
+                        $this->setResponseInfo('success','Your system setting has been updated successfully!', '', '', '');
+                    }
+                    else{
+                        $this->setResponseInfo('success','Your system setting cannot be updated unexpectedly!', '', '', '');
+                    }
+                }
+            }
+            else{
+                $this->setResponseInfo('no data','', [], 'No system setting is found', '');
+            }
+
+        } catch (\Throwable $th) {
+            $errorMsg = 'Delete Error Message : '.$th->getMessage();
+            Log::error($errorMsg);
+            $this->setResponseInfo('error', '', [], '',$errorMsg);
+        }
+
+        // respond to client
+        return response()->json($this->response, $this->httpStatus);
     }
 
     public function deleteSystemSettingById(Request $request)

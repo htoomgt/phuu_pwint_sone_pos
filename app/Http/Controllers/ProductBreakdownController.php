@@ -299,12 +299,11 @@ class ProductBreakdownController extends GenericController
      * @since 2022-02-25
      */
     public function deleteBreakdownById(Request $request){
-         // get product breakdown Id
-         $id = $request->id;
 
-         dd($id);
-        /* try{
 
+        try{
+             // get product breakdown Id
+            $id = $request->id;
 
             // validate the id
             if($id == ""){
@@ -336,7 +335,7 @@ class ProductBreakdownController extends GenericController
             $errorMsg = 'Delete Error Message : '.$th->getMessage();
             Log::error($errorMsg);
             $this->setResponseInfo('error', '', [], '',$errorMsg);
-        } */
+        }
 
 
         // respond to client
