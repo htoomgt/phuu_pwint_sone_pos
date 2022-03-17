@@ -126,32 +126,32 @@
                     }
                 },
                 "columns": [{
-                    "name": "name",
-                    "data": "name",
-                    "title": "Name",
+                    "name": "sale_date",
+                    "data": "sale_date",
+                    "title": "Date",
                     "orderable": true,
                     "searchable": true
                 }, {
-                    "name": "myanmar_name",
-                    "data": "myanmar_name",
-                    "title": "Myanmar Name",
+                    "name": "item",
+                    "data": "product_name",
+                    "title": "Item",
+                    "orderable": true,
+                    "searchable": true
+                }, {
+                    "name": "code",
+                    "data": "product_code",
+                    "title": "Code",
                     "orderable": true,
                     "searchable": true
                 }, {
                     "name": "category",
-                    "data": "category",
+                    "data": "product_category",
                     "title": "Category",
                     "orderable": true,
                     "searchable": true
                 }, {
-                    "name": "product_code",
-                    "data": "product_code",
-                    "title": "Product Code",
-                    "orderable": true,
-                    "searchable": true
-                }, {
-                    "name": "measure_unit",
-                    "data": "measure_unit",
+                    "name": "unit",
+                    "data": "product_measure_unit",
                     "title": "Measure Unit",
                     "orderable": true,
                     "searchable": true
@@ -162,27 +162,27 @@
                     "orderable": true,
                     "searchable": true
                 }, {
-                    "name": "reorder_level",
-                    "data": "reorder_level",
-                    "title": "Reorder Level",
+                    "name": "sale_quantity",
+                    "data": "sale_quantity",
+                    "title": "Sale Quantity",
                     "orderable": true,
                     "searchable": true
                 }, {
-                    "name": "ex_mill_price",
-                    "data": "ex_mill_price",
-                    "title": "Ex-mill Price",
+                    "name": "amount",
+                    "data": "sale_amount",
+                    "title": "Sale Amount",
                     "orderable": true,
                     "searchable": true
                 }, {
-                    "name": "transport_fee",
-                    "data": "transport_fee",
-                    "title": "Transport fee",
+                    "name": "profit_per_unit",
+                    "data": "profit_per_unit",
+                    "title": "Profit Per Unit",
                     "orderable": true,
                     "searchable": true
                 }, {
-                    "name": "unload_fee",
-                    "data": "unload_fee",
-                    "title": "Unload fee",
+                    "name": "profit",
+                    "data": "profit",
+                    "title": "Profit",
                     "orderable": true,
                     "searchable": true
                 }],
