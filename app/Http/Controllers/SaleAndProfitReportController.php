@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 use Yajra\DataTables\Html\Builder;
 
@@ -15,17 +15,18 @@ class SaleAndProfitReportController extends GenericController
         $this->setPageTitle("Report", "Sale And Profit");
         $dataTableId = "#dtSaleAndProfit";
 
-        if(request()->ajax()){
+        if (request()->ajax()) {
             $totalSaleOnDate = request()->total_sale_on_date;
-            $product = request()->product;
+            $productId = request()->product;
             $startDate = request()->start_date;
             $endDate = request()->end_date;
 
-            $datesToSearch = $this->generateSqlInsertReadyDates($startDate, $endDate);
+            $startDate = date('Y-m-d', strtotime($startDate));
+            $endDate = date('Y-m-d', strtotime($endDate));
 
+            DB::statement("SET SQL_MODE=''");
 
-
-            $model = Sale::query()
+            $model = DB::table('sales')
                 ->selectRaw("
                     sales.created_at AS 'sale_date',
                     p.name AS 'product_name',
@@ -33,35 +34,40 @@ class SaleAndProfitReportController extends GenericController
                     pc.name AS 'product_category',
                     pmu.name AS 'product_measure_unit',
                     sd.unit_price,
-                    sd.quantity AS 'sale_quantity',
-                    sd.amount AS 'sale_amount',
+                    sum(sd.quantity) AS 'sale_quantity',
+                    sum(sd.amount) AS 'sale_amount',
                     sd.profit_per_unit,
-                    (sd.profit_per_unit * sd.quantity) AS 'profit'
+                    (sd.profit_per_unit * sum(sd.quantity) ) AS 'profit'
                 ")
                 ->leftJoin('sale_details AS sd', 'sales.id', '=', 'sd.sale_id')
                 ->leftJoin('products AS p', 'sd.product_id', '=', 'p.id')
                 ->leftJoin('product_categories AS pc', 'p.category_id', '=', 'pc.id')
-                ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id');
+                ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id')
+                ->groupBy('p.id')
+                ->orderBy('p.name', 'ASC');
+
+            if (isset($productId)) {
+                $model = $model->where('sd.product_id', $productId);
+            }
+
+            if ($startDate != "" && $endDate != "") {
+                $model = $model->where('sales.created_at', '>=', $startDate)
+                    ->where('sales.created_at', '<=', $endDate);
+            }
 
             return DataTables::of($model)
-                // ->filterColumn('category', function ($query, $keyword){
-                //     $query->where('pct.name', 'LIKE', "%{$keyword}%");
-                // })
-                // ->addColumn('category', function(Product $product){
-                //     return $product->product_category_name;
-                // })
-                // ->orderColumn('category', function ($query, $order) {
-                //     $query->orderBy('pct.name', $order);
-                // })
-                // ->addColumn('measure_unit', function(Product $product){
-                //     return $product->product_measure_unit;
-                // })
-                // ->filterColumn('measure_unit', function ($query, $keyword){
-                //     return $query->where('pmu.name', 'LIKE', "%{$keyword}%");
-                // })
-                // ->orderColumn('measure_unit', function ($query, $order) {
-                //     return $query->orderBy('pmu.name', $order);
-                // })
+                ->editColumn('sale_amount', function($query) {
+                    return number_format($query->sale_amount, 0);
+                })
+                ->editColumn('profit_per_unit', function($query) {
+                    return number_format($query->profit_per_unit, 0);
+                })
+                ->editColumn('profit', function($query) {
+                    return number_format($query->profit, 0);
+                })
+                ->editColumn('sale_date', function ($query) {
+                    return date('d, M, Y', strtotime($query->sale_date));
+                })
                 ->toJson();
         }
 
@@ -91,27 +97,25 @@ class SaleAndProfitReportController extends GenericController
                     "data" => "function(d){
                         d.start_date = $('#start_date').val(),
                         d.end_date = $('#end_date').val()
-                    }"
+                    }",
                 ],
                 "order" => [
                     [0, 'desc'],
                 ],
                 "columnDefs" => [
                     /* ["width" => "5%", "targets" => 0],
-                    ["width" => "10%", "targets" => 1],
-                    ["width" => "20%", "targets" => 2],
-                    ["width" => "25%", "targets" => 3],
-                    ["width" => "20%", "targets" => 4],
-                    ["width" => "20%", "targets" => 5], */
-
-                ],
+            ["width" => "10%", "targets" => 1],
+            ["width" => "20%", "targets" => 2],
+            ["width" => "25%", "targets" => 3],
+            ["width" => "20%", "targets" => 4],
+            ["width" => "20%", "targets" => 5], */    ],
 
             ]);
 
-        return view("report.sale_and_profit", compact(['dataTable','dataTableId']));
+        return view("report.sale_and_profit", compact(['dataTable', 'dataTableId']));
     }
 
-    public function exportRequestReport(Request $request){
-
+    public function exportRequestReport(Request $request)
+    {
     }
 }

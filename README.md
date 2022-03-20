@@ -60,3 +60,8 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+
+## Referenced Link
+
+1. Datatable Aggregration sql query full mode enabling [link]('https://stackoverflow.com/questions/40917189/laravel-syntax-error-or-access-violation-1055-error')
