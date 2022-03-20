@@ -16,13 +16,15 @@ class SaleAndProfitReportController extends GenericController
         $dataTableId = "#dtSaleAndProfit";
 
         if (request()->ajax()) {
+
             $totalSaleOnDate = request()->total_sale_on_date;
-            $productId = request()->product;
+            $productIds = request()->products;
             $startDate = request()->start_date;
             $endDate = request()->end_date;
 
             $startDate = date('Y-m-d', strtotime($startDate));
             $endDate = date('Y-m-d', strtotime($endDate));
+
 
             DB::statement("SET SQL_MODE=''");
 
@@ -46,13 +48,13 @@ class SaleAndProfitReportController extends GenericController
                 ->groupBy('p.id')
                 ->orderBy('p.name', 'ASC');
 
-            if (isset($productId)) {
-                $model = $model->where('sd.product_id', $productId);
+            if (isset($productIds)) {
+                $model = $model->whereIn('sd.product_id', $productIds);
             }
 
             if ($startDate != "" && $endDate != "") {
-                $model = $model->where('sales.created_at', '>=', $startDate)
-                    ->where('sales.created_at', '<=', $endDate);
+                $model = $model->where('sales.created_at', '>=', $startDate. " 00:00:00")
+                    ->where('sales.created_at', '<=', $endDate. " 23:59:59");
             }
 
             return DataTables::of($model)

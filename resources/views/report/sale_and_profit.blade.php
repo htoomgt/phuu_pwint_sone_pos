@@ -39,7 +39,7 @@
                                         </div>
                                         <div class="col-2">
                                             <div class="form-group">
-                                                <select name="product" class="form-control select2Product" id="product" style="width:100%;">
+                                                <select name="products[]" multiple="multiple" class="form-control select2Product" id="products" style="width:100%;">
                                                     <option></option>
                                                 </select>
                                             </div>
@@ -120,7 +120,7 @@
                                 return false;
                             }
                         };
-                        d.product = $("#product").val();
+                        d.products = $("#products").val();
                         d.start_date = $("#start_date").val();
                         d.end_date = $("#end_date").val();
                     }

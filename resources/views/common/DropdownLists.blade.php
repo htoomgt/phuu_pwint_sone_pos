@@ -38,6 +38,7 @@
         }
     }
 
+
     function dropDownRefresh() {
         // Role
         $(".select2Role").select2({
@@ -164,6 +165,8 @@
         // Product
         $(".select2Product").select2(select2ProductConfig);
         // Product End
+
+
 
         // Product all by names
         $(".select2ProductAllByName").select2({
