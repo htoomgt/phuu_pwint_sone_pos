@@ -104,7 +104,7 @@
                 "serverSide": true,
                 "processing": true,
                 "ajax": {
-                    "url" : "{{route('report.saleAndProfit')}}",
+                    "url" : "{{route('report.saleAndProfitDaily')}}",
                     "data" : function(d){
 
                         d.products = $("#products").val();
@@ -112,8 +112,14 @@
                         d.end_date = $("#end_date").val();
                     }
                 },
-                "columns": [ {
-                    "name": "product_name",
+                "columns": [{
+                    "name": "sale_date",
+                    "data": "sale_date",
+                    "title": "Date",
+                    "orderable": true,
+                    "searchable": true
+                }, {
+                    "name": "item",
                     "data": "product_name",
                     "title": "Item",
                     "orderable": true,
@@ -183,6 +189,6 @@
 
     @include('common.SystemCommon');
     @include('common.DropdownLists')
-    @include('report.js_load.sale_and_profit_js');
+    @include('report.js_load.sale_and_profit_daily_js');
 
 @endpush

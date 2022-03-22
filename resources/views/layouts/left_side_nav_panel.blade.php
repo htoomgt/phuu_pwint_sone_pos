@@ -121,6 +121,12 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
+                            <a href="{{route('report.saleAndProfitDaily')}}" class="nav-link @if($lvl2PageTitle=='Sale And Profit Daily') active  @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Sale and profit daily</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{{route('report.saleAndProfit')}}" class="nav-link @if($lvl2PageTitle=='Sale And Profit') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Sale and profit</p>

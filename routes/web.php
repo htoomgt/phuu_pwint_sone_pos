@@ -150,7 +150,8 @@ Route::middleware(['auth'])->group(function(){
 
 
     Route::middleware(['can:see report'])->prefix('report')->name('report.')->group(function(){
-        Route::get('/sale-and-profit', [SaleAndProfitReportController::class, 'showReportPage'])->name('saleAndProfit');
+        Route::get('/sale-and-profit-daily', [SaleAndProfitReportController::class, 'saleAndProfitDaily'])->name('saleAndProfitDaily');
+        Route::get('/sale-and-profit', [SaleAndProfitReportController::class, 'saleAndProfit'])->name('saleAndProfit');
         Route::get('/inventory', [InventoryReportControllerReportController::class, 'showReportPage'])->name('inventory');
         Route::get('/reorder-level', [ReorderLevelReportControllerReportController::class, 'showReportPage'])->name('reorderLevel');
 
