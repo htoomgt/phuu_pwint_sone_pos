@@ -78,6 +78,14 @@
                             <h5 class="m-0">Sale And Profit List</h5>
                         </div>
                         <div class="card-body " style="">
+                            <div class="text-bold my-4 ml-0"  >
+                                <span class="form-label-md mt-1"> Total Sale Amount : &nbsp;</span> 
+                                <span id="total_sale_amount_label"> 0</span>
+                            </div>
+                            <div class="text-bold my-4 ml-0"  >
+                                <span class="form-label-md mt-1"> Total Profit : &nbsp;</span> 
+                                <span id="total_profit_label"> 0</span>
+                            </div>
                             {{-- Datatable here --}}
                             {!! $dataTable->table(['id' => $dataTableId, 'class' => 'display table table-responsive table-striped collpase', 'style' => 'width:100%;']) !!}
 

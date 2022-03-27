@@ -70,6 +70,7 @@
                 </div>
 
             </div>
+            
             <!-- /.row -->
             <div class="row mt-1">
                 <div class="col-12" >
@@ -78,6 +79,14 @@
                             <h5 class="m-0">Sale And Profit List</h5>
                         </div>
                         <div class="card-body "  >
+                            <div class="text-bold my-4 ml-0"  >
+                                <span class="form-label-md mt-1"> Total Sale Amount : &nbsp;</span> 
+                                <span id="total_sale_amount_label"> 0</span>
+                            </div>
+                            <div class="text-bold my-4 ml-0"  >
+                                <span class="form-label-md mt-1"> Total Profit : &nbsp;</span> 
+                                <span id="total_profit_label"> 0</span>
+                            </div>
                             {{-- Datatable here --}}
                             {!! $dataTable->table(['id' => $dataTableId, 'class' => 'display table table-responsive table-striped collpase', 'style' => 'width:100%;']) !!}
 
@@ -100,7 +109,8 @@
     <script type="text/javascript">
         $(function() {
             window.LaravelDataTables = window.LaravelDataTables || {};
-            window.LaravelDataTables["{{$dataTableId}}"] = $("#{{$dataTableId}}").DataTable({
+            // window.LaravelDataTables["{{$dataTableId}}"] = $("#{{$dataTableId}}").DataTable({
+            let dataTableOfPage = $("#{{$dataTableId}}").DataTable({
                 "serverSide": true,
                 "processing": true,
                 "ajax": {
@@ -184,6 +194,11 @@
                 ],
                 "columnDefs": []
             });
+
+            // var table = $("#{{$dataTableId}}").DataTable();
+            // let totalAmount = dataTableOfPage.column(7).data().sum();
+            // console.log(table.column(4));
+
         });
     </script>
 

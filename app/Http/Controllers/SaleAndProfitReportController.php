@@ -49,23 +49,29 @@ class SaleAndProfitReportController extends GenericController
                 ->orderBy('sales.created_at', 'ASC')
                 ->orderBy('p.name', 'ASC');
 
+
+
             if (isset($productIds)) {
                 $model = $model->whereIn('sd.product_id', $productIds);
             }
 
             if ($startDate != "" && $endDate != "") {
-                $model = $model->where('sales.created_at', '>=', $startDate. " 00:00:00")
-                    ->where('sales.created_at', '<=', $endDate. " 23:59:59");
+                $model = $model->where('sales.created_at', '>=', $startDate . " 00:00:00")
+                    ->where('sales.created_at', '<=', $endDate . " 23:59:59");
             }
 
+
+
+
+
             return DataTables::of($model)
-                ->editColumn('sale_amount', function($query) {
+                ->editColumn('sale_amount', function ($query) {
                     return number_format($query->sale_amount, 0);
                 })
-                ->editColumn('profit_per_unit', function($query) {
+                ->editColumn('profit_per_unit', function ($query) {
                     return number_format($query->profit_per_unit, 0);
                 })
-                ->editColumn('profit', function($query) {
+                ->editColumn('profit', function ($query) {
                     return number_format($query->profit, 0);
                 })
                 ->editColumn('sale_date', function ($query) {
@@ -111,11 +117,70 @@ class SaleAndProfitReportController extends GenericController
             ["width" => "20%", "targets" => 2],
             ["width" => "25%", "targets" => 3],
             ["width" => "20%", "targets" => 4],
-            ["width" => "20%", "targets" => 5], */    ],
+            ["width" => "20%", "targets" => 5], */],
 
             ]);
 
         return view("report.sale_and_profit_daily", compact(['dataTable', 'dataTableId']));
+    }
+
+    public function getTotalAmountOfSaleAndProfit(Request $request)
+    {
+        $productIds = $request->products;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+
+        $startDate = date('Y-m-d', strtotime($startDate));
+        $endDate = date('Y-m-d', strtotime($endDate));
+
+
+        DB::statement("SET SQL_MODE=''");
+
+        $model = DB::table('sales')
+            ->selectRaw("
+                sales.created_at AS 'sale_date',                
+                sd.unit_price,
+                sum(sd.quantity) AS 'sale_quantity',
+                sum(sd.amount) AS 'sale_amount',
+                sd.profit_per_unit,
+                (sd.profit_per_unit * sum(sd.quantity) ) AS 'profit'
+                ")
+            ->leftJoin('sale_details AS sd', 'sales.id', '=', 'sd.sale_id')
+            ->leftJoin('products AS p', 'sd.product_id', '=', 'p.id')
+            ->leftJoin('product_categories AS pc', 'p.category_id', '=', 'pc.id')
+            ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id')
+            ->groupBy('sales.created_at')
+            ->groupBy('p.id');
+
+
+
+
+        if (isset($productIds)) {
+            $model = $model->whereIn('sd.product_id', $productIds);
+        }
+
+        if ($startDate != "" && $endDate != "") {
+            $model = $model->where('sales.created_at', '>=', $startDate . " 00:00:00")
+                ->where('sales.created_at', '<=', $endDate . " 23:59:59");
+        }
+
+        $saleAndProfitFirstStep = $model->get();
+
+        $totalAmount = $saleAndProfitFirstStep->sum('sale_amount');
+        $totalProfit = $saleAndProfitFirstStep->sum('profit');
+
+        $totalAmount = number_format($totalAmount, 0, '.', ',');
+        $totalProfit = number_format($totalProfit, 0, '.', ',');
+        $data = [
+            'total_amount' => $totalAmount,
+            'total_profit' => $totalProfit,
+        ];
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $data
+        ]);
     }
 
     public function exportRequestSaleAndProfitReport(Request $request)
@@ -163,18 +228,18 @@ class SaleAndProfitReportController extends GenericController
             }
 
             if ($startDate != "" && $endDate != "") {
-                $model = $model->where('sales.created_at', '>=', $startDate. " 00:00:00")
-                    ->where('sales.created_at', '<=', $endDate. " 23:59:59");
+                $model = $model->where('sales.created_at', '>=', $startDate . " 00:00:00")
+                    ->where('sales.created_at', '<=', $endDate . " 23:59:59");
             }
 
             return DataTables::of($model)
-                ->editColumn('sale_amount', function($query) {
+                ->editColumn('sale_amount', function ($query) {
                     return number_format($query->sale_amount, 0);
                 })
-                ->editColumn('profit_per_unit', function($query) {
+                ->editColumn('profit_per_unit', function ($query) {
                     return number_format($query->profit_per_unit, 0);
                 })
-                ->editColumn('profit', function($query) {
+                ->editColumn('profit', function ($query) {
                     return number_format($query->profit, 0);
                 })
                 ->toJson();
@@ -215,7 +280,7 @@ class SaleAndProfitReportController extends GenericController
             ["width" => "20%", "targets" => 2],
             ["width" => "25%", "targets" => 3],
             ["width" => "20%", "targets" => 4],
-            ["width" => "20%", "targets" => 5], */    ],
+            ["width" => "20%", "targets" => 5], */],
 
             ]);
 

@@ -8,6 +8,21 @@
 
         if (frmDataGridValidationStatus.form()) {
             $("#{{$dataTableId}}").DataTable().ajax.reload();
+
+
+            let dataToPost = $("#frmDataGrid").serialize();
+
+            $.ajax({
+                url : "{{route('report.totalAmountSaleAndProfit')}}",
+                method : "GET",
+                data: dataToPost,
+                success : (response) => {
+                    console.log(response);
+                    $("#total_sale_amount_label").html(response.data.total_amount);
+                    $("#total_profit_label").html(response.data.total_profit);
+                },
+                
+            })
         }
 
     })
