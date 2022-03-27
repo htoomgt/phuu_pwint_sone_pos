@@ -91,8 +91,8 @@ class SaleAndProfitReportController extends GenericController
             ->parameters([
                 "paging" => true,
                 "searchDelay" => 350,
-                "responsive" => false,
-                "autoWidth" => false,
+                "responsive" => true,
+                "autoWidth" => true,
                 "searching" => false,
                 "deferLoading" => 0,
                 "ajax" => [

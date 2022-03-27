@@ -72,12 +72,12 @@
             </div>
             <!-- /.row -->
             <div class="row mt-1">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
+                <div class="col-12" >
+                    <div class="card" >
+                        <div class="card-header" >
                             <h5 class="m-0">Sale And Profit List</h5>
                         </div>
-                        <div class="card-body " style="">
+                        <div class="card-body "  >
                             {{-- Datatable here --}}
                             {!! $dataTable->table(['id' => $dataTableId, 'class' => 'display table table-responsive table-striped collpase', 'style' => 'width:100%;']) !!}
 
@@ -117,7 +117,7 @@
                     "data": "sale_date",
                     "title": "Date",
                     "orderable": true,
-                    "searchable": true
+                    "searchable": true,                    
                 }, {
                     "name": "item",
                     "data": "product_name",
@@ -175,7 +175,7 @@
                 }],
                 "paging": true,
                 "searchDelay": 350,
-                "responsive": false,
+                "responsive": true,
                 "autoWidth": false,
                 "searching": false,
                 "deferLoading": 0,

@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  bppay-demo:
+    # restart: always
+    build:
+      context: ./
+    ports:
+      - 8400:8000
+    volumes:
+      - ./:/app/
+    networks:
+     - mynetwork
+networks:
+  mynetwork:
+    driver: bridge
+    ipam:
+        driver: default
+        config:
+            - subnet: "172.23.0.0/24"
+              gateway: "172.23.0.1"
+
+
+
+
