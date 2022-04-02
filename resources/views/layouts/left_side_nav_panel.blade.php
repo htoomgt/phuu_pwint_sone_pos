@@ -133,7 +133,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a href="{{route('report.inventory')}}" class="nav-link @if($lvl2PageTitle=='Inventory') active  @endif">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Inventory</p>
                             </a>

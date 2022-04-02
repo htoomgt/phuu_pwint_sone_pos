@@ -160,6 +160,7 @@ Route::middleware(['auth'])->group(function(){
 
         
         Route::get('/inventory', [InventoryReportControllerReportController::class, 'showReportPage'])->name('inventory');
+        
         Route::get('/reorder-level', [ReorderLevelReportControllerReportController::class, 'showReportPage'])->name('reorderLevel');
 
     });
