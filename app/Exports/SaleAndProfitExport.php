@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSize
+class SaleAndProfitExport implements FromQuery, WithHeadings, ShouldAutoSize
 {
     use Exportable;
 
@@ -25,8 +25,7 @@ class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSiz
 
     public function headings(): array
     {
-        return [
-            'Sale Date',
+        return [            
             'Product Name',
             'Product Code',
             'Product Category',
@@ -44,8 +43,7 @@ class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSiz
     public function query()
     {
         $query = DB::table('sales')
-                ->selectRaw("
-                    date_format(sales.created_at, '%d, %M, %Y') AS 'sale_date',
+                ->selectRaw("                    
                     p.name AS 'product_name',
                     p.product_code,
                     pc.name AS 'product_category',
@@ -59,10 +57,8 @@ class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSiz
                 ->leftJoin('sale_details AS sd', 'sales.id', '=', 'sd.sale_id')
                 ->leftJoin('products AS p', 'sd.product_id', '=', 'p.id')
                 ->leftJoin('product_categories AS pc', 'p.category_id', '=', 'pc.id')
-                ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id')                
-                ->groupBy(DB::raw('cast(sales.created_at as date)'))
-                ->groupBy('p.id')
-                ->orderBy('sales.created_at', 'ASC')
+                ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id')                                
+                ->groupBy('p.id')                
                 ->orderBy('p.name', 'ASC');
 
 
@@ -77,6 +73,4 @@ class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSiz
             }
         return $query;
     }
-
-
 }

@@ -154,6 +154,7 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/sale-and-profit', [SaleAndProfitReportController::class, 'saleAndProfit'])->name('saleAndProfit');
 
         Route::get('/sale-and-profit-daily-export', [SaleAndProfitReportController::class, 'exportRequestSaleAndProfitDaily'])->name('saleAndProfitDailyExport');
+        Route::get('/sale-and-profit-export', [SaleAndProfitReportController::class, 'exportRequestSaleAndProfit'])->name('saleAndProfitExport');
         
         Route::get('/total-amount-sale-and-profit', [SaleAndProfitReportController::class, 'getTotalAmountOfSaleAndProfit'])->name('totalAmountSaleAndProfit');
 

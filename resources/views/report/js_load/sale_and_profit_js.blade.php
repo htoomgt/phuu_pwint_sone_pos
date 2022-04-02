@@ -31,7 +31,8 @@
         e.preventDefault();
 
         if (frmDataGridValidationStatus.form()) {
-            alert("Your form is ready to export file");
+            $("#frmDataGrid").attr('action', '{{route("report.saleAndProfitExport")}}')            
+            $("#frmDataGrid").submit();
         }
 
     })

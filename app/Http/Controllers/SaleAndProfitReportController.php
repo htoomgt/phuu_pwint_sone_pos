@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\SaleAndProfitDailyExport;
+use App\Exports\SaleAndProfitExport;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -300,5 +301,23 @@ class SaleAndProfitReportController extends GenericController
             ]);
 
         return view("report.sale_and_profit", compact(['dataTable', 'dataTableId']));
+    }
+
+    public function exportRequestSaleAndProfit(Request $request)
+    {
+        $productIds = request()->products ?? [];
+        $startDate = request()->start_date ?? "";
+        $endDate = request()->end_date ?? "";
+
+        $startDateTime = date('Y-m-d', strtotime($startDate))." 00:00:00";
+        $endDateTime = date('Y-m-d', strtotime($endDate))." 23:59:59";
+
+        $fileNumberWithTime = date('YmdHis');
+
+        return (new SaleAndProfitExport(
+            $startDateTime,
+            $endDateTime,
+            $productIds
+        ))->download('sale_and_profit_report_'.$fileNumberWithTime.'.xlsx');
     }
 }
