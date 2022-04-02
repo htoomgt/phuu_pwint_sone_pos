@@ -65,3 +65,4 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ## Referenced Link
 
 1. Datatable Aggregration sql query full mode enabling [link]('https://stackoverflow.com/questions/40917189/laravel-syntax-error-or-access-violation-1055-error')
+2. Excel Export [link](https://www.bacancytechnology.com/blog/laravel-8-export-data-as-excel-file)

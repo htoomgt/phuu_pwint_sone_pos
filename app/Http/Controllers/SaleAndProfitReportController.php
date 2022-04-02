@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SaleAndProfitDailyExport;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +26,7 @@ class SaleAndProfitReportController extends GenericController
             $endDate = date('Y-m-d', strtotime($endDate));
 
 
-            DB::statement("SET SQL_MODE=''");
+            // DB::statement("SET SQL_MODE=''");
 
             $model = DB::table('sales')
                 ->selectRaw("
@@ -43,8 +44,8 @@ class SaleAndProfitReportController extends GenericController
                 ->leftJoin('sale_details AS sd', 'sales.id', '=', 'sd.sale_id')
                 ->leftJoin('products AS p', 'sd.product_id', '=', 'p.id')
                 ->leftJoin('product_categories AS pc', 'p.category_id', '=', 'pc.id')
-                ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id')
-                ->groupBy('sales.created_at')
+                ->leftJoin('product_measure_units AS pmu', 'p.measure_unit_id', '=', 'pmu.id')                
+                ->groupBy(DB::raw('cast(sales.created_at as date)'))
                 ->groupBy('p.id')
                 ->orderBy('sales.created_at', 'ASC')
                 ->orderBy('p.name', 'ASC');
@@ -183,8 +184,22 @@ class SaleAndProfitReportController extends GenericController
         ]);
     }
 
-    public function exportRequestSaleAndProfitReport(Request $request)
+    public function exportRequestSaleAndProfitDaily(Request $request)
     {
+        $productIds = request()->products ?? [];
+        $startDate = request()->start_date ?? "";
+        $endDate = request()->end_date ?? "";
+
+        $startDateTime = date('Y-m-d', strtotime($startDate))." 00:00:00";
+        $endDateTime = date('Y-m-d', strtotime($endDate))." 23:59:59";
+
+        $fileNumberWithTime = date('YmdHis');
+
+        return (new SaleAndProfitDailyExport(
+            $startDateTime,
+            $endDateTime,
+            $productIds
+        ))->download('sale_and_profit_daily_report_'.$fileNumberWithTime.'.xlsx');
     }
 
     public function saleAndProfit(Builder $builder)

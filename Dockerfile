@@ -15,6 +15,12 @@ RUN apk add libzip-dev  && \
 RUN apk add libxml2-dev  \
     && docker-php-ext-install xml  
 
+#For php ext intl as dependency
+RUN apk add icu-dev 
+
+RUN docker-php-ext-configure intl && docker-php-ext-install intl
+
+
 RUN curl -sS https://getcomposer.org/installer​ | php -- \
      --install-dir=/usr/local/bin --filename=composer
 

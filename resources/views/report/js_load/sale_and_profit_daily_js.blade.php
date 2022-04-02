@@ -30,8 +30,11 @@
     $("#btnExport").on('click', (e) => {
         e.preventDefault();
 
+        $("#frmDataGrid").attr('action', '{{route("report.saleAndProfitDailyExport")}}')
+
         if (frmDataGridValidationStatus.form()) {
-            alert("Your form is ready to export file");
+            $("#frmDataGrid").attr('action', '{{route("report.saleAndProfitDailyExport")}}')            
+            $("#frmDataGrid").submit();
         }
 
     })
