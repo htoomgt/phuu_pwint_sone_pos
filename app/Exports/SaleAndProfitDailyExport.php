@@ -5,9 +5,10 @@ namespace App\Exports;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class SaleAndProfitDailyExport implements FromQuery, WithHeadings
+class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSize
 {
     use Exportable;
 
@@ -37,21 +38,23 @@ class SaleAndProfitDailyExport implements FromQuery, WithHeadings
             'Profit'
         ];
     }
+
+    
     
     public function query()
     {
         $query = DB::table('sales')
                 ->selectRaw("
-                    sales.created_at AS 'sale_date',
+                    date_format(sales.created_at, '%d, %M, %Y') AS 'sale_date',
                     p.name AS 'product_name',
                     p.product_code,
                     pc.name AS 'product_category',
                     pmu.name AS 'product_measure_unit',
-                    sd.unit_price,
-                    sum(sd.quantity) AS 'sale_quantity',
-                    sum(sd.amount) AS 'sale_amount',
-                    sd.profit_per_unit,
-                    (sd.profit_per_unit * sum(sd.quantity) ) AS 'profit'
+                    format(sd.unit_price, 0),
+                    format(sum(sd.quantity),0) AS 'sale_quantity',
+                    format(sum(sd.amount),0) AS 'sale_amount',
+                    format(sd.profit_per_unit,0),
+                    format((sd.profit_per_unit * sum(sd.quantity) ),0) AS 'profit'
                 ")
                 ->leftJoin('sale_details AS sd', 'sales.id', '=', 'sd.sale_id')
                 ->leftJoin('products AS p', 'sd.product_id', '=', 'p.id')
