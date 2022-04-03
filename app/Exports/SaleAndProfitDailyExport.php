@@ -67,7 +67,7 @@ class SaleAndProfitDailyExport implements FromQuery, WithHeadings, ShouldAutoSiz
 
 
 
-            if (isset($this->productIds)) {
+            if (count($this->productIds) > 0) {
                 $query = $query->whereIn('sd.product_id', $this->productIds);
             }
 

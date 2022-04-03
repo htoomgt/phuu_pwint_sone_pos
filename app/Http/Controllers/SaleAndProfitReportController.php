@@ -187,14 +187,16 @@ class SaleAndProfitReportController extends GenericController
 
     public function exportRequestSaleAndProfitDaily(Request $request)
     {
-        $productIds = request()->products ?? [];
-        $startDate = request()->start_date ?? "";
-        $endDate = request()->end_date ?? "";
+        $productIds = $request->products ?? [];
+        $startDate = $request->start_date ?? "";
+        $endDate = $request->end_date ?? "";
 
         $startDateTime = date('Y-m-d', strtotime($startDate))." 00:00:00";
         $endDateTime = date('Y-m-d', strtotime($endDate))." 23:59:59";
 
         $fileNumberWithTime = date('YmdHis');
+
+        
 
         return (new SaleAndProfitDailyExport(
             $startDateTime,
@@ -305,14 +307,15 @@ class SaleAndProfitReportController extends GenericController
 
     public function exportRequestSaleAndProfit(Request $request)
     {
-        $productIds = request()->products ?? [];
-        $startDate = request()->start_date ?? "";
-        $endDate = request()->end_date ?? "";
+        $productIds = $request->products ?? [];
+        $startDate = $request->start_date ?? "";
+        $endDate = $request->end_date ?? "";
 
         $startDateTime = date('Y-m-d', strtotime($startDate))." 00:00:00";
         $endDateTime = date('Y-m-d', strtotime($endDate))." 23:59:59";
 
         $fileNumberWithTime = date('YmdHis');
+        
 
         return (new SaleAndProfitExport(
             $startDateTime,

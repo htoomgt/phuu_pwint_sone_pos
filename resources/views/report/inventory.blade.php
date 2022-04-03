@@ -88,6 +88,6 @@
 
     @include('common.SystemCommon');
     @include('common.DropdownLists');
-    @include('report.js_load.sale_and_profit_daily_js');
+    @include('report.js_load.inventory_js');
 
 @endpush

@@ -63,14 +63,15 @@ class SaleAndProfitExport implements FromQuery, WithHeadings, ShouldAutoSize
 
 
 
-            if (isset($this->productIds)) {
+            if (count($this->productIds) > 0) {
                 $query = $query->whereIn('sd.product_id', $this->productIds);
             }
 
-            if ($this->startDateTime != "" && $this->endDateTime != "") {
+            if ($this->startDateTime != "" && $this->endDateTime != "") {                
                 $query = $query->where('sales.created_at', '>=', $this->startDateTime)
                     ->where('sales.created_at', '<=', $this->endDateTime );
             }
+        
         return $query;
     }
 }
