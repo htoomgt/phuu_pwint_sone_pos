@@ -452,6 +452,7 @@ class ProductController extends GenericController implements ResourceFunctions
     public function getProductByParentProductId(Request $request)
     {
 
+        
         try {
             $product = Product::with(['measure_unit', 'category'])
                 ->where('breakdown_parent', $request->id)->first();

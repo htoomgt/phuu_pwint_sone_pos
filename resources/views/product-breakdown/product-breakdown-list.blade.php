@@ -12,7 +12,10 @@
     <div class="content">
         <div class="container-fluid">
             {{-- Add New button block start --}}
-            <x-add-new-button-block routeName="{{ route('productBreakdown.makeBreakdownPage') }}" buttonText="Make New" />
+            <x-add-new-button-block 
+                routeName="{{ route('productBreakdown.makeBreakdownPage') }}" 
+                buttonText="Make New" 
+                targetModel=""/>
             {{-- Add New button block end --}}
 
             {{-- Datatable block start --}}

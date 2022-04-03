@@ -7,15 +7,15 @@ use Illuminate\View\Component;
 class DataTableBlock extends Component
 {
     public $dataTable = "";
-    public string $dataTableHeader = "";
-    public string $dataTableId = "";
+    public $dataTableHeader = "";
+    public $dataTableId = "";
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($dataTable, string $dataTableId, string $dataTableHeader, )
+    public function __construct($dataTable, $dataTableId, $dataTableHeader)
     {
         $this->dataTable = $dataTable;
         $this->dataTableId = $dataTableId;

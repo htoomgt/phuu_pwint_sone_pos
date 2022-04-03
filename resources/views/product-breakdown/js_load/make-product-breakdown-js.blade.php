@@ -9,6 +9,7 @@
         $("#dlProductFromBreakdown").change(async (e)=>{
             let productId = $("#dlProductFromBreakdown").val();
 
+
             let result  = await $.ajax({
                 url: "{{route('product.getByParentProductId')}}",
                 type: "GET",
@@ -18,6 +19,10 @@
                 },
 
             });
+
+            console.log(result);
+
+            
 
             if(result.status === "success"){
                 let fetchedProduct = result.data;
