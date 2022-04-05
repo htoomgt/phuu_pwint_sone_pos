@@ -29,7 +29,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
-                            <form id="frmProductPurchaseMake">
+                            <form id="frmProductPurchaseMake" autocomplete="off">
 
                                 @csrf
                                 <div class="form-group col-md-4">
