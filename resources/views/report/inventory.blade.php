@@ -23,19 +23,7 @@
                                                     <option></option>
                                                 </select>
                                             </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control datePicker" id="start_date"
-                                                    name="start_date" placeholder="Enter start date" readonly="true">
-                                            </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control datePicker" id="end_date"
-                                                    name="end_date" placeholder="Enter end date" readonly="true">
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                         <div class="col-3">
                                             <button class="btn btn-primary" id="btnSearch">
                                                 <i class="fas fa-search"></i> Search
@@ -66,7 +54,7 @@
                         <div class="card-body " style="">
                             
                             {{-- Datatable here --}}
-                            {{-- {!! $dataTable->table(['id' => $dataTableId, 'class' => 'display table table-responsive table-striped collpase', 'style' => 'width:100%;']) !!} --}}
+                            {!! $dataTable->table(['id' => $dataTableId, 'class' => 'display table table-responsive table-striped collpase', 'style' => 'width:100%;']) !!}
 
 
 
@@ -82,9 +70,83 @@
 @endsection 
 
 @push('page_js_script')
-    <script>
+<script type="text/javascript">
+    $(function() {
+        window.LaravelDataTables = window.LaravelDataTables || {};
+        // window.LaravelDataTables["{{$dataTableId}}"] = $("#{{$dataTableId}}").DataTable({
+        let dataTableOfPage = $("#{{$dataTableId}}").DataTable({
+            "serverSide": true,
+            "processing": true,
+            "ajax": {
+                "url" : "{{route('report.inventory')}}",
+                "data" : function(d){
 
-    </script>
+                    d.products = $("#products").val();                    
+                }
+            },
+            "columns": [
+                {
+                "name": "product_id",
+                "data": "product_id",
+                "title": "Item Id",
+                "orderable": false,
+                "searchable": false
+            },    
+                {
+                "name": "item",
+                "data": "product_name",
+                "title": "Item",
+                "orderable": true,
+                "searchable": true
+            }, {
+                "name": "code",
+                "data": "product_code",
+                "title": "Code",
+                "orderable": true,
+                "searchable": true
+            }, {
+                "name": "category",
+                "data": "product_category",
+                "title": "Category",
+                "orderable": true,
+                "searchable": true
+            }, {
+                "name": "unit",
+                "data": "product_measure_unit",
+                "title": "Measure Unit",
+                "orderable": true,
+                "searchable": true
+            }, {
+                "name": "unit_price",
+                "data": "unit_price",
+                "title": "Unit Price",
+                "orderable": true,
+                "searchable": true
+            }, {
+                "name": "balance",
+                "data": "balance",
+                "title": "Balance",
+                "orderable": true,
+                "searchable": true
+            }],
+            "paging": true,
+            "searchDelay": 350,
+            "responsive": true,
+            "autoWidth": false,
+            "searching": false,
+            "deferLoading": 0,
+            "order": [
+                [0, "desc"]
+            ],
+            "columnDefs": []
+        });
+
+        // var table = $("#{{$dataTableId}}").DataTable();
+        // let totalAmount = dataTableOfPage.column(7).data().sum();
+        // console.log(table.column(4));
+
+    });
+</script>
 
     @include('common.SystemCommon');
     @include('common.DropdownLists');

@@ -16,7 +16,7 @@ class CreateCurrentInventoryStoredProcedure extends Migration
     {
         $sqlStatement = "        
         DROP TABLE IF EXISTS `current_inventory`; 
-        CREATE PROCEDURE `current_inventory`(
+        CREATE DEFINER=`db_user`@`%` PROCEDURE `current_inventory`(
             IN `filter_products` TEXT
         )
         LANGUAGE SQL
@@ -93,21 +93,27 @@ class CreateCurrentInventoryStoredProcedure extends Migration
         /*Balance Raw*/
         select
             p.id as 'product_id',
-            p.name as 'product_name',
+           p.name as 'product_name',
+           p.product_code AS 'product_code',   
             pbi.product_to_id,    
             pbo.product_from_id,
+            pc.name AS 'product_category',
+            pmu.name AS 'product_measure_unit',
+            FORMAT(p.unit_price, 0) AS 'unit_price',
             coalesce(pbi.total_breakdown_to, 0) as 'total_break_down_to_qty',    
-            coalesce(pbo.total_breakdown_from, 0) as 'total_break_down_from_qty',    
-            coalesce(ppi.total_purchased, 0) as 'total_purchased_qty',
+           coalesce(pbo.total_breakdown_from, 0) as 'total_break_down_from_qty',    
+           coalesce(ppi.total_purchased, 0) as 'total_purchased_qty',
             coalesce(pso.total_sold, 0) as 'total_sold_qty',
-            ((coalesce(pbi.total_breakdown_to, 0) + coalesce(ppi.total_purchased, 0)) -
-            (coalesce(pso.total_sold, 0) + coalesce(pbo.total_breakdown_from, 0))) as 'balance'   
+            FORMAT(((coalesce(pbi.total_breakdown_to, 0) + coalesce(ppi.total_purchased, 0)) -
+           coalesce(pso.total_sold, 0) + coalesce(pbo.total_breakdown_from, 0)), 0) as 'balance'   
             
         from products p
         LEFT JOIN product_purchase_in  as ppi ON p.id = ppi.product_id
         LEFT JOIN product_sale_out as pso ON p.id = pso.product_id
         LEFT JOIN product_break_down_in as pbi ON p.id = pbi.product_to_id
         LEFT JOIN product_break_down_out as pbo ON p.id = pbo.product_from_id
+        LEFT JOIN product_categories AS pc ON p.category_id = pc.id
+        LEFT JOIN product_measure_units AS pmu ON p.measure_unit_id = pmu.id
         WHERE FIND_IN_SET(p.id, filter_products);
         
         END

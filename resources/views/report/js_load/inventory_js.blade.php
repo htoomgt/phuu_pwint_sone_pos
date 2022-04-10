@@ -6,24 +6,14 @@
     $("#btnSearch").on('click', (e) => {
         e.preventDefault();
 
-        if (frmDataGridValidationStatus.form()) {
+        
             $("#{{ $dataTableId }}").DataTable().ajax.reload();
 
-            let dataToPost = $("#frmDataGrid").serialize();
-
-            $.ajax({
-                url : "{{route('report.totalAmountSaleAndProfit')}}",
-                method : "GET",
-                data: dataToPost,
-                success : (response) => {
-                    console.log(response);
-                    $("#total_sale_amount_label").html(response.data.total_amount);
-                    $("#total_profit_label").html(response.data.total_profit);
-                },
-                
-            })
             
-        }
+
+            
+            
+        
 
     })
 
@@ -33,7 +23,9 @@
         $("#frmDataGrid").attr('action', '{{route("report.saleAndProfitDailyExport")}}')
 
         if (frmDataGridValidationStatus.form()) {
-            $("#frmDataGrid").attr('action', '{{route("report.saleAndProfitDailyExport")}}')            
+            $("#frmDataGrid").attr('action', '{{route("report.inventory_export")}}')  
+            // console.log("hello current inventory export");          
+            // console.log('{{route("report.inventory_export")}}');
             $("#frmDataGrid").submit();
         }
 
