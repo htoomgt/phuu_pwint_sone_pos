@@ -58,8 +58,8 @@
     </div>
     <!-- /.content -->
 
-    {{-- @include('product-category.product-category-create')
-    @include('product-category.product-category-update') --}}
+    @include('product-category.product-category-create')
+    @include('product-category.product-category-update')
 
 
 @endsection
