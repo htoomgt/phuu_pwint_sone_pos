@@ -139,6 +139,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="{{route('report.inventory_daily')}}" class="nav-link @if($lvl2PageTitle=='Daily Inventory') active  @endif">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Daily Inventory</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Reorder Level List</p>

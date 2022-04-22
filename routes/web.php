@@ -159,6 +159,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/total-amount-sale-and-profit', [SaleAndProfitReportController::class, 'getTotalAmountOfSaleAndProfit'])->name('totalAmountSaleAndProfit');
 
         
+        Route::get('/inventory-daily', [InventoryReportControllerReportController::class, 'showDailyReportPage'])->name('inventory_daily');
+        Route::get('/inventory-daily-export', [InventoryReportControllerReportController::class, 'inventoryExport'])->name('inventory_daily_export');
+
         Route::get('/inventory', [InventoryReportControllerReportController::class, 'showReportPage'])->name('inventory');
         Route::get('/inventory-export', [InventoryReportControllerReportController::class, 'inventoryExport'])->name('inventory_export');
         
