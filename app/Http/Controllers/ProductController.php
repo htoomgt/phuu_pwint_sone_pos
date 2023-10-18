@@ -43,7 +43,7 @@ class ProductController extends GenericController implements ResourceFunctions
      * - DRY
      * - Skinny Controller, Fat Model with repository pattern and trait
      * - Business logic should be in service class
-     * - validation with function at trait
+     * - validation with function at trait for more compact and clean code
      * - use eloquent than raw query
      * - mass assignment
      * - comment code with prefer / useful description
@@ -51,7 +51,7 @@ class ProductController extends GenericController implements ResourceFunctions
      * - using config file
      * - use Ioc container or facades
      * - store date in standard foramt
-     * -
+     * - validation updated both at frontend and at backend
      */
 
     private $productReadRepository;
