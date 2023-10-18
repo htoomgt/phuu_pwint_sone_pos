@@ -300,6 +300,8 @@ class ProductController extends GenericController implements ResourceFunctions
     {
 
         $this->validateGetProductByParentId($request);
+
+
         try {
 
             $product = $this->productReadRepository->findByBreakdownParentId($request->id);
