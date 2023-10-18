@@ -19,8 +19,8 @@ class CreateProductCriteriaChangeLogsTable extends Migration
             $table->foreignId('product_id')->nullable()->references('id')->on('products')->onUpdate('no action')->onDelete('set null');
             $table->string('criteria_name', 128);
             $table->date('used_date');
-            $table->decimal('value_from', 10, 2)->unsigned();
-            $table->decimal('value_to', 10, 2)->unsigned();
+            $table->decimal('value_from', 10, 2)->unsigned()->nullable();
+            $table->decimal('value_to', 10, 2)->unsigned()->nullable();
             $table->timestamps();
 
             $table->index('product_id');
@@ -29,7 +29,6 @@ class CreateProductCriteriaChangeLogsTable extends Migration
 
             $table->index(['product_id', 'criteria_name'], 'pccl_pid_cn');
             $table->index(['product_id', 'criteria_name', 'used_date'], 'pccl_pid_cn_ud');
-
         });
         Schema::enableForeignKeyConstraints();
     }
