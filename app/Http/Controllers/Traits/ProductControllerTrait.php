@@ -152,7 +152,27 @@ trait ProductControllerTrait
 
     public function validateProductCreateRequest($request)
     {
-        $request->validate([]);
+        $validationRule = [
+            'name' => "required|min:3|max:255",
+            "myanmar_name" => "min:3",
+            "product_code" => "required|min:3|max:255",
+            "category_id" => "required|exists:product_categories,id",
+            "measure_unit_id" => "required|exists:product_measure_units,id",
+            "reorder_level" => "required|numeric",
+            "ex_mill_price" => "required|numeric|min:1",
+            "transport_fee" => "numeric|numeric|min:0",
+            "unload_fee" => "numeric|numeric|min:0",
+            "unit_price" => "required|numeric|min:1",
+        ];
+
+        if ($request->breakdown_parent != '') {
+            $ruleToAdd = [
+                "breadown_parent_full_multiplier" => "required|numeric|min:2",
+            ];
+            $validationRule = array_merge($validationRule, $ruleToAdd);
+        }
+
+        $request->validate($validationRule);
     }
 
     public function validateProductFindById($request)
@@ -164,14 +184,37 @@ trait ProductControllerTrait
 
     public function validateUpdateByIdRequest($request)
     {
-        $request->validate([]);
+        $validationRule = [
+            'id' => 'required|exists:products,id',
+            'name' => "required|min:3|max:255",
+            "myanmar_name" => "min:3",
+            "product_code" => "required|min:3|max:255",
+            "category_id" => "required|exists:product_categories,id",
+            "measure_unit_id" => "required|exists:product_measure_units,id",
+            "reorder_level" => "required|numeric",
+            "ex_mill_price" => "required|numeric|min:1",
+            "transport_fee" => "numeric|numeric|min:0",
+            "unload_fee" => "numeric|numeric|min:0",
+            "unit_price" => "required|numeric|min:1",
+        ];
+
+        if ($request->breakdown_parent != '') {
+            $ruleToAdd = [
+                "breadown_parent_full_multiplier" => "required|numeric|min:2",
+            ];
+            $validationRule = array_merge($validationRule, $ruleToAdd);
+        }
+
+
+
+        $request->validate($validationRule);
     }
 
     public function validateProductStatusUpdateRequest($request)
     {
         $request->validate([
             'id' => 'required|exists:products,id',
-            'status' => 'required|in:active,inactive',
+            'statusToChange' => 'required|in:active,inactive',
         ]);
     }
 

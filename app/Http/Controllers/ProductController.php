@@ -24,6 +24,7 @@ class ProductController extends GenericController implements ResourceFunctions
      * Single Responsibility Principle (SRP)
      * by using trait to separate the logic, using trait instead of using smaller class, because it is easier to maintain
      * by using GenericController to separate the logic
+     * by only serving the product related function
      *
      * Open/Closed Principle (OCP)
      * by implementing ResourceFunction
@@ -41,7 +42,7 @@ class ProductController extends GenericController implements ResourceFunctions
      * - KISS
      * - DRY
      * - Skinny Controller, Fat Model with repository pattern and trait
-     * - Business logic should be in service clas
+     * - Business logic should be in service class
      * - validation with function at trait
      * - use eloquent than raw query
      * - mass assignment
@@ -205,6 +206,7 @@ class ProductController extends GenericController implements ResourceFunctions
         try {
             $product = Product::find($request->id);
 
+            // Product Criteria change log recording for changes
             (new ProductService)->productCriteriaChangeLogSaving($product, $request, $this->productCriteriaChangeLogWriteRepository);
 
 

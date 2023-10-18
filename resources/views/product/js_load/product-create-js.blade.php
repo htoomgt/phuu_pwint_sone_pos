@@ -4,34 +4,42 @@
     $("#btnCreateProduct").on('click', function() {
         let dataToPost = $("#frmCreateProduct").serialize();
         let url = "{{ route('product.addNew') }}";
+        console.log("this is log");
 
+        console.log($("#dlBreakdownParent").prop('selectedIndex'));
 
-        if (frmCreateProductValidationStatus.form()) {
+        // if (frmCreateProductValidationStatus.form()) {
 
-            axios({
-                    url: url,
-                    method: "POST",
-                    data: dataToPost
+        axios({
+                url: url,
+                method: "POST",
+                data: dataToPost
+            })
+            .then((response) => {
+                if (response.data.status == "success") {
+                    Swal.fire({
+                            'icon': 'success',
+                            'title': 'Product Creating',
+                            'text': response.data.messages.request_msg,
+                            'confirmButtonText': "OK"
+                        })
+                        .then((result) => {
+                            if (result.isConfirmed) {
+                                window.location = "{{ route('product.showList') }}";
+                            }
+                        });
+                }
+            })
+            .catch((error) => {
+                let errMsgObj = error.response.data.errors;
+                Swal.fire({
+                    'icon': 'error',
+                    'title': error.response.data.message,
+                    'text': Object.values(errMsgObj)[0][0],
+                    'confirmButtonText': "OK"
                 })
-                .then((response) => {
-                    if (response.data.status == "success") {
-                        Swal.fire({
-                                'icon': 'success',
-                                'title': 'Product Creating',
-                                'text': response.data.messages.request_msg,
-                                'confirmButtonText': "OK"
-                            })
-                            .then((result) => {
-                                if (result.isConfirmed) {
-                                    window.location = "{{ route('product.showList') }}";
-                                }
-                            });
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
-                });
-        }
+            });
+        // }
 
 
     })
@@ -70,13 +78,15 @@
                 required: true,
                 min: 1
             },
-            breadown_parent_full_multiplier : {
-                required: function(element){
-                    return $("#breakdown_parent_id").val() != "";
+            breadown_parent_full_multiplier: {
+                required: function(element) {
+                    return $("#dlBreakdownParent").prop('selectedIndex') > 0;
                 },
-                min : function(element){
-                    if($("#breakdown_parent_id").val() != ""){
+                min: function(element) {
+                    if ($("#dlBreakdownParent").prop('selectedIndex') > 0) {
                         return 2;
+                    } else {
+                        return false;
                     }
                 }
             },
@@ -117,7 +127,7 @@
                 required: "Please enter reorder level",
                 min: "Please enter reorder level at least 1"
             },
-            breadown_parent_full_multiplier : {
+            breadown_parent_full_multiplier: {
                 required: "Please enter breadown parent full multiplier",
                 min: "Please enter breadown parent full multiplier at least 2"
             },

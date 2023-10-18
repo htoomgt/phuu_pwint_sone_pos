@@ -1,9 +1,12 @@
 <script>
     dropDownRefresh();
 
+
+
     $("#btnUpdateProduct").on('click', function() {
         let dataToPost = $("#frmEditProduct").serialize();
         let url = "{{ route('product.updateById') }}";
+
 
 
         if (frmCreateProductValidationStatus.form()) {
@@ -29,7 +32,15 @@
                     }
                 })
                 .catch((error) => {
-                    console.log(error)
+                    console.log(error.response);
+                    let errMsgObj = error.response.data.errors;
+                    Swal.fire({
+                        'icon': 'error',
+                        'title': error.response.data.message,
+                        'text': Object.values(errMsgObj)[0][0],
+                        'confirmButtonText': "OK"
+                    })
+
                 });
         }
 
@@ -66,13 +77,15 @@
             measure_unit_id: {
                 required: true
             },
-            breadown_parent_full_multiplier : {
-                required: function(element){
-                    return $("#breakdown_parent_id").val() != "";
+            breadown_parent_full_multiplier: {
+                required: function(element) {
+                    return $("#dlBreakdownParent").val() !== undefined;
                 },
-                min : function(element){
-                    if($("#breakdown_parent_id").val() != ""){
+                min: function(element) {
+                    if ($("#dlBreakdownParent").val() !== undefined) {
                         return 2;
+                    } else {
+                        return false;
                     }
                 }
             },
@@ -113,7 +126,7 @@
             measure_unit_id: {
                 required: "Please choose measure munit"
             },
-            breadown_parent_full_multiplier : {
+            breadown_parent_full_multiplier: {
                 required: "Please enter breadown parent full multiplier",
                 min: "Please enter breadown parent full multiplier at least 2"
             },

@@ -62,11 +62,14 @@ class ProductService
 
         // $productCriteriaChangeLog->save();
 
-        $productCriteriaChangeLogWriteRepository->create($productCriteriaChangeLogToSave);
+
+
+
 
         // Logging compute value if there were changes in basic value
         if ($changesForComputeValue) {
 
+            $productCriteriaChangeLogWriteRepository->create($productCriteriaChangeLogToSave);
 
 
             $productCriteriaChangeLogToSave = [];
