@@ -52,6 +52,10 @@ class ProductController extends GenericController implements ResourceFunctions
      * - use Ioc container or facades
      * - store date in standard foramt
      * - validation updated both at frontend and at backend
+     *
+     * referenced list
+     * - https://medium.com/@eloufirhatim/solid-principles-in-laravel-1418be178346
+     * - https://www.mindtwo.de/guidelines/coding/laravel#follow-laravel-naming-conventions
      */
 
     private $productReadRepository;
