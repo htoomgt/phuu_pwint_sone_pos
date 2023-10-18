@@ -34,4 +34,13 @@ class ProductReadRepository implements ProductReadRepositoryInterface
 
         return $product;
     }
+
+    public function findByBreakdownParentId($breakdownParentId)
+    {
+        $product = Product::with(['measure_unit', 'category'])
+            ->where('breakdown_parent', $breakdownParentId)->first();
+
+
+        return $product;
+    }
 }

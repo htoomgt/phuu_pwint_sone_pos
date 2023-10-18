@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Yajra\DataTables\Html\Builder;
 
 class GenericController extends Controller
 {
@@ -35,32 +36,24 @@ class GenericController extends Controller
         $custom_invalid_msg = [],
         $custom_no_data_msg = 'No record is founded!',
         $custom_request_fail_msg = 'Your request cannot be done!'
-    )
-    {
-        if($result_status == 'success'){
+    ) {
+        if ($result_status == 'success') {
             $this->response['status'] = 'success';
             $this->httpStatus = Response::HTTP_OK;
-            $this->response['messages'] = array_merge($this->response['messages'], ['request_msg'=>$custom_request_success_msg]);
-        }
-        elseif($result_status == 'invalid')
-        {
+            $this->response['messages'] = array_merge($this->response['messages'], ['request_msg' => $custom_request_success_msg]);
+        } elseif ($result_status == 'invalid') {
             $this->response['status'] = 'invalid';
-            $this->httpStatus = Response::HTTP_UNPROCESSABLE_ENTITY ;
+            $this->httpStatus = Response::HTTP_UNPROCESSABLE_ENTITY;
             $this->response['messages'] = array_merge($this->response['messages'], $custom_invalid_msg);
-        }
-        elseif($result_status == 'no data')
-        {
+        } elseif ($result_status == 'no data') {
             $this->response['status'] = 'no data';
-            $this->httpStatus = Response::HTTP_OK ;
+            $this->httpStatus = Response::HTTP_OK;
             $this->response['messages'] = array_merge($this->response['messages'], $custom_no_data_msg);
-        }
-        elseif($result_status == 'error')
-        {
+        } elseif ($result_status == 'error') {
             $this->response['status'] = 'error';
             $this->httpStatus = Response::HTTP_INTERNAL_SERVER_ERROR;
             $this->response['messages'] = array_merge($this->response['messages'], ['request_msg' => $custom_request_fail_msg]);
-        }
-        else{
+        } else {
             $this->response['status'] = 'fail';
             $this->httpStatus = Response::HTTP_SERVICE_UNAVAILABLE;
             $this->response['messages'] = array_merge($this->response['messages'], ['request_msg' => $custom_request_fail_msg]);
@@ -76,22 +69,20 @@ class GenericController extends Controller
         $dayCount = $interval->format("%a");
         $sqlInsertReadyDates = "";
 
-        for ($i=1; $i <= $dayCount ; $i++) {
+        for ($i = 1; $i <= $dayCount; $i++) {
 
-            if($i==1){
+            if ($i == 1) {
                 $dateToAdd = $dateStartDate->format('Y-m-d');
-            }
-            else{
-                $dateToAdd = date("Y-m-d", strtotime($dateStartDate->format('Y-m-d')." + {$i} day"));
+            } else {
+                $dateToAdd = date("Y-m-d", strtotime($dateStartDate->format('Y-m-d') . " + {$i} day"));
             }
 
             $sqlInsertReadyDates .= "('{$dateToAdd}')";
 
 
-            if($i !== $dayCount){
-                $sqlInsertReadyDates = $sqlInsertReadyDates.", \n";
+            if ($i !== $dayCount) {
+                $sqlInsertReadyDates = $sqlInsertReadyDates . ", \n";
             }
-
         }
 
         return $sqlInsertReadyDates;

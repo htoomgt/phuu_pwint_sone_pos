@@ -3,21 +3,56 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\ProductCriteriaChangeLog;
-use App\Repositories\ProductCriteriaChangeLogWriteRepository;
+use Illuminate\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use Yajra\DataTables\Html\Builder;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Services\ProductService;
 use App\Repositories\ProductReadRepository;
 use App\Repositories\ProductWriteRepository;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
-use Illuminate\View\View;
-use Yajra\DataTables\Facades\DataTables;
-use Yajra\DataTables\Html\Builder;
+use App\Http\Controllers\Traits\ProductControllerTrait;
+use App\Repositories\ProductCriteriaChangeLogWriteRepository;
 
 
 class ProductController extends GenericController implements ResourceFunctions
 {
+    use ProductControllerTrait;
+
+    /***
+     * Single Responsibility Principle (SRP)
+     * by using trait to separate the logic, using trait instead of using smaller class, because it is easier to maintain
+     * by using GenericController to separate the logic
+     *
+     * Open/Closed Principle (OCP)
+     * by implementing ResourceFunction
+     *
+     * Liskov Substitution Principle (LSP)
+     * by exntending the GenericController
+     *
+     * Interface Segregation Principle (ISP)
+     * by using read / write dependency injection
+     *
+     * Dependency Inversion Principle (DIP)
+     * by using constructor dependency injection
+     *
+     * Best Practices
+     * - KISS
+     * - DRY
+     * - Skinny Controller, Fat Model with repository pattern and trait
+     * - Business logic should be in service clas
+     * - validation with function at trait
+     * - use eloquent than raw query
+     * - mass assignment
+     * - comment code with prefer / useful description
+     * - function description or doc
+     * - using config file
+     * - use Ioc container or facades
+     * - store date in standard foramt
+     * -
+     */
+
     private $productReadRepository;
     private $productWriteRepository;
     private $productCriteriaChangeLogWriteRepository;
@@ -27,6 +62,7 @@ class ProductController extends GenericController implements ResourceFunctions
         ProductWriteRepository $productWriteRepository,
         ProductCriteriaChangeLogWriteRepository $productCriteriaChangeLogWriteRepository
     ) {
+
         parent::__construct();
         $this->productReadRepository = $productReadRepository;
         $this->productWriteRepository = $productWriteRepository;
@@ -34,6 +70,12 @@ class ProductController extends GenericController implements ResourceFunctions
     }
 
 
+    /**
+     * To show product list view page
+     * @return View
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
     public function showListPage(Builder $builder)
     {
         $this->setPageTitle("Manage Product", "Product List");
@@ -45,144 +87,10 @@ class ProductController extends GenericController implements ResourceFunctions
 
             $model = $this->productReadRepository->productShowList();
 
-
-            return DataTables::of($model)
-                ->addColumn('actions', function (Product $product) use ($deleteUrl, $dataTableId) {
-                    $actions = '
-                <div class="dropdown">
-                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
-                  </button>
-                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="' . route('product.edit', $product->id) . '"
-
-                            >
-                        <i class="fas fa-edit"></i>
-                        Edit
-                    </a>
-                    <a class="dropdown-item" href="#" onclick = "dtDeleteRow(' . $product->id . ', `' . $deleteUrl . '`, `' . $dataTableId . '`)">
-                        <i class="far fa-trash-alt"></i>
-                        Delete
-                    </a>
-                  </div>
-                </div>
-            ';
-
-                    return $actions;
-                })
-                ->editColumn('status', function (Product $productCategory) use ($statusUpdateUrl, $dataTableId) {
-                    $displayStatus = '';
-                    $statusAction = '';
-
-                    if ($productCategory->status == 'active') {
-                        $displayStatus = 'Active';
-                        $statusAction = '
-                        <a class="dropdown-item" href="#" onclick="dtChangeStatus(`' . $productCategory->id . '`, `inactive`, `' . $statusUpdateUrl . '`, `' . $dataTableId . '` )">
-                            Inactive
-                        </a>
-                    ';
-                    } else {
-                        $displayStatus = 'inactive';
-                        $statusAction = '
-                        <a class="dropdown-item" href="#" onclick="dtChangeStatus(`' . $productCategory->id . '`, `active`, `' . $statusUpdateUrl . '`, `' . $dataTableId . '` )">
-                            Active
-                        </a>
-                    ';
-                    }
-
-                    $statusColorClass = $displayStatus == "Active" ? "btn-success" : "btn-secondary";
-
-                    return '<div class="dropdown">
-                      <button class="btn ' . $statusColorClass . ' dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        ' . $displayStatus . '
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        ' . $statusAction . '
-                      </div>
-                    </div>';
-                })
-                ->filterColumn('category', function ($query, $keyword) {
-                    $query->where('pct.name', 'LIKE', "%{$keyword}%");
-                })
-                ->addColumn('category', function (Product $product) {
-                    return $product->product_category_name;
-                })
-                ->orderColumn('category', function ($query, $order) {
-                    $query->orderBy('pct.name', $order);
-                })
-                ->addColumn('measure_unit', function (Product $product) {
-                    return $product->product_measure_unit;
-                })
-                ->filterColumn('measure_unit', function ($query, $keyword) {
-                    return $query->where('pmu.name', 'LIKE', "%{$keyword}%");
-                })
-                ->orderColumn('measure_unit', function ($query, $order) {
-                    return $query->orderBy('pmu.name', $order);
-                })
-                ->addColumn('creator', function (Product $product) {
-                    return $product->creator_name;
-                })
-                ->filterColumn('creator', function ($query, $keyword) {
-                    return $query->where('cu.full_name', 'LIKE', "%{$keyword}%");
-                })
-                ->orderColumn('creator', function ($query, $order) {
-                    $query->orderBy('cu.full_name', $order);
-                })
-                ->addColumn('updater', function (Product $product) {
-                    return $product->updater_name;
-                })
-                ->filterColumn('updater', function ($query, $keyword) {
-                    return $query->where('uu.full_name', 'LIKE', "%{$keyword}%");
-                })
-                ->orderColumn('updater', function ($query, $order) {
-                    $query->orderBy('uu.full_name', $order);
-                })
-                ->editColumn('created_at', function ($request) {
-                    return $request->created_at->format('Y-m-d');
-                })
-                ->editColumn('updated_at', function ($request) {
-                    return $request->created_at->format('Y-m-d');
-                })
-                ->rawColumns(['actions', 'status'])
-                ->toJson();
+            return $this->getDataTableResponseData($model, $statusUpdateUrl, $deleteUrl, $dataTableId);
         }
 
-        $dataTable = $builder->columns([
-            ['data' => 'id', 'title' => 'Id'],
-            ['data' => 'actions', 'title' => 'Actions', 'searchable' => false, 'orderable' => false],
-            ['data' => 'status', 'title' => 'Status'],
-            ['data' => 'name', 'title' => 'Name'],
-            ['data' => 'myanmar_name', 'title' => 'Myanmar Name'],
-            ['data' => 'category', 'title' => 'Category'],
-            ['data' => 'product_code', 'title' => 'Product Code'],
-            ['data' => 'measure_unit', 'title' => 'Measure Unit'],
-            ['data' => 'unit_price', 'title' => 'Unit Price'],
-            ['data' => 'reorder_level', 'title' => 'Reorder Level'],
-            ['data' => 'ex_mill_price', 'title' => 'Ex-mill Price'],
-            ['data' => 'transport_fee', 'title' => 'Transport fee'],
-            ['data' => 'unload_fee', 'title' => 'Unload fee'],
-            ['data' => 'creator', 'title' => 'Creator'],
-            ['data' => 'created_at', 'title' => 'Created At'],
-            ['data' => 'updater', 'title' => 'Updater'],
-            ['data' => 'updated_at', 'title' => 'Updated At'],
-        ])
-            ->parameters([
-                "paging" => true,
-                "searchDelay" => 350,
-                "responsive" => true,
-                "autoWidth" => false,
-                "order" => [
-                    [0, 'desc'],
-                ],
-                "columnDefs" => [
-                    /* ["width" => "5%", "targets" => 0],
-                    ["width" => "10%", "targets" => 1],
-                    ["width" => "20%", "targets" => 2],
-                    ["width" => "25%", "targets" => 3],
-                    ["width" => "20%", "targets" => 4],
-                    ["width" => "20%", "targets" => 5], */],
-
-            ]);
+        $dataTable = $this->getDataTableStructure($builder);
 
         return view('product.product-show-list', compact('dataTable'));
     }
@@ -208,6 +116,9 @@ class ProductController extends GenericController implements ResourceFunctions
      */
     public function addNew(Request $request): JsonResponse
     {
+
+        $this->validateProductCreateRequest($request);
+
         try {
 
             $dataFormPost = $request->all();
@@ -232,12 +143,20 @@ class ProductController extends GenericController implements ResourceFunctions
         return response()->json($this->response, $this->httpStatus);
     }
 
-    public function getDataRowById(Request $request)
+    /**
+     * To get the product data row by Id
+     * @return JsonResponse
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
+    public function getDataRowById(Request $request): JsonResponse
     {
+        $this->validateProductFindById($request);
 
         try {
 
             $product = $this->productReadRepository->findById($request->id);
+
 
 
             if (!empty($product)) {
@@ -255,6 +174,12 @@ class ProductController extends GenericController implements ResourceFunctions
         return response()->json($this->response, $this->httpStatus);
     }
 
+    /**
+     * To response view page for product edit
+     * @return View
+     * @since 2021-07-19
+     * @author Htoo Maung Thait
+     */
     public function edit(Product $product)
     {
 
@@ -275,96 +200,12 @@ class ProductController extends GenericController implements ResourceFunctions
      */
     public function updateById(Request $request): JsonResponse
     {
+        $this->validateUpdateByIdRequest($request);
+
         try {
             $product = Product::find($request->id);
 
-
-            $changesForComputeValue = false;
-
-            $productCriteriaChangeLog = new ProductCriteriaChangeLog();
-            $productCriteriaChangeLog->product_id = $product->id;
-
-            $productCriteriaChangeLogToSave = [];
-            $productCriteriaChangeLogToSave["product_id"] = $product->id;
-            $productCriteriaChangeLogToSave["used_date"] = date('Y-m-d');
-
-            if ($product->ex_mill_price != $request->ex_mill_price) {
-
-                $productCriteriaChangeLogToSave["criteria_name"] = 'ex_mill_price';
-                $productCriteriaChangeLogToSave["value_from"] = $product->ex_mill_price;
-                $productCriteriaChangeLogToSave["value_to"] = $request->ex_mill_price;
-
-                // removed duplicated rows dry best practice
-                $changesForComputeValue = true;
-            }
-
-            if ($product->transport_fee != $request->transport_fee) {
-
-
-
-                $productCriteriaChangeLogToSave["criteria_name"] = 'transport_fee';
-                $productCriteriaChangeLogToSave["value_from"] = $product->transport_fee;
-                $productCriteriaChangeLogToSave["value_to"] = $request->transport_fee;
-
-
-                // removed duplicated rows dry best practice
-                $changesForComputeValue = true;
-            }
-
-            if ($product->unload_fee != $request->unload_fee) {
-
-
-                $productCriteriaChangeLogToSave["criteria_name"] = 'unload_fee';
-                $productCriteriaChangeLogToSave["value_from"] = $product->unload_fee;
-                $productCriteriaChangeLogToSave["value_to"] = $request->unload_fee;
-
-                // removed duplicated rows dry best practice
-                $changesForComputeValue = true;
-            }
-
-            if ($product->unit_price != $request->unit_price) {
-
-                $productCriteriaChangeLogToSave["criteria_name"] = 'unit_price';
-                $productCriteriaChangeLogToSave["value_from"] = $product->unit_price;
-                $productCriteriaChangeLogToSave["value_to"] = $request->unit_price;
-
-                // removed duplicated rows dry best practice
-                $changesForComputeValue = true;
-            }
-
-            // $productCriteriaChangeLog->save();
-
-            $this->productCriteriaChangeLogWriteRepository->create($productCriteriaChangeLogToSave);
-
-            // Logging compute value if there were changes in basic value
-            if ($changesForComputeValue) {
-
-
-
-                $productCriteriaChangeLogToSave = [];
-                $productCriteriaChangeLogToSave["product_id"] = $product->id;
-                $productCriteriaChangeLogToSave["criteria_name"] = 'original_cost';
-                $productCriteriaChangeLogToSave["value_from"] = $product->original_cost;
-                $productCriteriaChangeLogToSave["value_to"] = $request->original_cost;
-                $productCriteriaChangeLogToSave["used_date"] = date('Y-m-d');
-
-                $this->productCriteriaChangeLogWriteRepository->create($productCriteriaChangeLogToSave);
-
-
-
-
-
-
-                $productCriteriaChangeLogToSave = [];
-                $productCriteriaChangeLogToSave["product_id"] = $product->id;
-                $productCriteriaChangeLogToSave["criteria_name"] = 'profit_per_unit';
-                $productCriteriaChangeLogToSave["value_from"] = $product->profit_per_unit;
-                $productCriteriaChangeLogToSave["value_to"] = $request->profit_per_unit;
-                $productCriteriaChangeLogToSave["used_date"] = date('Y-m-d');
-
-                $this->productCriteriaChangeLogWriteRepository->create($productCriteriaChangeLogToSave);
-            }
-
+            (new ProductService)->productCriteriaChangeLogSaving($product, $request, $this->productCriteriaChangeLogWriteRepository);
 
 
             $columnsExcept = ['_token'];
@@ -396,8 +237,11 @@ class ProductController extends GenericController implements ResourceFunctions
      * @since 2021-07-19
      * @author Htoo Maung Thait
      */
-    public function statusUpdateById(Request $request)
+    public function statusUpdateById(Request $request): JsonResponse
     {
+
+        $this->validateProductStatusUpdateRequest($request);
+
         try {
 
 
@@ -426,6 +270,9 @@ class ProductController extends GenericController implements ResourceFunctions
      */
     public function deleteById(Request $request): JsonResponse
     {
+
+        $this->validateProductDeleteRequest($request);
+
         try {
 
             $status = $this->productWriteRepository->deleteById($request->id);
@@ -452,10 +299,10 @@ class ProductController extends GenericController implements ResourceFunctions
     public function getProductByParentProductId(Request $request)
     {
 
-
+        $this->validateGetProductByParentId($request);
         try {
-            $product = Product::with(['measure_unit', 'category'])
-                ->where('breakdown_parent', $request->id)->first();
+
+            $product = $this->productReadRepository->findByBreakdownParentId($request->id);
 
 
             if (!empty($product)) {
